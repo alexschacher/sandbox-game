@@ -9,60 +9,20 @@ public class CameraSnapRotate : MonoBehaviour
     private Vector3 targetRotation;
 
     [Header("Input")]
-    [SerializeField] private string inputAxis = "Horizontal";
     [SerializeField] private bool canControl = true;
     [SerializeField] private bool invertInput;
-    private bool canTakeInput;
 
     [Header("Motion")]
     [SerializeField] [Range(0.5f, 3f)] private float snappiness = 1f;
 
-    private void Start()
+    private void Awake()
     {
         targetRotation = transform.eulerAngles;
     }
-
     private void Update()
     {
-        if (canControl)
-        {
-            GetInput();
-        }
         Lerp();
     }
-
-    private void GetInput()
-    {
-        float input = Input.GetAxisRaw(inputAxis);
-        if (invertInput)
-        {
-            input = -input;
-        }
-
-        if (input == 0f)
-        {
-            canTakeInput = true;
-        }
-        else if (input < 0f && canTakeInput)
-        {
-            targetAngle = targetRotation.y + angleIncrement;
-            if (targetAngle > 360)
-            {
-                targetAngle -= 360;
-            }
-            canTakeInput = false;
-        }
-        else if (input > 0f && canTakeInput)
-        {
-            targetAngle = targetRotation.y - angleIncrement;
-            if (targetAngle < 0)
-            {
-                targetAngle += 360;
-            }
-            canTakeInput = false;
-        }
-    }
-
     private void Lerp()
     {
         targetRotation = new Vector3(targetRotation.x, targetAngle, targetRotation.z);
@@ -72,4 +32,29 @@ public class CameraSnapRotate : MonoBehaviour
             Mathf.LerpAngle(transform.eulerAngles.y, targetRotation.y, Time.deltaTime * snappiness * 10),
             Mathf.LerpAngle(transform.eulerAngles.z, targetRotation.z, Time.deltaTime * snappiness * 10));
     }
+    private void OnRotateCameraLeft() {RotateCamera(true); }
+    private void OnRotateCameraRight() {RotateCamera(false); }
+    private void RotateCamera(bool left)
+    {
+        if (!canControl) return;
+        if (invertInput) left = !left;
+
+        if (left)
+        {
+            targetAngle = targetRotation.y + angleIncrement;
+            if (targetAngle > 360)
+            {
+                targetAngle -= 360;
+            }
+        }
+        else
+        {
+            targetAngle = targetRotation.y - angleIncrement;
+            if (targetAngle < 0)
+            {
+                targetAngle += 360;
+            }
+        }
+    }
+    
 }

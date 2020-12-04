@@ -20,7 +20,6 @@ public class CameraController : MonoBehaviour
         Instance = (Instance == null) ? this : Instance;
         Cam = (Cam == null) ? Camera.main.transform : Cam;
     }
-
     private void Update()
     {
         if (alwaysFaceTarget)

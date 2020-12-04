@@ -11,10 +11,8 @@ public class CameraSnapZoom : MonoBehaviour
     private Vector3 targetZoomPosition;
 
     [Header("Input")]
-    [SerializeField] private string inputAxis = "Vertical";
     [SerializeField] private bool canControl = true;
     [SerializeField] private bool invertInput;
-    private bool canTakeInput;
 
     [Header("Motion")]
     [SerializeField] [Range(0f, 3f)] private float lag = 1f;
@@ -28,49 +26,10 @@ public class CameraSnapZoom : MonoBehaviour
         cameraController = GetComponent<CameraController>();
         cam = cameraController.Cam;
     }
-
     private void Update()
     {
-        if (canControl)
-        {
-            GetInput();
-        }
         Lerp();
     }
-
-    private void GetInput()
-    {
-        float zoomIncrement = 1f / (zoomLevels - 1);
-        float input = Input.GetAxisRaw(inputAxis);
-        if (invertInput)
-        {
-            input = -input;
-        }
-
-        if (input == 0f)
-        {
-            canTakeInput = true;
-        }
-        else if (input < 0f && zoom > 0f && canTakeInput)
-        {
-            canTakeInput = false;
-            zoom -= zoomIncrement;
-            if (zoom < 0.09f)
-            {
-                zoom = 0f;
-            }
-        }
-        else if (input > 0f && zoom < 1f && canTakeInput)
-        {
-            canTakeInput = false;
-            zoom += zoomIncrement;
-            if (zoom > 0.91f)
-            {
-                zoom = 1f;
-            }
-        }
-    }
-
     private void Lerp()
     {
         if (cam == null || zoomedInPosition == null || zoomedOutPosition == null) return;
@@ -86,5 +45,31 @@ public class CameraSnapZoom : MonoBehaviour
             ref zoomVelocity,
             lag / 10
             );
+    }
+    private void OnZoomCameraIn() { ZoomCamera(false); }
+    private void OnZoomCameraOut() { ZoomCamera(true); }
+    private void ZoomCamera(bool zoomOut)
+    {
+        if (!canControl) return;
+        if (invertInput) zoomOut = !zoomOut;
+
+        float zoomIncrement = 1f / (zoomLevels - 1);
+
+        if (zoomOut)
+        {
+            zoom -= zoomIncrement;
+            if (zoom < 0.09f)
+            {
+                zoom = 0f;
+            }
+        }
+        else
+        {
+            zoom += zoomIncrement;
+            if (zoom > 0.91f)
+            {
+                zoom = 1f;
+            }
+        }
     }
 }
