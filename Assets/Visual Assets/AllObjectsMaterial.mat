@@ -76,8 +76,10 @@ Material:
     - Boolean_187D6DC4: 0
     - Vector1_E526CB93: 1
     - _BumpScale: 1
+    - _CameraTargetBrightness: 0.25
+    - _CameraTargetRadius: 3.5
     - _Cutoff: 0.5
-    - _Daylight: 0
+    - _Daylight: 0.9131055
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _FlipX: 0
@@ -88,12 +90,13 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _IsBillboarded: 0
-    - _LightingStep1: 0.1
-    - _LightingStep2: 0.2
+    - _LightingStep1: 0.001
+    - _LightingStep2: 0.05
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _ShadeOpacity: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -105,7 +108,8 @@ Material:
     - Vector2_15A1ECEF: {r: 0, g: 0, b: 0, a: 0}
     - Vector2_560B0111: {r: 0, g: 0, b: 0, a: 0}
     - _AnimFrame: {r: 0, g: 0, b: 0, a: 0}
-    - _AtmosphereTint: {r: 1, g: 1, b: 1, a: 0}
+    - _AtmosphereTint: {r: 1, g: 0.9650541, b: 0.5614288, a: 1}
+    - _CameraTargetPosition: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DarknessColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
