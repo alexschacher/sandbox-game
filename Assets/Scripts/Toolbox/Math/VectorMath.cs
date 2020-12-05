@@ -13,6 +13,11 @@ public static class VectorMath
 
         return ((camForward * verticalInput) + (camRight * horizontalInput)).normalized;
     }
+    public static Vector2 ConvertInputVectorUsingCamera(Vector2 input, Transform camera)
+    {
+        Vector3 dir = ConvertInputVectorUsingCamera(input.x, input.y, camera);
+        return new Vector2(dir.x, dir.z);
+    }
 
     public static Vector3 RoundNormalizedVectorTo45DegreeGridMovement(Vector3 dir)
     {

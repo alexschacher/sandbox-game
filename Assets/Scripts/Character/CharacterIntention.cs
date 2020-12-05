@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class CharacterIntention : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private Vector2 moveDir;
+    [SerializeField] private Vector2 faceDir;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public void SetMoveDir(Vector2 dir) => moveDir = dir;
+    public void SetFaceDir(Vector2 dir) => faceDir = dir;
+    
+    public Vector2 GetMoveDir() => moveDir;
+    public Vector2 GetFaceDir() => faceDir;
 }
