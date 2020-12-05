@@ -5,6 +5,8 @@ public class CameraFollowTarget : MonoBehaviour
 {
     [HideInInspector] private static CameraFollowTarget Instance;
 
+    [SerializeField] private Material material;
+
     [Header("Target")]
     [SerializeField] public bool followTarget = true;
     [SerializeField] private Transform targetObject;
@@ -22,6 +24,7 @@ public class CameraFollowTarget : MonoBehaviour
     private void Update()
     {
         FollowTarget();
+        UpdateMaterial();
     }
 
     private void FollowTarget()
@@ -35,6 +38,11 @@ public class CameraFollowTarget : MonoBehaviour
             followLag
             );
         }
+    }
+
+    private void UpdateMaterial()
+    {
+        material.SetVector("_CameraTargetPosition", targetObject.transform.position);
     }
 
     public static void SetTargetObject(Transform target)

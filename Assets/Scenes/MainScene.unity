@@ -35452,6 +35452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dda8fca2a9c86148a8b2f3bea70ae21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: fb546b9fd42ebeb488e49ee25d549d27, type: 2}
   followTarget: 1
   targetObject: {fileID: 379544979719833493}
   targetOffset: {x: 0, y: 0, z: 0}
@@ -50514,6 +50515,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2764107522875217075, guid: 122e4f66525c2b6489c9c383ae58b538,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7734644717500580661, guid: 122e4f66525c2b6489c9c383ae58b538,
         type: 3}
       propertyPath: m_Name

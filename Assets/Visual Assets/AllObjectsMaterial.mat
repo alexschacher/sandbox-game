@@ -79,7 +79,7 @@ Material:
     - _CameraTargetBrightness: 0.25
     - _CameraTargetRadius: 3.5
     - _Cutoff: 0.5
-    - _Daylight: 0.6
+    - _Daylight: 0.65191317
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _FlipX: 0
@@ -108,8 +108,8 @@ Material:
     - Vector2_15A1ECEF: {r: 0, g: 0, b: 0, a: 0}
     - Vector2_560B0111: {r: 0, g: 0, b: 0, a: 0}
     - _AnimFrame: {r: 0, g: 0, b: 0, a: 0}
-    - _AtmosphereTint: {r: 1, g: 0.5707547, b: 0.5707547, a: 1}
-    - _CameraTargetPosition: {r: 0, g: 0, b: 0, a: 0}
+    - _AtmosphereTint: {r: 0.8999528, g: 0.81058335, b: 0.6162059, a: 1}
+    - _CameraTargetPosition: {r: 8.61257, g: 1, b: -1.2810858, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DarknessColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

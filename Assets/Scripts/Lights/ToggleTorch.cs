@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class ToggleTorch : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private GameObject torch;
 
-    // Update is called once per frame
-    void Update()
+    private void OnGrab()
     {
-        
+        torch.SetActive(!torch.activeSelf);
     }
 }
