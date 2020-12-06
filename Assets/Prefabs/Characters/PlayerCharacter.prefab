@@ -19,6 +19,8 @@ GameObject:
   - component: {fileID: 1205841805314784296}
   - component: {fileID: 7734644717500580667}
   - component: {fileID: 7734644717500580660}
+  - component: {fileID: 1312242121634298262}
+  - component: {fileID: 5716699765885593569}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -112,6 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 508be23e236384f47ba84708e4aab86d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveDir: {x: 0, y: 0}
   moveSpeed: 4
 --- !u!114 &290932327239795425
 MonoBehaviour:
@@ -216,6 +219,38 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &1312242121634298262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7734644717500580661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e33c822723131e438d6734d3e81e959, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentAnim: []
+  currentFrame: 0
+  animSpeed: 1
+  animTimer: 0
+  paused: 0
+--- !u!114 &5716699765885593569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7734644717500580661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 534b1b0c79bfd0041aae6231e98d21d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkAnim: {fileID: 11400000, guid: 7fb9245c568e8484585e732d38f82b21, type: 2}
+  standAnim: {fileID: 11400000, guid: d735ebe180eacbf4fbd22181812e02ce, type: 2}
+  animState: 0
 --- !u!1001 &664797126859398689
 PrefabInstance:
   m_ObjectHideFlags: 0

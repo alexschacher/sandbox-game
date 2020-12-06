@@ -2,17 +2,45 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BillboardAnimator))]
 public class CharacterAnimator : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public enum AnimState { Stand, Walk }
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] private Anim walkAnim;
+    [SerializeField] private Anim standAnim;
+
+    private BillboardAnimator animator;
+    private Vector3 currentPosition;
+    private Vector3 prevPosition;
+    [SerializeField] private AnimState animState = AnimState.Stand;
+
+    private void Awake()
     {
-        
+        animator = GetComponent<BillboardAnimator>();
+    }
+    private void Update()
+    {
+        currentPosition = transform.position;
+
+        if (currentPosition != prevPosition)
+        {
+            if (animState != AnimState.Walk)
+            {
+                animator.StartAnim(walkAnim);
+                animState = AnimState.Walk;
+                Debug.Log("Start walking");
+            }
+        }
+        else
+        {
+            if (animState != AnimState.Stand)
+            {
+                animator.StartAnim(standAnim);
+                animState = AnimState.Stand;
+                Debug.Log("Start standing");
+            }
+        }
+        prevPosition = currentPosition;
     }
 }
