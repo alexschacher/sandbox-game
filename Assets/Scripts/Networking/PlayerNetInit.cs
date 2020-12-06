@@ -5,7 +5,7 @@ using Mirror;
 
 public class PlayerNetInit : NetworkBehaviour
 {
-    [SerializeField] private BillboardManager characterBillboard;
+    [SerializeField] private Billboard characterBillboard;
     [SerializeField] private List<Material> characterMaterials;
     [SyncVar(hook = "SetCharacterMaterial")] private int characterMaterialIndex;
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [ExecuteAlways]
-public class BillboardManager : MonoBehaviour
+public class Billboard : MonoBehaviour
 {
     private MeshRenderer rend;
     private MaterialPropertyBlock properties;
@@ -24,7 +24,7 @@ public class BillboardManager : MonoBehaviour
     {
         rend.GetPropertyBlock(properties);
             properties.SetFloat("_FrameWidth", frameWidth);
-            properties.SetFloat("_FrameSpacing", frameWidth);
+            properties.SetFloat("_FrameSpacing", frameSpacing);
             properties.SetFloat("_IsBillboarded", 1f);
         rend.SetPropertyBlock(properties);
     }

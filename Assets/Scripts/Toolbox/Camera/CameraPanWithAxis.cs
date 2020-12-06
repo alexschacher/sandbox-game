@@ -39,9 +39,10 @@ public class CameraPanWithAxis : MonoBehaviour
         {
             verticalInput = -verticalInput;
         }
+        
+        Vector2 input = new Vector2(horizontalInput, verticalInput);
+        Vector2 moveDir = VectorMath.ConvertInputToWorldDir(input, cam);
 
-        Vector3 offsetAmount = VectorMath.ConvertInputVectorUsingCamera(horizontalInput, verticalInput, cam);
-
-        transform.position += offsetAmount * speed * Time.deltaTime * 15;
+        transform.position += new Vector3(moveDir.x, 0f, moveDir.y) * speed * Time.deltaTime * 15;
     }
 }

@@ -2,17 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Billboard), typeof(FaceDir))]
 public class BillboardFaceDir : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private Billboard billboard;
+    private FaceDir faceDir;
+    private bool flipX = false;
+    private bool prevFlipX = false;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
+        billboard = GetComponent<Billboard>();
+        faceDir = GetComponent<FaceDir>();
+    }
+    private void Update()
+    {
+        flipX = VectorMath.DetermineBillboardFlipX(faceDir.GetFaceDir(), flipX, Camera.main.transform);
         
+        if (flipX != prevFlipX) billboard.SetFlipX(flipX);
+        
+        prevFlipX = flipX;
     }
 }

@@ -35,11 +35,11 @@ public class DayTimer : MonoBehaviour
     [SerializeField] private float nightHour = 22f;
 
     [Header("Transition")]
-    [SerializeField] private float transitionStartLightValue;
-    [SerializeField] private float transitionTargetLightValue;
-    [SerializeField] private Color transitionStartColor;
-    [SerializeField] private Color transitionTargetColor;
-    [SerializeField] private float transitionTimer;
+    [SerializeField] private float transitionStartLightValue = 1f;
+    [SerializeField] private float transitionTargetLightValue = 1f;
+    [SerializeField] private Color transitionStartColor = Color.white;
+    [SerializeField] private Color transitionTargetColor = Color.white;
+    [SerializeField] private float transitionTimer = 1f;
     [SerializeField] private float transitionLength;
 
     

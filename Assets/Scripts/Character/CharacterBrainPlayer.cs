@@ -22,7 +22,7 @@ public class CharacterBrainPlayer : MonoBehaviour
     private void GetMoveInput()
     {
         Vector2 moveInput = moveInputAction.ReadValue<Vector2>();
-        Vector2 moveDir = VectorMath.ConvertInputVectorUsingCamera(moveInput, Camera.main.transform);
+        Vector2 moveDir = VectorMath.ConvertInputToWorldDir(moveInput, Camera.main.transform);
         intention.SetMoveDir(moveDir);
     }
 }

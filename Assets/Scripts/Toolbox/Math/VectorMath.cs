@@ -2,24 +2,25 @@
 
 public static class VectorMath
 {
-    public static Vector3 ConvertInputVectorUsingCamera(float horizontalInput, float verticalInput, Transform camera)
+    public static Vector2 ConvertInputToWorldDir(Vector2 input, Transform cam)
     {
-        Vector3 camForward = camera.forward;
-        Vector3 camRight = camera.right;
-        camForward.y = 0;
-        camRight.y = 0;
-        camForward = camForward.normalized;
-        camRight = camRight.normalized;
-
-        return ((camForward * verticalInput) + (camRight * horizontalInput)).normalized;
-    }
-    public static Vector2 ConvertInputVectorUsingCamera(Vector2 input, Transform camera)
-    {
-        Vector3 dir = ConvertInputVectorUsingCamera(input.x, input.y, camera);
-        return new Vector2(dir.x, dir.z);
+        return ((GetCamFwd(cam) * input.y) + (GetCamRight(cam) * input.x)).normalized;
     }
 
-    public static Vector3 RoundNormalizedVectorTo45DegreeGridMovement(Vector3 dir)
+    public static bool DetermineBillboardFlipX(Vector2 dir, bool currentFlip, Transform cam)
+    {
+        float deadZone = 0.01f;
+        Vector2 camRight = GetCamRight(cam);
+
+        if (Vector3.Dot(dir, camRight) < -deadZone) return true;
+        else if (Vector3.Dot(dir, camRight) > deadZone) return false;
+        return currentFlip;
+    }
+
+    public static Vector2 GetCamFwd(Transform cam) => new Vector2(cam.forward.x, cam.forward.z).normalized;
+    public static Vector2 GetCamRight(Transform cam) => new Vector2(cam.right.x, cam.right.z).normalized;
+
+    public static Vector3 RoundDirTo45DegreeGridMovement(Vector3 dir)
     {
         if (dir.x >  0.92f) return new Vector3( 1, 0, 0);
         if (dir.z >  0.92f) return new Vector3( 0, 0, 1);
