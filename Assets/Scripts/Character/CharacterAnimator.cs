@@ -29,7 +29,6 @@ public class CharacterAnimator : MonoBehaviour
             {
                 animator.StartAnim(walkAnim);
                 animState = AnimState.Walk;
-                Debug.Log("Start walking");
             }
         }
         else
@@ -38,7 +37,6 @@ public class CharacterAnimator : MonoBehaviour
             {
                 animator.StartAnim(standAnim);
                 animState = AnimState.Stand;
-                Debug.Log("Start standing");
             }
         }
         prevPosition = currentPosition;

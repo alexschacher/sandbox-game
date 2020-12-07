@@ -76,7 +76,7 @@ Material:
     - Boolean_187D6DC4: 0
     - Vector1_E526CB93: 1
     - _BumpScale: 1
-    - _CameraTargetBrightness: 0.25
+    - _CameraTargetBrightness: 0.3
     - _CameraTargetRadius: 3.5
     - _Cutoff: 0.5
     - _Daylight: 1

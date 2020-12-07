@@ -34,7 +34,8 @@ public class BillboardAnimator : MonoBehaviour
             {
                 currentFrame = 0;
             }
-            SetBillboardFrame(currentAnim[currentFrame]);
+
+            if (currentAnim != null) SetBillboardFrame(currentAnim[currentFrame]);
         }
     }
     private void SetBillboardFrame(Vector2Int frame)
