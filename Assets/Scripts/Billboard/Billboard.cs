@@ -61,4 +61,6 @@ public class Billboard : MonoBehaviour
     {
         rend.enabled = visibility;
     }
+
+    public Vector2 GetOriginFrame() => originFrame;
 }
