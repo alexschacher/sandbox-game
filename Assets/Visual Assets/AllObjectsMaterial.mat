@@ -69,7 +69,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texturesheet:
-        m_Texture: {fileID: 2800000, guid: dc3751c9d8faa574a918d04f028ba52c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6295dd4e8a0282f4894dd8b2587bac8e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -79,7 +79,7 @@ Material:
     - _CameraTargetBrightness: 0.3
     - _CameraTargetRadius: 3.5
     - _Cutoff: 0.5
-    - _Daylight: 0
+    - _Daylight: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _FlipX: 0
@@ -108,8 +108,8 @@ Material:
     - Vector2_15A1ECEF: {r: 0, g: 0, b: 0, a: 0}
     - Vector2_560B0111: {r: 0, g: 0, b: 0, a: 0}
     - _AnimFrame: {r: 0, g: 0, b: 0, a: 0}
-    - _AtmosphereTint: {r: 0.5764706, g: 0.43921572, b: 1, a: 1}
-    - _CameraTargetPosition: {r: 2.5923104, g: 0, b: 2.9030206, a: 0}
+    - _AtmosphereTint: {r: 1, g: 1, b: 1, a: 1}
+    - _CameraTargetPosition: {r: 3.3696265, g: -2.5, b: 10.006662, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DarknessColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

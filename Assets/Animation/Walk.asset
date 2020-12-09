@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf4bf4c9b103b4046bad8741e69816a6, type: 3}
   m_Name: Walk
   m_EditorClassIdentifier: 
-  animSpeed: 7
+  animSpeed: 9
   anim:
   - {x: 1, y: 0}
   - {x: 2, y: 0}

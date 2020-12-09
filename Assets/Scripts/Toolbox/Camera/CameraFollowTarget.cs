@@ -23,21 +23,21 @@ public class CameraFollowTarget : MonoBehaviour
 
     private void Update()
     {
-        FollowTarget();
-        UpdateMaterial();
+        if (targetObject != null && followTarget)
+        {
+            FollowTarget();
+            UpdateMaterial();
+        }
     }
 
     private void FollowTarget()
     {
-        if (targetObject != null && followTarget)
-        {
-            transform.position = Vector3.SmoothDamp(
-            transform.position,
-            targetObject.position + targetOffset,
-            ref followVelocity,
-            followLag
-            );
-        }
+        transform.position = Vector3.SmoothDamp(
+        transform.position,
+        targetObject.position + targetOffset,
+        ref followVelocity,
+        followLag
+        );
     }
 
     private void UpdateMaterial()

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8252190611665842087}
   - component: {fileID: 8252190611665842084}
   - component: {fileID: 8252190611665842085}
+  - component: {fileID: 8282917312227691104}
   m_Layer: 0
   m_Name: GrassTuft
   m_TagString: Untagged
@@ -96,5 +97,20 @@ MonoBehaviour:
   frameSpacing: 1
   flipX: 0
   flipY: 0
-  originFrame: {x: 4, y: 0}
+  originFrame: {x: 5, y: 0}
   animFrame: {x: 0, y: 0}
+--- !u!114 &8282917312227691104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8252190611665842082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67c4f33b9686acf4897cc87cb4014226, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  randomFlipX: 1
+  randomFlipY: 0
+  originFrameXOffsetRange: 0
