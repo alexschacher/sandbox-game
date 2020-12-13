@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 [RequireComponent(typeof(FaceDir))]
-public class CharacterMovementMotor : MonoBehaviour
+public class CharacterMovementMotor : NetworkBehaviour
 {
     private CharacterIntention intention;
     private FaceDir faceDir;
@@ -22,7 +23,10 @@ public class CharacterMovementMotor : MonoBehaviour
     }
     private void Update()
     {
-        AttemptMove();
+        if (isLocalPlayer)
+        {
+            AttemptMove();
+        }
     }
     private void AttemptMove()
     {
@@ -33,9 +37,12 @@ public class CharacterMovementMotor : MonoBehaviour
         AdjustDirAroundCliffs();
         AdjustDirAroundWalls(false);
 
-        moveDir.y = 0f;
-        transform.Translate(moveDir * distanceToMove);
-        faceDir.SetFaceDir(VectorMath.V3toV2Norm(moveDir));
+        if (moveDir != Vector3.zero)
+        {
+            moveDir.y = 0f;
+            transform.Translate(moveDir * distanceToMove);
+            faceDir.SetFaceDir(VectorMath.V3toV2Norm(moveDir));
+        }
         ClampHeightToGround();
     }
     private void AdjustDirAroundWalls(bool allowRedirect)

@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 [RequireComponent(typeof(BillboardAnimator))]
-public class CharacterAnimator : MonoBehaviour
+public class CharacterAnimator : NetworkBehaviour
 {
     public enum AnimState { Stand, Walk }
 
@@ -13,6 +14,8 @@ public class CharacterAnimator : MonoBehaviour
     private BillboardAnimator animator;
     private Vector3 currentPosition;
     private Vector3 prevPosition;
+    private float animationGrace = 0.15f;
+    private float animationGraceTimer;
     [SerializeField] private AnimState animState = AnimState.Stand;
 
     private void Awake()
@@ -35,8 +38,21 @@ public class CharacterAnimator : MonoBehaviour
         {
             if (animState != AnimState.Stand)
             {
-                animator.StartAnim(standAnim);
-                animState = AnimState.Stand;
+                if (!hasAuthority)
+                {
+                    animationGraceTimer += Time.deltaTime;
+                    if (animationGraceTimer > animationGrace)
+                    {
+                        animationGraceTimer = 0f;
+                        animator.StartAnim(standAnim);
+                        animState = AnimState.Stand;
+                    }
+                }
+                else
+                {
+                    animator.StartAnim(standAnim);
+                    animState = AnimState.Stand;
+                }
             }
         }
         prevPosition = currentPosition;

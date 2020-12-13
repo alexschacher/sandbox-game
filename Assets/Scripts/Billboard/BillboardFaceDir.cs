@@ -18,8 +18,11 @@ public class BillboardFaceDir : MonoBehaviour
     private void Update()
     {
         flipX = VectorMath.DetermineBillboardFlipX(faceDir.GetFaceDir(), flipX, Camera.main.transform);
-        
-        if (flipX != prevFlipX) billboard.SetFlipX(flipX);
+
+        if (flipX != prevFlipX)
+        {
+            billboard.SetFlipX(flipX);
+        }
         
         prevFlipX = flipX;
     }

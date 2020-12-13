@@ -3,8 +3,8 @@ using Mirror;
 
 public class CameraFollowMe : NetworkBehaviour
 {
-    void Start()
+    override public void OnStartAuthority()
     {
-        if (isLocalPlayer) CameraFollowTarget.SetTargetObject(transform);
+        CameraFollowTarget.SetTargetObject(transform);
     }
 }

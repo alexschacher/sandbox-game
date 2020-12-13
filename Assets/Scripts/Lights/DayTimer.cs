@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class DayTimer : MonoBehaviour
+public class DayTimer : NetworkBehaviour
 {
     public enum PartOfDay { Morning, Day, Evening, Night }
     public enum Season { Spring, Summer, Fall, Winter }
@@ -10,8 +11,8 @@ public class DayTimer : MonoBehaviour
     [SerializeField] private Material material;
 
     [Header("Time")]
+    [SyncVar] [SerializeField] private float currentHour = 12f;
     [SerializeField] private float timeSpeed = 1f;
-    [SerializeField] private float currentHour = 12f;
     [SerializeField] private PartOfDay currentPartOfDay = PartOfDay.Day;
     [SerializeField] private float currentLightValue = 1f;
     [SerializeField] private Color currentColor = Color.white;
@@ -49,7 +50,10 @@ public class DayTimer : MonoBehaviour
     }
     private void Update()
     {
-        UpdateHour();
+        if (isServer)
+        {
+            UpdateHour();
+        }
         CheckForStartTransition();
         LerpTransition();
     }

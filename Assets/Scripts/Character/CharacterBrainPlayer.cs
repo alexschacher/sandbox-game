@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Mirror;
 
-public class CharacterBrainPlayer : MonoBehaviour
+public class CharacterBrainPlayer : NetworkBehaviour
 {
     private CharacterIntention intention;
 
@@ -17,7 +18,10 @@ public class CharacterBrainPlayer : MonoBehaviour
     }
     private void Update()
     {
-        GetMoveInput();
+        if (isLocalPlayer)
+        {
+            GetMoveInput();
+        }
     }
     private void GetMoveInput()
     {
