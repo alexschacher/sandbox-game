@@ -4,11 +4,12 @@ using Steamworks;
 
 public class SteamLobby : MonoBehaviour
 {
-    [SerializeField] private GameObject netUICanvas;
+    [SerializeField] private GameMenu gameMenu;
     private NetworkManager netManager;
     protected Callback<LobbyCreated_t> lobbyCreated;
     protected Callback<GameLobbyJoinRequested_t> gameLobbyJoinRequested;
     protected Callback<LobbyEnter_t> lobbyEnter;
+    protected Callback<LobbyKicked_t> lobbyKicked;
 
     private void Start()
     {
@@ -19,18 +20,18 @@ public class SteamLobby : MonoBehaviour
             lobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
             gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);
             lobbyEnter = Callback<LobbyEnter_t>.Create(OnLobbyEnter);
+            lobbyKicked = Callback<LobbyKicked_t>.Create(OnLobbyKicked);
         }
     }
     public void HostLobby()
     {
-        netUICanvas.SetActive(false);
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, netManager.maxConnections);
     }
     private void OnLobbyCreated(LobbyCreated_t callback)
     {
         if(callback.m_eResult != EResult.k_EResultOK)
         {
-            netUICanvas.SetActive(true);
+            gameMenu.DisplayMainMenu();
             return;
         }
 
@@ -45,8 +46,12 @@ public class SteamLobby : MonoBehaviour
     {
         if (NetworkServer.active) return;
 
+        gameMenu.HideMainMenu();
         netManager.networkAddress = SteamMatchmaking.GetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "HostAddress");
         netManager.StartClient();
-        netUICanvas.SetActive(false);
+    }
+    private void OnLobbyKicked(LobbyKicked_t callback)
+    {
+        gameMenu.DisplayMainMenu();
     }
 }
