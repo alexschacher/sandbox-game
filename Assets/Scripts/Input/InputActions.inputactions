@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "name": "Move",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "5e8adcac-0c43-4bb0-b8b7-016efc1ebea3",
                     "expectedControlType": "Vector2",
                     "processors": "NormalizeVector2",
@@ -49,6 +49,38 @@
                     "name": "ZoomCameraOut",
                     "type": "Button",
                     "id": "3c47d72a-8190-492a-afc7-379d8438783f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Scroll",
+                    "type": "PassThrough",
+                    "id": "e08ac1be-8354-4159-9c68-0bb07e0a53d8",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "MousePosition",
+                    "type": "Value",
+                    "id": "6a7c6a3c-6a92-427f-89d5-5c43f82435d9",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "PlaceObject",
+                    "type": "Button",
+                    "id": "7837f2e2-7ea9-4c7a-a800-727d74a4ae49",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "DeleteObject",
+                    "type": "Button",
+                    "id": "c73c0808-76c3-4008-98cc-60659524a5f6",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -362,6 +394,50 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "adb69b55-1656-41e1-a131-81e2c00677f0",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Scroll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1596fecf-de22-412e-bb41-e280367930eb",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MousePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "15ea4e4d-7028-4f84-af23-fbdee0cb593e",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PlaceObject",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9c769e39-d615-406e-87c7-49c34c915a47",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DeleteObject",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
