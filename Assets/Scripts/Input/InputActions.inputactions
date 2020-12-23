@@ -84,6 +84,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "SelectObject",
+                    "type": "Button",
+                    "id": "2d8c9dc0-20f2-493e-bd68-bc8037b239c2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -436,6 +444,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "DeleteObject",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d3e271b9-4995-45d5-8ed8-38e50addcd56",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectObject",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

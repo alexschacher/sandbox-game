@@ -5,81 +5,78 @@ using Mirror;
 
 public class Level : NetworkBehaviour
 {
-    private short[] testChunk;
-    [SerializeField] private int chunkWidth = 8;
-    [SerializeField] private int chunkHeight = 4;
+    private short[] levelData;
+    private GameObject[,,] staticEntities;
 
-    [SerializeField] private GameObject groundPrefab;
-    [SerializeField] private GameObject waterPrefab;
+    [SerializeField] private int levelWidth = 32;
+    public int GetLevelWidth() => levelWidth;
 
+    [SerializeField] private int levelHeight = 4;
+    public int GetLevelHeight() => levelHeight;
+
+
+
+    // Generate Level Data
     private void Start()
     {
-        testChunk = GenerateChunk();
+        levelData = GenerateLevel();
+        staticEntities = new GameObject[levelWidth, levelHeight, levelWidth];
     }
 
-    private short[] GenerateChunk()
+    private short[] GenerateLevel()
     {
-        short[] chunk = new short[chunkWidth * chunkWidth * chunkHeight];
+        short[] levelData = new short[levelWidth * levelWidth * levelHeight];
 
-        for (int z = 0; z < chunkWidth; z++)
+        for (int z = 0; z < levelWidth; z++)
         {
-            for (int x = 0; x < chunkWidth; x++)
+            for (int x = 0; x < levelWidth; x++)
             {
-                chunk[Get1D(x, 0, z)] = (short)Random.Range(1, 3);
+                levelData[Get1D(x, 0, z)] = (short)ID.Ground;
 
-                if (Random.Range(0f, 100f) < 10f)
+                if (Random.Range(0f, 100f) < 5f)
                 {
-                    chunk[Get1D(x, 1, z)] = (short)ID.Apple;
+                    levelData[Get1D(x, 0, z)] = (short)ID.Water;
+                }
+                if (Random.Range(0f, 100f) < 3f)
+                {
+                    levelData[Get1D(x, 1, z)] = (short)ID.Apple;
                 }
             }
         }
-        return chunk;
+        return levelData;
     }
 
+
+
+    // Send Level Data to Client
     private void OnGrab()
     {
         if (isServer)
         {
-            RpcSendChunk(testChunk);
+            SendLevelData(levelData);
         }
     }
 
-    [ClientRpc] private void RpcSendChunk(short[] chunk)
+    [ClientRpc]
+    private void SendLevelData(short[] levelData)
     {
-        //DebugChunk(chunk);
-        SpawnChunk(chunk);
+        this.levelData = levelData;
+        DestroyAllStaticEntities();
+        SpawnLevel(levelData);
     }
 
-    private void DebugChunk(short[] chunk)
+
+
+    // Spawn Objects
+    private void SpawnLevel(short[] levelData)
     {
-        string message = "";
-
-        Debug.Log("--- Chunk ---");
-
-        for (int y = 0; y < chunkHeight; y++)
+        for (int y = 0; y < levelHeight; y++)
         {
-            Debug.Log("y: " + y);
-            for (int z = 0; z < chunkWidth; z++)
+            for (int z = 0; z < levelWidth; z++)
             {
-                for (int x = 0; x < chunkWidth; x++)
+                for (int x = 0; x < levelWidth; x++)
                 {
-                    message = message + chunk[Get1D(x, y, z)];
-                }
-                Debug.Log(message);
-                message = "";
-            }
-        }
-    }
-
-    private void SpawnChunk(short[] chunk)
-    {
-        for (int y = 0; y < chunkHeight; y++)
-        {
-            for (int z = 0; z < chunkWidth; z++)
-            {
-                for (int x = 0; x < chunkWidth; x++)
-                {
-                    SpawnObject((ID)chunk[Get1D(x, y, z)], x, y, z);
+                    SpawnObject((ID)levelData[Get1D(x, y, z)], x, y, z);
                 }
             }
         }
@@ -90,31 +87,61 @@ public class Level : NetworkBehaviour
         if (id == ID.Empty) return;
 
         Entity entity = Entity.GetFromID(id);
-
         GameObject spawnedObj = Instantiate(entity.prefab, new Vector3(x, y * 0.5f, z), Quaternion.identity, transform);
-
         spawnedObj.GetComponent<Spawnable>().Init(entity.values);
+        staticEntities[x, y, z] = spawnedObj;
     }
 
-    public void ModifyCell(ID id, int x, int y, int z)
+
+
+    // Destroy Objects
+    private void DestroyAllStaticEntities()
     {
-        if (isClient)
+        foreach (GameObject obj in staticEntities)
         {
-            CmdModifyCell(id, x, y, z);
+            Destroy(obj);
         }
     }
 
-    [Command(ignoreAuthority = true)] private void CmdModifyCell(ID id, int x, int y, int z)
+    private void DestroyObject(int x, int y, int z)
     {
-        testChunk[Get1D(x, y, z)] = (short)id;
-
-        RpcModifyCell(id, x, y, z);
+        GameObject objectToDelete = staticEntities[x, y, z];
+        if (objectToDelete != null)
+        {
+            Destroy(objectToDelete);
+        }
     }
 
-    [ClientRpc] private void RpcModifyCell(ID id, int x, int y, int z)
+
+
+    // Modify
+    public void Modify(ID id, int x, int y, int z)
     {
+        if (isClient) CmdModify(id, x, y, z);
+    }
+
+    [Command(ignoreAuthority = true)]
+    private void CmdModify(ID id, int x, int y, int z)
+    {
+        levelData[Get1D(x, y, z)] = (short)id;
+        RpcModify(id, x, y, z);
+    }
+
+    [ClientRpc]
+    private void RpcModify(ID id, int x, int y, int z)
+    {
+        levelData[Get1D(x, y, z)] = (short)id;
+        DestroyObject(x, y, z);
         SpawnObject(id, x, y, z);
     }
 
-    private int Get1D(int x, int y, int z) => x + (z * chunkWidth) + (y * chunkWidth * chunkWidth);
+
+
+    // Utility
+    public ID GetCellID(int x, int y, int z)
+    {
+        return (ID)levelData[Get1D(x, y, z)];
+    }
+
+    private int Get1D(int x, int y, int z) => x + (z * levelWidth) + (y * levelWidth * levelWidth);
 }

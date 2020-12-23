@@ -10,9 +10,12 @@ public class EditCursor : MonoBehaviour
     [SerializeField] private InputActionAsset inputAsset;
     private InputAction scrollAction, mousePositionAction;
 
-    [SerializeField] private int maxHeight;
+    private int levelWidth;
+    private int levelHeight; 
+
     private int cursorHeight;
     private Vector3Int cursorPosition;
+    private ID selectedID = ID.Ground;
 
     private void Awake()
     {
@@ -24,13 +27,16 @@ public class EditCursor : MonoBehaviour
 
         mousePositionAction = inputActions.FindAction("MousePosition");
         mousePositionAction.Enable();
+
+        levelWidth = level.GetLevelWidth();
+        levelHeight = level.GetLevelHeight();
     }
 
     private void Scroll(InputAction.CallbackContext context)
     {
         float scroll = context.ReadValue<float>();
 
-        if (scroll < 0 && transform.position.y < (maxHeight - 1) * 0.5f)
+        if (scroll < 0 && transform.position.y < (levelHeight - 1) * 0.5f)
         {
             cursorHeight++;
         }
@@ -64,22 +70,31 @@ public class EditCursor : MonoBehaviour
     {
         if (IfWithinChunk() == false) return;
 
-        level.ModifyCell(ID.Ground, cursorPosition.x, cursorPosition.y, cursorPosition.z);
+        level.Modify(selectedID, cursorPosition.x, cursorPosition.y, cursorPosition.z);
     }
 
     private void OnDeleteObject()
     {
         if (IfWithinChunk() == false) return;
 
-        level.ModifyCell(ID.Empty, cursorPosition.x, cursorPosition.y, cursorPosition.z);
+        level.Modify(ID.Empty, cursorPosition.x, cursorPosition.y, cursorPosition.z);
+    }
+
+    private void OnSelectObject()
+    {
+        if (IfWithinChunk() == false) return;
+
+        selectedID = level.GetCellID(cursorPosition.x, cursorHeight, cursorPosition.z);
+
+        Debug.Log("Selected " + selectedID.ToString());
     }
 
     private bool IfWithinChunk()
     {
         if (cursorPosition.x >= 0 &&
             cursorPosition.z >= 0 &&
-            cursorPosition.x < 8 &&
-            cursorPosition.z < 8)
+            cursorPosition.x < levelWidth &&
+            cursorPosition.z < levelWidth)
         {
             return true;
         }
