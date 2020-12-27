@@ -5,8 +5,8 @@ using Mirror;
 
 public class Level : NetworkBehaviour
 {
-    private short[] levelData;
-    private GameObject[,,] staticEntities;
+    private short[] levelIDs;
+    private GameObject[,,] staticObjects;
 
     [SerializeField] private int levelWidth = 32;
     public int GetLevelWidth() => levelWidth;
@@ -19,8 +19,8 @@ public class Level : NetworkBehaviour
     // Generate Level Data
     private void Start()
     {
-        levelData = GenerateLevel();
-        staticEntities = new GameObject[levelWidth, levelHeight, levelWidth];
+        levelIDs = GenerateLevel();
+        staticObjects = new GameObject[levelWidth, levelHeight, levelWidth];
     }
 
     private short[] GenerateLevel()
@@ -53,14 +53,14 @@ public class Level : NetworkBehaviour
     {
         if (isServer)
         {
-            SendLevelData(levelData);
+            SendLevelData(levelIDs);
         }
     }
 
     [ClientRpc]
     private void SendLevelData(short[] levelData)
     {
-        this.levelData = levelData;
+        this.levelIDs = levelData;
         DestroyAllStaticEntities();
         SpawnLevel(levelData);
     }
@@ -89,7 +89,7 @@ public class Level : NetworkBehaviour
         Entity entity = Entity.GetFromID(id);
         GameObject spawnedObj = Instantiate(entity.prefab, new Vector3(x, y * 0.5f, z), Quaternion.identity, transform);
         spawnedObj.GetComponent<Spawnable>().Init(entity.values);
-        staticEntities[x, y, z] = spawnedObj;
+        staticObjects[x, y, z] = spawnedObj;
     }
 
 
@@ -97,7 +97,7 @@ public class Level : NetworkBehaviour
     // Destroy Objects
     private void DestroyAllStaticEntities()
     {
-        foreach (GameObject obj in staticEntities)
+        foreach (GameObject obj in staticObjects)
         {
             Destroy(obj);
         }
@@ -105,7 +105,7 @@ public class Level : NetworkBehaviour
 
     private void DestroyObject(int x, int y, int z)
     {
-        GameObject objectToDelete = staticEntities[x, y, z];
+        GameObject objectToDelete = staticObjects[x, y, z];
         if (objectToDelete != null)
         {
             Destroy(objectToDelete);
@@ -123,14 +123,14 @@ public class Level : NetworkBehaviour
     [Command(ignoreAuthority = true)]
     private void CmdModify(ID id, int x, int y, int z)
     {
-        levelData[Get1D(x, y, z)] = (short)id;
+        levelIDs[Get1D(x, y, z)] = (short)id;
         RpcModify(id, x, y, z);
     }
 
     [ClientRpc]
     private void RpcModify(ID id, int x, int y, int z)
     {
-        levelData[Get1D(x, y, z)] = (short)id;
+        levelIDs[Get1D(x, y, z)] = (short)id;
         DestroyObject(x, y, z);
         SpawnObject(id, x, y, z);
     }
@@ -138,9 +138,30 @@ public class Level : NetworkBehaviour
 
 
     // Utility
-    public ID GetCellID(int x, int y, int z)
+    public ID GetID(int x, int y, int z)
     {
-        return (ID)levelData[Get1D(x, y, z)];
+        if (CheckIfInRange(x, y, z) == false) return ID.Empty;
+        return (ID)levelIDs[Get1D(x, y, z)];
+    }
+
+    public GameObject GetStaticObject(int x, int y, int z)
+    {
+        if (CheckIfInRange(x, y, z) == false) return null;
+        return staticObjects[x, y, z];
+    }
+
+    public bool CheckIfInRange(int x, int y, int z)
+    {
+        if (x >= 0 && x < GetLevelWidth() &&
+            y >= 0 && y < GetLevelHeight() &&
+            z >= 0 && z < GetLevelWidth())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private int Get1D(int x, int y, int z) => x + (z * levelWidth) + (y * levelWidth * levelWidth);

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 504431855105407884}
   - component: {fileID: 504431855105407883}
   - component: {fileID: 5828019624979669745}
+  - component: {fileID: 2611136814178946882}
   m_Layer: 8
   m_Name: Spawnable Block
   m_TagString: Untagged
@@ -104,5 +105,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a05ebd0036b4a34baf9c6f2d4729ba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2611136814178946882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504431855105407882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7debfb316b33b546937c5a1bb219931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

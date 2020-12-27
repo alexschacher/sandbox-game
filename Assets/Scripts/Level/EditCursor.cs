@@ -84,7 +84,7 @@ public class EditCursor : MonoBehaviour
     {
         if (IfWithinChunk() == false) return;
 
-        selectedID = level.GetCellID(cursorPosition.x, cursorHeight, cursorPosition.z);
+        selectedID = level.GetID(cursorPosition.x, cursorHeight, cursorPosition.z);
 
         Debug.Log("Selected " + selectedID.ToString());
     }

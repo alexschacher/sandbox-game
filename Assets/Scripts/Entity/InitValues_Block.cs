@@ -4,5 +4,5 @@ using UnityEngine;
 
 [CreateAssetMenu] public class InitValues_Block : InitValues
 {
-    
+    public BlockBitmaskInfo blockBitmaskInfo;
 }

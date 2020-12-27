@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6299b93dc3da6b144b385577c119b46f, type: 3}
   m_Name: Ground Values
   m_EditorClassIdentifier: 
+  blockBitmaskInfo: {fileID: 11400000, guid: cb3f8676ab202034d93b972b7e27b2c6, type: 2}
