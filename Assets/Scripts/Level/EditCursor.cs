@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class EditCursor : MonoBehaviour
 {
     [SerializeField] private Level level;
-
+    [SerializeField] private Text selectedText;
     [SerializeField] private InputActionAsset inputAsset;
     private InputAction scrollAction, mousePositionAction;
 
@@ -68,36 +69,25 @@ public class EditCursor : MonoBehaviour
 
     private void OnPlaceObject()
     {
-        if (IfWithinChunk() == false) return;
+        if (ActiveGame.GetLevel().CheckIfInRange(cursorPosition.x, cursorHeight, cursorPosition.z) == false) return;
 
         level.Modify(selectedID, cursorPosition.x, cursorPosition.y, cursorPosition.z);
     }
 
     private void OnDeleteObject()
     {
-        if (IfWithinChunk() == false) return;
+        if (ActiveGame.GetLevel().CheckIfInRange(cursorPosition.x, cursorHeight, cursorPosition.z) == false) return;
 
         level.Modify(ID.Empty, cursorPosition.x, cursorPosition.y, cursorPosition.z);
     }
 
     private void OnSelectObject()
     {
-        if (IfWithinChunk() == false) return;
+        if (ActiveGame.GetLevel().CheckIfInRange(cursorPosition.x, cursorHeight, cursorPosition.z) == false) return;
 
         selectedID = level.GetID(cursorPosition.x, cursorHeight, cursorPosition.z);
 
         Debug.Log("Selected " + selectedID.ToString());
-    }
-
-    private bool IfWithinChunk()
-    {
-        if (cursorPosition.x >= 0 &&
-            cursorPosition.z >= 0 &&
-            cursorPosition.x < levelWidth &&
-            cursorPosition.z < levelWidth)
-        {
-            return true;
-        }
-        return false;
+        selectedText.text = "Selected " + selectedID.ToString();
     }
 }

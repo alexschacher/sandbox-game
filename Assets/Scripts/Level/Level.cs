@@ -17,13 +17,12 @@ public class Level : NetworkBehaviour
 
 
     // Generate Level Data
-    private void Start()
+    private void Awake()
     {
-        levelIDs = GenerateLevel();
         staticObjects = new GameObject[levelWidth, levelHeight, levelWidth];
     }
 
-    private short[] GenerateLevel()
+    public void GenerateLevel()
     {
         short[] levelData = new short[levelWidth * levelWidth * levelHeight];
 
@@ -33,39 +32,37 @@ public class Level : NetworkBehaviour
             {
                 levelData[Get1D(x, 0, z)] = (short)ID.Ground;
 
-                if (Random.Range(0f, 100f) < 5f)
+                if (x == 0 || z == 0 || x == levelWidth - 1 || z == levelWidth - 1)
                 {
                     levelData[Get1D(x, 0, z)] = (short)ID.Water;
                 }
-                if (Random.Range(0f, 100f) < 3f)
+                else
                 {
-                    levelData[Get1D(x, 1, z)] = (short)ID.Apple;
+                    if (Random.Range(0f, 100f) < 1f)
+                    {
+                        levelData[Get1D(x, 1, z)] = (short)ID.Apple;
+                    }
                 }
             }
         }
-        return levelData;
+        levelIDs = levelData;
     }
 
 
 
     // Send Level Data to Client
-    private void OnGrab()
+    public void SendLevelDataToClient(NetworkConnection conn)
     {
-        if (isServer)
-        {
-            SendLevelData(levelIDs);
-        }
+        TargetSendLevelData(conn, levelIDs);
     }
 
-    [ClientRpc]
-    private void SendLevelData(short[] levelData)
+    [TargetRpc]
+    private void TargetSendLevelData(NetworkConnection target, short[] levelData)
     {
-        this.levelIDs = levelData;
+        levelIDs = levelData;
         DestroyAllStaticEntities();
         SpawnLevel(levelData);
     }
-
-
 
     // Spawn Objects
     private void SpawnLevel(short[] levelData)
@@ -95,7 +92,7 @@ public class Level : NetworkBehaviour
 
 
     // Destroy Objects
-    private void DestroyAllStaticEntities()
+    public void DestroyAllStaticEntities()
     {
         foreach (GameObject obj in staticObjects)
         {
