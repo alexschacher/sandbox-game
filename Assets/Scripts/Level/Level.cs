@@ -6,6 +6,7 @@ using Mirror;
 public class Level : NetworkBehaviour
 {
     private short[] levelIDs;
+    public short[] GetLevelData() => levelIDs;
     private GameObject[,,] staticObjects;
 
     [SerializeField] private int levelWidth = 32;
@@ -21,7 +22,7 @@ public class Level : NetworkBehaviour
     {
         staticObjects = new GameObject[levelWidth, levelHeight, levelWidth];
     }
-
+    
     public void GenerateLevel()
     {
         short[] levelData = new short[levelWidth * levelWidth * levelHeight];
@@ -36,15 +37,34 @@ public class Level : NetworkBehaviour
                 {
                     levelData[Get1D(x, 0, z)] = (short)ID.Water;
                 }
+                else if (x == 1 || z == 1 || x == levelWidth - 2 || z == levelWidth - 2)
+                {
+                    levelData[Get1D(x, 1, z)] = (short)ID.Post;
+                }
                 else
                 {
-                    if (Random.Range(0f, 100f) < 1f)
+                    if (Random.Range(0f, 100f) < 2f)
                     {
                         levelData[Get1D(x, 1, z)] = (short)ID.Apple;
+                    }
+                    else
+                    if (Random.Range(0f, 100f) < 5f)
+                    {
+                        levelData[Get1D(x, 1, z)] = (short)ID.Tree;
                     }
                 }
             }
         }
+        levelIDs = levelData;
+    }
+
+
+    // Save and Load Level Data
+
+    public void SetLevelData(int width, int height, short[] levelData)
+    {
+        levelWidth = width;
+        levelHeight = height;
         levelIDs = levelData;
     }
 
@@ -63,6 +83,8 @@ public class Level : NetworkBehaviour
         DestroyAllStaticEntities();
         SpawnLevel(levelData);
     }
+
+
 
     // Spawn Objects
     private void SpawnLevel(short[] levelData)

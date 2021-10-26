@@ -20,7 +20,7 @@ public class SmoothNetTransform : NetworkBehaviour
     }
     private void Update()
     {
-        if (isLocalPlayer)
+        if (hasAuthority)
         {
             UpdatePosition();
         }
@@ -47,7 +47,7 @@ public class SmoothNetTransform : NetworkBehaviour
     }
     [ClientRpc] private void RpcSendNewPosition(Vector3 newPosition, float timeSinceLast)
     {
-        if (isLocalPlayer) return;
+        if (hasAuthority) return;
 
         lerpStartPosition = transform.position;
         lerpEndPosition = newPosition;

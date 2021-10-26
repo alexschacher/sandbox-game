@@ -11,10 +11,15 @@ public class SteamLobby : MonoBehaviour
     protected Callback<LobbyEnter_t> lobbyEnter;
     protected Callback<LobbyKicked_t> lobbyKicked;
 
-    private void Start()
+    public static CSteamID LobbyID { get; private set; }
+
+    private void Awake()
     {
         netManager = GetComponent<NetworkManager>();
+    }
 
+    private void Start()
+    {
         if (SteamManager.Initialized)
         {
             lobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
@@ -23,10 +28,13 @@ public class SteamLobby : MonoBehaviour
             lobbyKicked = Callback<LobbyKicked_t>.Create(OnLobbyKicked);
         }
     }
+
     public void HostLobby()
     {
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, netManager.maxConnections);
+        HUD.LogMessage("SteamLobby: HostLobby called");
     }
+
     private void OnLobbyCreated(LobbyCreated_t callback)
     {
         if(callback.m_eResult != EResult.k_EResultOK)
@@ -35,21 +43,31 @@ public class SteamLobby : MonoBehaviour
             return;
         }
 
+        LobbyID = new CSteamID(callback.m_ulSteamIDLobby);
+
         netManager.StartHost();
-        SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "HostAddress", SteamUser.GetSteamID().ToString());
+        SteamMatchmaking.SetLobbyData(LobbyID, "HostAddress", SteamUser.GetSteamID().ToString());
     }
+
     private void OnGameLobbyJoinRequested(GameLobbyJoinRequested_t callback)
     {
+        HUD.LogMessage("SteamLobby: GameLobbyJoinRequested");
         SteamMatchmaking.JoinLobby(callback.m_steamIDLobby);
     }
+
     private void OnLobbyEnter(LobbyEnter_t callback)
     {
+        HUD.LogMessage("SteamLobby: OnLobbyEnter");
+
         if (NetworkServer.active) return;
+
+        HUD.LogMessage("SteamLobby: Attempting to start Client...");
 
         gameMenu.HideMainMenu();
         netManager.networkAddress = SteamMatchmaking.GetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "HostAddress");
         netManager.StartClient();
     }
+
     private void OnLobbyKicked(LobbyKicked_t callback)
     {
         gameMenu.DisplayMainMenu();

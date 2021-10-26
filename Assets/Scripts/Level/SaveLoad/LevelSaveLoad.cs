@@ -4,35 +4,28 @@ using UnityEngine;
 
 public static class LevelSaveLoad
 {
-    /*
-    public static GameSave Pack()
-    {
-        GameSave gameSave = new GameSave();
-
-        gameSave.xWidth = ActiveGame.GetLevel().GetXWidth();
-        gameSave.height = ActiveGame.GetLevel().GetHeight();
-        gameSave.zWidth = ActiveGame.GetLevel().GetZWidth();
-        gameSave.levelData = ActiveGame.GetLevel().GetLevelData();
-
-        return gameSave;
-    }
-
-    public static void Save(GameSave gameSave, string filename)
+    public static void Save(string filename)
     {
         string path = Application.persistentDataPath + "/" + filename + ".savegame";
+
+        GameSave gameSave = new GameSave();
+        gameSave.xWidth = App.GetLevel().GetLevelWidth();
+        gameSave.height = App.GetLevel().GetLevelHeight();
+        gameSave.zWidth = App.GetLevel().GetLevelWidth();
+        gameSave.levelData = App.GetLevel().GetLevelData();
 
         BinaryFormatter bf = new BinaryFormatter();
         FileStream fileStream = File.Create(path);
         bf.Serialize(fileStream, gameSave);
         fileStream.Close();
 
-        Log.LogMessage("File saved: " + path);
+        HUD.LogMessage("Level saved: " + path);
     }
 
-    public static GameSave Load(string filename)
+    public static bool Load(string filename)
     {
-        GameSave gameSave = new GameSave();
         string path = Application.persistentDataPath + "/" + filename + ".savegame";
+        GameSave gameSave = new GameSave();
 
         if (File.Exists(path))
         {
@@ -41,23 +34,16 @@ public static class LevelSaveLoad
             gameSave = (GameSave)bf.Deserialize(fileStream);
             fileStream.Close();
 
+            App.GetLevel().SetLevelData(gameSave.xWidth, gameSave.height, gameSave.levelData);
+
             gameSave.successfullyLoaded = true;
-            Log.LogMessage("File loaded: " + path);
+            HUD.LogMessage("Level loaded: " + path);
         }
         else
         {
             gameSave.successfullyLoaded = false;
-            Log.LogError("Load Failed: File not found.");
+            HUD.LogMessage("Level Load Failed: File not found.");
         }
-
-        return gameSave;
+        return gameSave.successfullyLoaded;
     }
-
-    public static Level Unpack(GameSave gameSave)
-    {
-        Level level = new Level(gameSave.xWidth, gameSave.height, gameSave.zWidth);
-        level.SetLevelData(gameSave.levelData);
-        return level;
-    }
-    */
 }

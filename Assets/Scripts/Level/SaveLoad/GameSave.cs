@@ -5,5 +5,5 @@ public class GameSave
     public int xWidth;
     public int height;
     public int zWidth;
-    public ID[,,] levelData;
+    public short[] levelData;
 }

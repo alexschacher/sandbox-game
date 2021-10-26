@@ -16,11 +16,19 @@ public class CharacterBrainPlayer : NetworkBehaviour
         intention = GetComponent<CharacterIntention>();
         moveInputAction = inputActionAsset.FindAction("Move");
     }
+
     private void Update()
     {
-        if (isLocalPlayer)
+        if (hasAuthority)
         {
-            GetMoveInput();
+            if (App.IsInputLocked())
+            {
+                intention.SetMoveDir(Vector2.zero);
+            }
+            else
+            {
+                GetMoveInput();
+            }
         }
     }
     private void GetMoveInput()

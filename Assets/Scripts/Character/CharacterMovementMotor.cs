@@ -23,7 +23,7 @@ public class CharacterMovementMotor : NetworkBehaviour
     }
     private void Update()
     {
-        if (isLocalPlayer)
+        if (hasAuthority)
         {
             AttemptMove();
         }

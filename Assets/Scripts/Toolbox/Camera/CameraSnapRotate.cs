@@ -32,8 +32,8 @@ public class CameraSnapRotate : MonoBehaviour
             Mathf.LerpAngle(transform.eulerAngles.y, targetRotation.y, Time.deltaTime * snappiness * 10),
             Mathf.LerpAngle(transform.eulerAngles.z, targetRotation.z, Time.deltaTime * snappiness * 10));
     }
-    private void OnRotateCameraLeft() {RotateCamera(true); }
-    private void OnRotateCameraRight() {RotateCamera(false); }
+    private void OnRotateCameraLeft() { if (!App.IsInputLocked()) { RotateCamera(true); } }
+    private void OnRotateCameraRight() { if (!App.IsInputLocked()) { RotateCamera(false); } }
     private void RotateCamera(bool left)
     {
         if (!canControl) return;

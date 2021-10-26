@@ -13,7 +13,7 @@ public class ToggleTorch : NetworkBehaviour
 
     private void OnGrab()
     {
-        if (hasAuthority)
+        if (hasAuthority && !App.IsInputLocked())
         {
             torchOn = !torchOn;
             torch.SetActive(torchOn);

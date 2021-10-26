@@ -20,11 +20,11 @@ using UnityEngine;
     public static void InitDictionary()
     {
         Entity[] allEntities = Resources.LoadAll<Entity>("Entity");
-        Debug.Log("EntityInfo assets found: " + allEntities.Length);
+        //Debug.Log("EntityInfo assets found: " + allEntities.Length);
 
         foreach (Entity e in allEntities)
         {
-            Debug.Log(" - " + e.name);
+            //Debug.Log(" - " + e.name);
 
             if (idLookup.ContainsKey(e.id))
             {
@@ -33,7 +33,7 @@ using UnityEngine;
             idLookup[e.id] = e;
         }
 
-        Debug.Log("EntityInfo assets loaded into idLookup: " + idLookup.Count);
+        //Debug.Log("EntityInfo assets loaded into idLookup: " + idLookup.Count);
     }
 }
 
@@ -42,5 +42,11 @@ public enum ID : short
     Empty,
     Ground,
     Water,
-    Apple
+    Apple,
+    Post,
+    Tree,
+    Bridge,
+    Tallgrass,
+    Pumpkin,
+    Gravestone
 }

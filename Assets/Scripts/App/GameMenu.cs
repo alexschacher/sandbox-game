@@ -4,15 +4,21 @@ using Mirror;
 
 public class GameMenu : MonoBehaviour
 {
-    [SerializeField] private InputField userNameInput;
     [SerializeField] private GameObject steamNetManagerObject;
     [SerializeField] private GameObject ipNetManagerObject;
     [SerializeField] private GameObject menuUI;
     [SerializeField] private GameObject gameUI;
+    [SerializeField] private GameObject levelEditCursor;
+
+    [SerializeField] private GameObject steamHostButton;
+    [SerializeField] private GameObject localHostButton;
+    [SerializeField] private GameObject joinLocalButton;
+
     private SteamLobby steamLobby;
     private NetworkManager steamNetManager;
     private NetworkManager ipNetManager;
     private NetworkManager activeNetManager;
+    private bool inEditor = false;
 
     public void Awake()
     {
@@ -22,38 +28,74 @@ public class GameMenu : MonoBehaviour
         steamLobby = steamNetManagerObject.GetComponent<SteamLobby>();
         steamNetManager = steamNetManagerObject.GetComponent<NetworkManager>();
         ipNetManager = ipNetManagerObject.GetComponent<NetworkManager>();
+
+        #if UNITY_EDITOR
+                inEditor = true;
+        #endif
+        if (inEditor)
+        {
+            ipNetManagerObject.SetActive(true);
+            Destroy(steamNetManagerObject);
+            activeNetManager = ipNetManager;
+            steamHostButton.SetActive(false);
+        }
+        else
+        {
+            steamNetManagerObject.SetActive(true);
+            Destroy(ipNetManagerObject);
+            activeNetManager = steamNetManager;
+            localHostButton.SetActive(false);
+            joinLocalButton.SetActive(false);
+        }
     }
+
     public void HostUsingSteam()
     {
+        if (inEditor == true) return;
+
         HideMainMenu();
         DisplayGameUI();
+        App.SetTextInputAvailable(true);
 
-        steamNetManagerObject.SetActive(true);
-        activeNetManager = ipNetManager;
+        levelEditCursor.SetActive(true);
+        HUD.SetSelectedIDVisibility(true);
+
         steamLobby.HostLobby();
     }
+
     public void HostUsingIP()
     {
+        if (inEditor == false) return;
+
         HideMainMenu();
         DisplayGameUI();
+        App.SetTextInputAvailable(true);
 
-        ipNetManagerObject.SetActive(true);
-        activeNetManager = ipNetManager;
+        levelEditCursor.SetActive(true);
+        HUD.SetSelectedIDVisibility(true);
+
         ipNetManager.StartHost();
     }
+
     public void JoinIP()
     {
+        if (inEditor == false) return;
+
         HideMainMenu();
         DisplayGameUI();
+        App.SetTextInputAvailable(true);
 
-        ipNetManagerObject.SetActive(true);
-        activeNetManager = ipNetManager;
         ipNetManager.StartClient();
     }
+
     public void LeaveGame()
     {
         HideGameUI();
         DisplayMainMenu();
+        App.SetTextInputAvailable(false);
+
+        levelEditCursor.SetActive(false);
+        HUD.SetSelectedIDVisibility(false);
 
         activeNetManager.StopHost();
         activeNetManager.StopServer();
@@ -61,10 +103,14 @@ public class GameMenu : MonoBehaviour
 
         steamNetManagerObject.SetActive(false);
         ipNetManagerObject.SetActive(false);
+
+        HUD.LogMessage("Left game");
     }
+
     public void DisplayMainMenu() => menuUI.SetActive(true);
     public void HideMainMenu() => menuUI.SetActive(false);
     public void DisplayGameUI() => gameUI.SetActive(true);
     public void HideGameUI() => gameUI.SetActive(false);
+
     public void ExitGame() => Application.Quit();
 }

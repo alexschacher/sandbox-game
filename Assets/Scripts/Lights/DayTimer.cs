@@ -13,6 +13,7 @@ public class DayTimer : NetworkBehaviour
     [Header("Time")]
     [SyncVar] [SerializeField] private float currentHour = 12f;
     [SerializeField] private float timeSpeed = 1f;
+    private float timeSpeedDefaultNormalizer = 0.1f;
     [SerializeField] private PartOfDay currentPartOfDay = PartOfDay.Day;
     [SerializeField] private float currentLightValue = 1f;
     [SerializeField] private Color currentColor = Color.white;
@@ -59,7 +60,7 @@ public class DayTimer : NetworkBehaviour
     }
     private void UpdateHour()
     {
-        currentHour += Time.deltaTime * timeSpeed;
+        currentHour += Time.deltaTime * timeSpeed * timeSpeedDefaultNormalizer;
         if (currentHour >= 24f) currentHour = currentHour % 24f;
     }
     private void CheckForStartTransition()
