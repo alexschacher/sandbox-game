@@ -9,7 +9,7 @@ public class App : MonoBehaviour
 {
     public static App instance;
 
-    public static readonly string gameSaveName = "worldsavetest6";
+    public static readonly string gameSaveName = "worldsavetest_newformat3";
     [SerializeField] private Level level;
     public static Level GetLevel() => instance.level;
 

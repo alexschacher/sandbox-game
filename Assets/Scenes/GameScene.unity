@@ -2572,7 +2572,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: version 21.10.1 - Multiplayer usability update
+  m_Text: version 21.11.1 - Chunk Loading Update - (in development)
 --- !u!222 &1389760685
 CanvasRenderer:
   m_ObjectHideFlags: 0
