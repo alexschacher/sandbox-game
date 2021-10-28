@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class Level : NetworkBehaviour
+public class Level_Old : NetworkBehaviour
 {
 
     // This will all be replaced by private LiveLevel liveLevel, and appropriate getters, setters, and initializers

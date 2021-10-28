@@ -24,7 +24,7 @@ public class BlockBitmask : MonoBehaviour
 
     public void UpdateModel()
     {
-        Level level = App.GetLevel();
+        Level_Old level = App.GetLevel();
 
         int bitMask = 0;
         if (level.GetID(pos.x, pos.y, pos.z - 1) == ID.Ground) bitMask += 1;
@@ -56,7 +56,7 @@ public class BlockBitmask : MonoBehaviour
 
     private void UpdateNeighbors()
     {
-        Level level = App.GetLevel();
+        Level_Old level = App.GetLevel();
 
         UpdateNeighbor(level, pos.x + 1, pos.y, pos.z);
         UpdateNeighbor(level, pos.x - 1, pos.y, pos.z);
@@ -64,7 +64,7 @@ public class BlockBitmask : MonoBehaviour
         UpdateNeighbor(level, pos.x, pos.y, pos.z - 1);
     }
 
-    private void UpdateNeighbor(Level level, int x, int y, int z)
+    private void UpdateNeighbor(Level_Old level, int x, int y, int z)
     {
         GameObject neighbor = level.GetStaticObject(x, y, z);
         if (neighbor != null)

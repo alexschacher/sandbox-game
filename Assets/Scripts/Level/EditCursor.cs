@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class EditCursor : MonoBehaviour
 {
-    [SerializeField] private Level level;
+    [SerializeField] private Level_Old level;
     [SerializeField] private InputActionAsset inputAsset;
     private InputAction scrollAction, mousePositionAction, placeAction, deleteAction, ctrlAction;
 

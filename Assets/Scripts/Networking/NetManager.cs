@@ -27,10 +27,11 @@ public class NetManager : NetworkManager
     {
         base.OnStartServer();
 
-        if (LevelSaveLoad.Load(App.gameSaveName) == true) { }
+        if (LevelSaveLoad.LoadLevel(App.gameSaveName) == true) { }
         else
         {
-            App.GetLevel().GenerateLevel();
+            App.GetLevel().GenerateLevel(); // Delete this
+            Level level = LevelGenerator.Generate(8);
             HUD.LogMessage("NetManager: New Level Generated");
         }
 
@@ -43,6 +44,7 @@ public class NetManager : NetworkManager
     {
         base.OnServerAddPlayer(conn);
 
+        // Instead of this, send chunks manually
         App.GetLevel().SendLevelDataToClient(conn);
 
         GameObject playerObj = Instantiate(playerCharacterPrefab, new Vector3(3f, 0.5f, 3f), Quaternion.identity);
@@ -68,7 +70,10 @@ public class NetManager : NetworkManager
     public override void OnStopServer()
     {
         base.OnStopServer();
+
+        // Instead of this, save new level
         LevelSaveLoad.Save(App.gameSaveName);
+
         listOfConnectedPlayers.Clear();
         UpdateConnectedPlayersText();
     }
