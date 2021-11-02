@@ -20,6 +20,8 @@ public class NetManager : NetworkManager
     override public void Awake()
     {
         base.Awake();
+
+        if (instance != null) return;
         instance = this;
     }
 
@@ -27,13 +29,14 @@ public class NetManager : NetworkManager
     {
         base.OnStartServer();
 
-        if (LevelSaveLoad.LoadLevel(App.gameSaveName) == true) { }
-        else
-        {
-            App.GetLevel().GenerateLevel(); // Delete this
-            Level level = LevelGenerator.Generate(8);
-            HUD.LogMessage("NetManager: New Level Generated");
-        }
+        LevelHandler.InitHostLevel(); //Replaces:
+        //if (LevelSaveLoad_Old.Load(App.gameSaveName) == true) { }
+        //else
+        //{
+            // Different Gen method
+            //App.GetLevel().GenerateLevel(); // Delete this
+            //HUD.LogMessage("NetManager: New Level Generated");
+        //}
 
         GameObject netManagerAssistObj = Instantiate(netManagerAssistPrefab);
         NetworkServer.Spawn(netManagerAssistObj);
@@ -44,12 +47,21 @@ public class NetManager : NetworkManager
     {
         base.OnServerAddPlayer(conn);
 
-        // Instead of this, send chunks manually
-        App.GetLevel().SendLevelDataToClient(conn);
+        LevelHandler.SendInitLevelInfo(conn);
+
+        for (int x = 0; x < 8; x++)
+        {
+            for (int z = 0; z < 8; z++)
+            {
+                LevelHandler.SendChunkToClient(conn, x, 0, z);
+            }
+        }
 
         GameObject playerObj = Instantiate(playerCharacterPrefab, new Vector3(3f, 0.5f, 3f), Quaternion.identity);
         NetworkServer.Spawn(playerObj, conn);
         uint controlledEntityNetId = playerObj.GetComponent<NetworkIdentity>().netId;
+
+        
 
         NetPlayer netPlayer = conn.identity.GetComponent<NetPlayer>();
         listOfConnectedPlayers.Add(netPlayer);
@@ -72,7 +84,8 @@ public class NetManager : NetworkManager
         base.OnStopServer();
 
         // Instead of this, save new level
-        LevelSaveLoad.Save(App.gameSaveName);
+        //LevelSaveLoad_Old.Save(App.gameSaveName);
+        //LevelUtil.SaveLevel(level, App.gameSaveName2);
 
         listOfConnectedPlayers.Clear();
         UpdateConnectedPlayersText();
@@ -96,7 +109,9 @@ public class NetManager : NetworkManager
         base.OnClientDisconnect(conn);
         gameMenu.DisplayMainMenu();
         gameMenu.HideGameUI();
-        App.GetLevel().DestroyAllStaticEntities();
+
+        // Different method here
+        //App.GetLevel().DestroyAllStaticEntities();
     }
 
     [Server] private void UpdateConnectedPlayersText()

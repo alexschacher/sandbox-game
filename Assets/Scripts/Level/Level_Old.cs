@@ -90,7 +90,7 @@ public class Level_Old : NetworkBehaviour
 
 
 
-
+    // Everything below should be a LevelHandler class which holds a Level and modifies it over the network etc
 
 
 

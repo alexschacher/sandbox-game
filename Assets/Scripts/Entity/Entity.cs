@@ -37,7 +37,7 @@ using UnityEngine;
     }
 }
 
-public enum ID : short
+public enum ID : ushort
 {
     Empty,
     Ground,

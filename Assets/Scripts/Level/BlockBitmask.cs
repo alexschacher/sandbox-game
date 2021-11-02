@@ -16,8 +16,9 @@ public class BlockBitmask : MonoBehaviour
 
     private void Start()
     {
-        UpdateModel();
-        UpdateNeighbors();
+        // Need to utilize new level format
+        //UpdateModel();
+        //UpdateNeighbors();
     }
 
     public void SetInfo(BlockBitmaskInfo blockBitmaskInfo) => info = blockBitmaskInfo;

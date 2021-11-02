@@ -131,8 +131,8 @@ GameObject:
   m_Component:
   - component: {fileID: 26724385}
   - component: {fileID: 26724388}
-  - component: {fileID: 26724386}
   - component: {fileID: 26724389}
+  - component: {fileID: 26724386}
   m_Layer: 0
   m_Name: Level
   m_TagString: Untagged
@@ -163,13 +163,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 26724384}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68aadbb502a53f642b5a1fc15a3b1386, type: 3}
+  m_Script: {fileID: 11500000, guid: 7cb435c191805c94e9b6f70a4fcb6c64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  levelWidth: 17
-  levelHeight: 2
 --- !u!114 &26724388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1083,7 +1081,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f4fbe73570b6841bbb2c9b1666e1fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: {fileID: 26724386}
+  level: {fileID: 0}
   inputAsset: {fileID: -944628639613478452, guid: ecc98b968cde10b48a3be2696881c799,
     type: 3}
   selectedID: 6
@@ -2224,7 +2222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 100cd89771acdf248a6cf9b37c100dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: {fileID: 26724386}
+  level: {fileID: 0}
 --- !u!114 &1346922874
 MonoBehaviour:
   m_ObjectHideFlags: 0

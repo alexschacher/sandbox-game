@@ -18,13 +18,9 @@ public class LevelGenerator : MonoBehaviour
                     {
                         level.chunks[chunkX, 0, chunkZ].voxelIDs[x, 0, z] = ID.Ground;
 
-                        if (x == 0 || z == 0)
+                        if (Random.Range(0f, 100f) < 5f)
                         {
-                            level.chunks[chunkX, 0, chunkZ].voxelIDs[x, 1, z] = ID.Apple;
-                        }
-                        else if (x == Chunk.width - 1 || z == Chunk.width - 1)
-                        {
-                            level.chunks[chunkX, 0, chunkZ].voxelIDs[x, 1, z] = ID.Tallgrass;
+                            level.chunks[chunkX, 0, chunkZ].voxelIDs[x, 1, z] = ID.Tree;
                         }
                     }
                 }

@@ -32,8 +32,8 @@ public class EditCursor : MonoBehaviour
         mousePositionAction = inputActions.FindAction("MousePosition");
         mousePositionAction.Enable();
 
-        levelWidth = level.GetLevelWidth();
-        levelHeight = level.GetLevelHeight();
+        levelWidth = 8; //level.GetLevelWidth();
+        levelHeight = 8; //level.GetLevelHeight();
     }
 
     private void Start()
@@ -120,24 +120,24 @@ public class EditCursor : MonoBehaviour
 
     private void OnPlaceObject()
     {
-        if (App.GetLevel().CheckIfInRange(cursorPosition.x, cursorHeight, cursorPosition.z) == false) return;
+        //if (App.GetLevel().CheckIfInRange(cursorPosition.x, cursorHeight, cursorPosition.z) == false) return;
 
-        level.Modify(selectedID, cursorPosition.x, cursorPosition.y, cursorPosition.z);
+        //level.Modify(selectedID, cursorPosition.x, cursorPosition.y, cursorPosition.z);
     }
 
     private void OnDeleteObject()
     {
-        if (App.GetLevel().CheckIfInRange(cursorPosition.x, cursorHeight, cursorPosition.z) == false) return;
+        //if (App.GetLevel().CheckIfInRange(cursorPosition.x, cursorHeight, cursorPosition.z) == false) return;
 
-        level.Modify(ID.Empty, cursorPosition.x, cursorPosition.y, cursorPosition.z);
+        //level.Modify(ID.Empty, cursorPosition.x, cursorPosition.y, cursorPosition.z);
     }
 
     private void OnSelectObject()
     {
-        if (App.GetLevel().CheckIfInRange(cursorPosition.x, cursorHeight, cursorPosition.z) == false) return;
+        //if (App.GetLevel().CheckIfInRange(cursorPosition.x, cursorHeight, cursorPosition.z) == false) return;
 
-        selectedID = level.GetID(cursorPosition.x, cursorHeight, cursorPosition.z);
+        //selectedID = level.GetID(cursorPosition.x, cursorHeight, cursorPosition.z);
 
-        HUD.SetSelectedID(selectedID);
+        //HUD.SetSelectedID(selectedID);
     }
 }
