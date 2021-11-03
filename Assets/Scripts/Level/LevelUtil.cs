@@ -147,6 +147,16 @@ public static class LevelUtil
         }
         return uncompressedChunk;
     }
+
+    public static Vector3Int GetChunkCoords(int worldX, int worldY, int worldZ)
+    {
+        return new Vector3Int(Mathf.FloorToInt(worldX / Chunk.width), Mathf.FloorToInt(worldY / Chunk.height), Mathf.FloorToInt(worldZ / Chunk.width));
+    }
+
+    public static Vector3Int GetVoxelCoords(int worldX, int worldY, int worldZ)
+    {
+        return new Vector3Int(worldX % Chunk.width, worldY % Chunk.height, worldZ % Chunk.width);
+    }
 }
 
 [System.Serializable]
@@ -222,5 +232,6 @@ public class Chunk
     public Chunk()
     {
         voxelIDs = new ID[width, height, width];
+        gameObjects = new GameObject[width, height, width];
     }
 }

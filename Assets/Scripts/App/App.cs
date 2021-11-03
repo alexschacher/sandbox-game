@@ -9,10 +9,8 @@ public class App : MonoBehaviour
 {
     public static App singleton;
 
-    public static readonly string gameSaveName = "worldsavetest_newformat6";
-    public static readonly string gameSaveName2 = "worldsavetest_new1";
-    [SerializeField] private Level_Old level;
-    public static Level_Old GetLevel() => singleton.level;
+    [SerializeField] private string gameSaveName = "gamesave1";
+    public static string GetGameSaveName() => singleton.gameSaveName;
 
     private bool inputLocked = false;
     public static bool IsInputLocked() => singleton.inputLocked;

@@ -16,22 +16,19 @@ public class BlockBitmask : MonoBehaviour
 
     private void Start()
     {
-        // Need to utilize new level format
-        //UpdateModel();
-        //UpdateNeighbors();
+        UpdateModel();
+        UpdateNeighbors();
     }
 
     public void SetInfo(BlockBitmaskInfo blockBitmaskInfo) => info = blockBitmaskInfo;
 
     public void UpdateModel()
     {
-        Level_Old level = App.GetLevel();
-
         int bitMask = 0;
-        if (level.GetID(pos.x, pos.y, pos.z - 1) == ID.Ground) bitMask += 1;
-        if (level.GetID(pos.x - 1, pos.y, pos.z) == ID.Ground) bitMask += 2;
-        if (level.GetID(pos.x + 1, pos.y, pos.z) == ID.Ground) bitMask += 4;
-        if (level.GetID(pos.x, pos.y, pos.z + 1) == ID.Ground) bitMask += 8;
+        if (LevelHandler.GetIdAtPosition(pos.x, pos.y, pos.z - 1) == ID.Ground) bitMask += 1;
+        if (LevelHandler.GetIdAtPosition(pos.x - 1, pos.y, pos.z) == ID.Ground) bitMask += 2;
+        if (LevelHandler.GetIdAtPosition(pos.x + 1, pos.y, pos.z) == ID.Ground) bitMask += 4;
+        if (LevelHandler.GetIdAtPosition(pos.x, pos.y, pos.z + 1) == ID.Ground) bitMask += 8;
 
         switch(bitMask)
         {
@@ -57,17 +54,15 @@ public class BlockBitmask : MonoBehaviour
 
     private void UpdateNeighbors()
     {
-        Level_Old level = App.GetLevel();
-
-        UpdateNeighbor(level, pos.x + 1, pos.y, pos.z);
-        UpdateNeighbor(level, pos.x - 1, pos.y, pos.z);
-        UpdateNeighbor(level, pos.x, pos.y, pos.z + 1);
-        UpdateNeighbor(level, pos.x, pos.y, pos.z - 1);
+        UpdateNeighbor(pos.x + 1, pos.y, pos.z);
+        UpdateNeighbor(pos.x - 1, pos.y, pos.z);
+        UpdateNeighbor(pos.x, pos.y, pos.z + 1);
+        UpdateNeighbor(pos.x, pos.y, pos.z - 1);
     }
 
-    private void UpdateNeighbor(Level_Old level, int x, int y, int z)
+    private void UpdateNeighbor(int x, int y, int z)
     {
-        GameObject neighbor = level.GetStaticObject(x, y, z);
+        GameObject neighbor = LevelHandler.GetObjectAtPosition(x, y, z);
         if (neighbor != null)
         {
             BlockBitmask blockBitmask = neighbor.GetComponent<BlockBitmask>();

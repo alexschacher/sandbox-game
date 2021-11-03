@@ -11,6 +11,10 @@ public class NetManager : NetworkManager
     private List<NetPlayer> listOfConnectedPlayers = new List<NetPlayer>();
     private NetManagerAssist netManagerAssist;
 
+    private float timer = 0;
+    private float updateLiveChunksInterval = 2f;
+    private List<GameObject> playerCharacterObjects = new List<GameObject>();
+
     [Header("Custom Fields")]
     [SerializeField] private GameMenu gameMenu;
     [SerializeField] private GameObject playerCharacterPrefab;
@@ -25,18 +29,21 @@ public class NetManager : NetworkManager
         instance = this;
     }
 
+    private void Update()
+    {
+        timer += Time.deltaTime;
+        if (timer > updateLiveChunksInterval)
+        {
+            timer -= updateLiveChunksInterval;
+            LevelHandler.UpdateLiveChunks(playerCharacterObjects);
+        }
+    }
+
     override public void OnStartServer()
     {
         base.OnStartServer();
 
-        LevelHandler.InitHostLevel(); //Replaces:
-        //if (LevelSaveLoad_Old.Load(App.gameSaveName) == true) { }
-        //else
-        //{
-            // Different Gen method
-            //App.GetLevel().GenerateLevel(); // Delete this
-            //HUD.LogMessage("NetManager: New Level Generated");
-        //}
+        LevelHandler.InitHostLevel();
 
         GameObject netManagerAssistObj = Instantiate(netManagerAssistPrefab);
         NetworkServer.Spawn(netManagerAssistObj);
@@ -49,19 +56,24 @@ public class NetManager : NetworkManager
 
         LevelHandler.SendInitLevelInfo(conn);
 
-        for (int x = 0; x < 8; x++)
-        {
-            for (int z = 0; z < 8; z++)
-            {
-                LevelHandler.SendChunkToClient(conn, x, 0, z);
-            }
-        }
+        // When a client joins, it gets sent a list of all currently Live Chunks
+        LevelHandler.SendAllLiveChunksToClient(conn);
+        // Placeholder:
+        //for (int x = 0; x < 8; x++)
+        //{
+        //    for (int z = 0; z < 8; z++)
+        //    {
+        //        
+        //        LevelHandler.SendChunkToClient(conn, x, 0, z);
+        //   }
+        //}
+        
 
         GameObject playerObj = Instantiate(playerCharacterPrefab, new Vector3(3f, 0.5f, 3f), Quaternion.identity);
         NetworkServer.Spawn(playerObj, conn);
         uint controlledEntityNetId = playerObj.GetComponent<NetworkIdentity>().netId;
 
-        
+        playerCharacterObjects.Add(playerObj);
 
         NetPlayer netPlayer = conn.identity.GetComponent<NetPlayer>();
         listOfConnectedPlayers.Add(netPlayer);
@@ -83,9 +95,7 @@ public class NetManager : NetworkManager
     {
         base.OnStopServer();
 
-        // Instead of this, save new level
-        //LevelSaveLoad_Old.Save(App.gameSaveName);
-        //LevelUtil.SaveLevel(level, App.gameSaveName2);
+        LevelUtil.SaveLevel(LevelHandler.GetLevel(), App.GetGameSaveName());
 
         listOfConnectedPlayers.Clear();
         UpdateConnectedPlayersText();
@@ -110,8 +120,7 @@ public class NetManager : NetworkManager
         gameMenu.DisplayMainMenu();
         gameMenu.HideGameUI();
 
-        // Different method here
-        //App.GetLevel().DestroyAllStaticEntities();
+        LevelHandler.DestroyObjectsInAllChunks();
     }
 
     [Server] private void UpdateConnectedPlayersText()

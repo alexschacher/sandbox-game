@@ -101,9 +101,6 @@ public class GameMenu : MonoBehaviour
         activeNetManager.StopServer();
         activeNetManager.StopClient();
 
-        steamNetManagerObject.SetActive(false);
-        ipNetManagerObject.SetActive(false);
-
         HUD.LogMessage("Left game");
     }
 

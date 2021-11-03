@@ -6,12 +6,8 @@ using UnityEngine.UI;
 
 public class EditCursor : MonoBehaviour
 {
-    [SerializeField] private Level_Old level;
     [SerializeField] private InputActionAsset inputAsset;
     private InputAction scrollAction, mousePositionAction, placeAction, deleteAction, ctrlAction;
-
-    private int levelWidth;
-    private int levelHeight; 
 
     private int cursorHeight;
     private Vector3Int cursorPosition = new Vector3Int(0,0,0), prevCursorPosition;
@@ -31,9 +27,6 @@ public class EditCursor : MonoBehaviour
 
         mousePositionAction = inputActions.FindAction("MousePosition");
         mousePositionAction.Enable();
-
-        levelWidth = 8; //level.GetLevelWidth();
-        levelHeight = 8; //level.GetLevelHeight();
     }
 
     private void Start()
@@ -99,7 +92,8 @@ public class EditCursor : MonoBehaviour
                 selectedID--;
                 if ((int)selectedID < 0)
                 {
-                    selectedID = (ID)System.Enum.GetNames(typeof(ID)).Length - 1;
+                    // Manually picking the last ID enum, not ideal
+                    selectedID = ID.Gravestone;
                 }
                 HUD.SetSelectedID(selectedID);
             }
@@ -107,7 +101,7 @@ public class EditCursor : MonoBehaviour
         else
         {
             // Adjust Height
-            if (scroll < 0 && transform.position.y < (levelHeight - 1) * 0.5f)
+            if (scroll < 0 && transform.position.y < (Chunk.height - 1) * 0.5f)
             {
                 cursorHeight++;
             }
@@ -120,24 +114,24 @@ public class EditCursor : MonoBehaviour
 
     private void OnPlaceObject()
     {
-        //if (App.GetLevel().CheckIfInRange(cursorPosition.x, cursorHeight, cursorPosition.z) == false) return;
+        if (LevelHandler.CheckIfInRange(cursorPosition.x, cursorPosition.y, cursorPosition.z) == false) return;
 
-        //level.Modify(selectedID, cursorPosition.x, cursorPosition.y, cursorPosition.z);
+        LevelHandler.ModifyVoxel(selectedID, cursorPosition.x, cursorPosition.y, cursorPosition.z);
     }
 
     private void OnDeleteObject()
     {
-        //if (App.GetLevel().CheckIfInRange(cursorPosition.x, cursorHeight, cursorPosition.z) == false) return;
+        if (LevelHandler.CheckIfInRange(cursorPosition.x, cursorPosition.y, cursorPosition.z) == false) return;
 
-        //level.Modify(ID.Empty, cursorPosition.x, cursorPosition.y, cursorPosition.z);
+        LevelHandler.ModifyVoxel(ID.Empty, cursorPosition.x, cursorPosition.y, cursorPosition.z);
     }
 
     private void OnSelectObject()
     {
-        //if (App.GetLevel().CheckIfInRange(cursorPosition.x, cursorHeight, cursorPosition.z) == false) return;
+        if (LevelHandler.CheckIfInRange(cursorPosition.x, cursorPosition.y, cursorPosition.z) == false) return;
 
-        //selectedID = level.GetID(cursorPosition.x, cursorHeight, cursorPosition.z);
+        selectedID = LevelHandler.GetIdAtPosition(cursorPosition.x, cursorHeight, cursorPosition.z);
 
-        //HUD.SetSelectedID(selectedID);
+        HUD.SetSelectedID(selectedID);
     }
 }
