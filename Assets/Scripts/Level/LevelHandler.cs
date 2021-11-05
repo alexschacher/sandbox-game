@@ -32,10 +32,8 @@ public class LevelHandler : NetworkBehaviour
 
     public static void UpdateLiveChunks(List<GameObject> playerObjects)
     {
-        Debug.Log("Update Live Chunks");
-
         List<Vector3Int> chunksThatShouldBeLive = new List<Vector3Int>();
-        List<Vector3Int> liveChunksCopy = singleton.liveChunks;
+        List<Vector3Int> liveChunksCopy = new List<Vector3Int>(singleton.liveChunks);
 
         foreach (GameObject playerObj in playerObjects)
         {
@@ -56,10 +54,13 @@ public class LevelHandler : NetworkBehaviour
         }
 
         List<Vector3Int> chunkThatShouldBeLiveCopy = new List<Vector3Int>(chunksThatShouldBeLive);
+
+        int matchesFound = 0;
         foreach (Vector3Int chunkThatShouldBeLive in chunkThatShouldBeLiveCopy)
         {
             if (liveChunksCopy.Contains(chunkThatShouldBeLive))
             {
+                matchesFound++;
                 chunksThatShouldBeLive.Remove(chunkThatShouldBeLive);
                 liveChunksCopy.Remove(chunkThatShouldBeLive);
             }
@@ -72,7 +73,8 @@ public class LevelHandler : NetworkBehaviour
                     chunksThatShouldBeLive.Remove(chunkThatShouldBeLive);
                 }
             }
-        } 
+        }
+        Debug.Log("Update Live Chunks - Matches found: " + matchesFound);
 
         foreach (Vector3Int chunkToUnload in liveChunksCopy)
         {
@@ -83,7 +85,6 @@ public class LevelHandler : NetworkBehaviour
 
         foreach (Vector3Int chunkToLoad in chunksThatShouldBeLive)
         {
-            Debug.Log("Load chunk: " + chunkToLoad.x + " " + chunkToLoad.y + " " + chunkToLoad.z);
             singleton.RpcSendChunk(chunkToLoad.x, chunkToLoad.y, chunkToLoad.z, LevelUtil.CompressChunk(singleton.level.chunks[chunkToLoad.x, chunkToLoad.y, chunkToLoad.z]));
             singleton.liveChunks.Add(chunkToLoad);
         }
@@ -103,8 +104,10 @@ public class LevelHandler : NetworkBehaviour
 
     public static void SendAllLiveChunksToClient(NetworkConnection conn)
     {
+        Debug.Log("SendAllLiveChunksToClient: " + singleton.liveChunks.Count + " chunks");
         foreach (Vector3Int chunk in singleton.liveChunks)
         {
+            Debug.Log("Chunk: " + chunk.x + " " + chunk.y + " " + chunk.z);
             SendChunkToClient(conn, chunk.x, chunk.y, chunk.z);
         }
     }
@@ -116,6 +119,13 @@ public class LevelHandler : NetworkBehaviour
 
     [TargetRpc] private void TargetSendChunkToClient(NetworkConnection target, int chunkX, int chunkY, int chunkZ, CompressedChunk compressedChunk)
     {
+        string message = "Target Send Chunk: ";
+        foreach (ushort u in compressedChunk.compressedVoxelData)
+        {
+            message = message + u + " ";
+        }
+        Debug.Log(message);
+
         level.chunks[chunkX, chunkY, chunkZ] = LevelUtil.UncompressChunk(compressedChunk);
 
         DestroyObjectsInChunk(chunkX, chunkY, chunkZ);
@@ -124,7 +134,7 @@ public class LevelHandler : NetworkBehaviour
 
     [ClientRpc] public void RpcSendChunk(int chunkX, int chunkY, int chunkZ, CompressedChunk compressedChunk)
     {
-        string message = "Rpc Send Chunk: ";
+        string message = "Rpc Send Chunk: x" + chunkX + " y" + chunkY + " z" + chunkZ + ":";
         foreach (ushort u in compressedChunk.compressedVoxelData)
         {
             message = message + u + " ";

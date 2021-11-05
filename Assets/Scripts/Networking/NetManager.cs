@@ -31,6 +31,8 @@ public class NetManager : NetworkManager
 
     private void Update()
     {
+        if (!NetworkServer.active) return;
+
         timer += Time.deltaTime;
         if (timer > updateLiveChunksInterval)
         {
@@ -44,7 +46,7 @@ public class NetManager : NetworkManager
         base.OnStartServer();
 
         LevelHandler.InitHostLevel();
-
+        
         GameObject netManagerAssistObj = Instantiate(netManagerAssistPrefab);
         NetworkServer.Spawn(netManagerAssistObj);
         netManagerAssist = netManagerAssistObj.GetComponent<NetManagerAssist>();
@@ -54,27 +56,10 @@ public class NetManager : NetworkManager
     {
         base.OnServerAddPlayer(conn);
 
-        LevelHandler.SendInitLevelInfo(conn);
-
-        // When a client joins, it gets sent a list of all currently Live Chunks
-        LevelHandler.SendAllLiveChunksToClient(conn);
-        // Placeholder:
-        //for (int x = 0; x < 8; x++)
-        //{
-        //    for (int z = 0; z < 8; z++)
-        //    {
-        //        
-        //        LevelHandler.SendChunkToClient(conn, x, 0, z);
-        //   }
-        //}
-        
-
-        GameObject playerObj = Instantiate(playerCharacterPrefab, new Vector3(3f, 0.5f, 3f), Quaternion.identity);
+        GameObject playerObj = Instantiate(playerCharacterPrefab, new Vector3(32f, 0.5f, 32f), Quaternion.identity);
         NetworkServer.Spawn(playerObj, conn);
-        uint controlledEntityNetId = playerObj.GetComponent<NetworkIdentity>().netId;
-
         playerCharacterObjects.Add(playerObj);
-
+        uint controlledEntityNetId = playerObj.GetComponent<NetworkIdentity>().netId;
         NetPlayer netPlayer = conn.identity.GetComponent<NetPlayer>();
         listOfConnectedPlayers.Add(netPlayer);
         
@@ -87,8 +72,11 @@ public class NetManager : NetworkManager
         {
             netPlayer.Init("Player " + numPlayers, controlledEntityNetId);
         }
-
         UpdateConnectedPlayersText();
+
+        LevelHandler.SendInitLevelInfo(conn);
+        LevelHandler.UpdateLiveChunks(playerCharacterObjects);
+        LevelHandler.SendAllLiveChunksToClient(conn);
     }
 
     public override void OnStopServer()

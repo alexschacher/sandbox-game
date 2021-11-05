@@ -200,7 +200,7 @@ MonoBehaviour:
   syncInterval: 0.1
   material: {fileID: 2100000, guid: fb546b9fd42ebeb488e49ee25d549d27, type: 2}
   currentHour: 14
-  timeSpeed: 1
+  timeSpeed: 0
   currentPartOfDay: 1
   currentLightValue: 1
   currentColor: {r: 1, g: 1, b: 1, a: 1}
