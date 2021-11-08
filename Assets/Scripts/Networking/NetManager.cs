@@ -11,8 +11,8 @@ public class NetManager : NetworkManager
     private List<NetPlayer> listOfConnectedPlayers = new List<NetPlayer>();
     private NetManagerAssist netManagerAssist;
 
-    private float timer = 0;
-    private float updateLiveChunksInterval = 2f;
+    private float updateLiveChunksTimer = 0;
+    private float updateLiveChunksInterval = 1.5f;
     private List<GameObject> playerCharacterObjects = new List<GameObject>();
 
     [Header("Custom Fields")]
@@ -33,10 +33,10 @@ public class NetManager : NetworkManager
     {
         if (!NetworkServer.active) return;
 
-        timer += Time.deltaTime;
-        if (timer > updateLiveChunksInterval)
+        updateLiveChunksTimer += Time.deltaTime;
+        if (updateLiveChunksTimer > updateLiveChunksInterval)
         {
-            timer -= updateLiveChunksInterval;
+            updateLiveChunksTimer -= updateLiveChunksInterval;
             LevelHandler.UpdateLiveChunks(playerCharacterObjects);
         }
     }
@@ -56,7 +56,7 @@ public class NetManager : NetworkManager
     {
         base.OnServerAddPlayer(conn);
 
-        GameObject playerObj = Instantiate(playerCharacterPrefab, new Vector3(32f, 0.5f, 32f), Quaternion.identity);
+        GameObject playerObj = Instantiate(playerCharacterPrefab, new Vector3(15f, 0.5f, 15f), Quaternion.identity);
         NetworkServer.Spawn(playerObj, conn);
         playerCharacterObjects.Add(playerObj);
         uint controlledEntityNetId = playerObj.GetComponent<NetworkIdentity>().netId;
@@ -75,8 +75,9 @@ public class NetManager : NetworkManager
         UpdateConnectedPlayersText();
 
         LevelHandler.SendInitLevelInfo(conn);
-        LevelHandler.UpdateLiveChunks(playerCharacterObjects);
         LevelHandler.SendAllLiveChunksToClient(conn);
+        LevelHandler.UpdateLiveChunks(playerCharacterObjects);
+
     }
 
     public override void OnStopServer()

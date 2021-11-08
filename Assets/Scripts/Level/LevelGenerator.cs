@@ -16,11 +16,20 @@ public class LevelGenerator : MonoBehaviour
                 {
                     for (int z = 0; z < Chunk.width; z++)
                     {
-                        level.chunks[chunkX, 0, chunkZ].voxelIDs[x, 0, z] = ID.Ground;
-
-                        if (Random.Range(0f, 100f) < 5f)
+                        if ((chunkX == 0 && x == 0) ||
+                            (chunkZ == 0 && z == 0) ||
+                            (chunkX == levelWidth - 1 && x == Chunk.width - 1) ||
+                            (chunkZ == levelWidth - 1 && z == Chunk.width - 1))
                         {
-                            level.chunks[chunkX, 0, chunkZ].voxelIDs[x, 1, z] = ID.Tree;
+                            level.chunks[chunkX, 0, chunkZ].voxelIDs[x, 0, z] = ID.Water;
+                        }
+                        else
+                        {
+                            level.chunks[chunkX, 0, chunkZ].voxelIDs[x, 0, z] = ID.Ground;
+                            if (Random.Range(0f, 100f) < 15f)
+                            {
+                                level.chunks[chunkX, 0, chunkZ].voxelIDs[x, 1, z] = ID.Tallgrass;
+                            }
                         }
                     }
                 }

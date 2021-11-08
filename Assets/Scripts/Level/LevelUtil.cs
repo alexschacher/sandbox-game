@@ -126,7 +126,7 @@ public static class LevelUtil
 
         int x = 0, y = 0, z = 0;
 
-        for (int i = 0; i < compressedChunk.compressedVoxelData.Length - 1; i++)
+        for (int i = 0; i < compressedChunk.compressedVoxelData.Length; i++)
         {
             if (compressedChunk.compressedVoxelData[i] > CompressedChunk.repeatBase) continue;
 
