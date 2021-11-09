@@ -11,7 +11,10 @@ public class EditCursor : MonoBehaviour
 
     private int cursorHeight;
     private Vector3Int cursorPosition = new Vector3Int(0,0,0), prevCursorPosition;
-    [SerializeField] private ID selectedID = ID.Post;
+
+    [SerializeField] private vID selectedVID = vID.Post;
+    [SerializeField] private eID selectedEID = eID.Apple;
+    private bool selectionModeIsVoxel = true;
 
     private void Awake()
     {
@@ -56,6 +59,19 @@ public class EditCursor : MonoBehaviour
         transform.position = new Vector3(cursorPosition.x, cursorPosition.y * 0.5f, cursorPosition.z);
     }
 
+    private Vector3 GetUnroundedCursorPosition()
+    {
+        Ray mouseRay = Camera.main.ScreenPointToRay(mousePositionAction.ReadValue<Vector2>());
+        Plane plane = new Plane(Vector3.up, -cursorHeight * 0.5f);
+        float distanceToPlane;
+        plane.Raycast(mouseRay, out distanceToPlane);
+
+        return new Vector3(
+            mouseRay.GetPoint(distanceToPlane).x,
+            cursorHeight * 0.5f,
+            mouseRay.GetPoint(distanceToPlane).z);
+    }
+
     private void CheckForNewCursorPosition()
     {
         if (cursorPosition != prevCursorPosition)
@@ -78,24 +94,67 @@ public class EditCursor : MonoBehaviour
         if (ctrlAction.ReadValue<float>() > 0.5f)
         {
             // Scroll through IDs
-            if (scroll < 0)
+            if (scroll > 0)
             {
-                selectedID++;
-                if ((int)selectedID > System.Enum.GetNames(typeof(ID)).Length - 1)
+                if (selectionModeIsVoxel)
                 {
-                    selectedID = 0;
+                    selectedVID++;
+                    if ((int)selectedVID > System.Enum.GetNames(typeof(vID)).Length - 1)
+                    {
+                        selectedEID = 0;
+                        selectionModeIsVoxel = false;
+                        HUD.SetSelectedID(selectedEID.ToString());
+                    }
+                    else
+                    {
+                        HUD.SetSelectedID(selectedVID.ToString());
+                    }
                 }
-                HUD.SetSelectedID(selectedID);
+                else
+                {
+                    selectedEID++;
+                    if ((int)selectedEID > System.Enum.GetNames(typeof(eID)).Length - 1)
+                    {
+                        selectedVID = 0;
+                        selectionModeIsVoxel = true;
+                        HUD.SetSelectedID(selectedVID.ToString());
+                    }
+                    else
+                    {
+                        HUD.SetSelectedID(selectedEID.ToString());
+                    }
+                }
             }
-            else if (scroll > 0)
+            else if (scroll < 0)
             {
-                selectedID--;
-                if ((int)selectedID < 0)
+                if (selectionModeIsVoxel)
                 {
-                    // Manually picking the last ID enum, not ideal
-                    selectedID = ID.Gravestone;
+                    selectedVID--;
+                    if ((int)selectedVID > 65000)
+                    {
+                        selectedEID = (eID)System.Enum.GetNames(typeof(eID)).Length - 1;
+                        selectionModeIsVoxel = false;
+                        HUD.SetSelectedID(selectedEID.ToString());
+                    }
+                    else
+                    {
+                        HUD.SetSelectedID(selectedVID.ToString());
+                    }
                 }
-                HUD.SetSelectedID(selectedID);
+                else
+                {
+                    selectedEID--;
+                    if ((int)selectedEID > 65000)
+                    {
+                        selectedVID = (vID)System.Enum.GetNames(typeof(vID)).Length - 1;
+                        selectionModeIsVoxel = true;
+                        HUD.SetSelectedID(selectedVID.ToString());
+                    }
+                    else
+                    {
+                        HUD.SetSelectedID(selectedEID.ToString());
+                    }
+                }
             }
         }
         else
@@ -116,22 +175,30 @@ public class EditCursor : MonoBehaviour
     {
         if (LevelHandler.CheckIfInRange(cursorPosition.x, cursorPosition.y, cursorPosition.z) == false) return;
 
-        LevelHandler.ModifyVoxel(selectedID, cursorPosition.x, cursorPosition.y, cursorPosition.z);
+        if (selectionModeIsVoxel)
+        {
+            LevelHandler.ModifyVoxel(selectedVID, cursorPosition.x, cursorPosition.y, cursorPosition.z);
+        }
+        else
+        {
+            LevelHandler.SpawnEntity(selectedEID, GetUnroundedCursorPosition());
+        }
     }
 
     private void OnDeleteObject()
     {
         if (LevelHandler.CheckIfInRange(cursorPosition.x, cursorPosition.y, cursorPosition.z) == false) return;
 
-        LevelHandler.ModifyVoxel(ID.Empty, cursorPosition.x, cursorPosition.y, cursorPosition.z);
+        LevelHandler.ModifyVoxel(vID.Empty, cursorPosition.x, cursorPosition.y, cursorPosition.z);
     }
 
     private void OnSelectObject()
     {
         if (LevelHandler.CheckIfInRange(cursorPosition.x, cursorPosition.y, cursorPosition.z) == false) return;
 
-        selectedID = LevelHandler.GetIdAtPosition(cursorPosition.x, cursorHeight, cursorPosition.z);
+        selectionModeIsVoxel = true;
+        selectedVID = LevelHandler.GetVoxelIdAtPosition(cursorPosition.x, cursorHeight, cursorPosition.z);
 
-        HUD.SetSelectedID(selectedID);
+        HUD.SetSelectedID(selectedVID.ToString());
     }
 }

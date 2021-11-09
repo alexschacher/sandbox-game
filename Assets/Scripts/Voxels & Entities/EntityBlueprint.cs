@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu] public class Entity : ScriptableObject
+[CreateAssetMenu] public class EntityBlueprint : ScriptableObject
 {
-    public ID id;
+    public eID id;
     public GameObject prefab;
     public InitValues values;
 
-    public static Dictionary<ID, Entity> idLookup = new Dictionary<ID, Entity>();
-    public static Entity GetFromID(ID id)
+    public static Dictionary<eID, EntityBlueprint> idLookup = new Dictionary<eID, EntityBlueprint>();
+    public static EntityBlueprint GetFromID(eID id)
     {
         if (idLookup.ContainsKey(id))
         {
@@ -19,10 +19,10 @@ using UnityEngine;
     }
     public static void InitDictionary()
     {
-        Entity[] allEntities = Resources.LoadAll<Entity>("Entity");
+        EntityBlueprint[] allEntities = Resources.LoadAll<EntityBlueprint>("Entity");
         //Debug.Log("EntityInfo assets found: " + allEntities.Length);
 
-        foreach (Entity e in allEntities)
+        foreach (EntityBlueprint e in allEntities)
         {
             //Debug.Log(" - " + e.name);
 
@@ -37,16 +37,8 @@ using UnityEngine;
     }
 }
 
-public enum ID : ushort
+public enum eID : ushort
 {
-    Empty,
-    Ground,
-    Water,
     Apple,
-    Post,
-    Tree,
-    Bridge,
-    Tallgrass,
-    Pumpkin,
-    Gravestone
+    Log
 }

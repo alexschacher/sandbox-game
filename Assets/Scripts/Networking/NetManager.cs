@@ -84,6 +84,7 @@ public class NetManager : NetworkManager
     {
         base.OnStopServer();
 
+        LevelHandler.UnloadAllChunks();
         LevelUtil.SaveLevel(LevelHandler.GetLevel(), App.GetGameSaveName());
 
         listOfConnectedPlayers.Clear();
@@ -109,7 +110,7 @@ public class NetManager : NetworkManager
         gameMenu.DisplayMainMenu();
         gameMenu.HideGameUI();
 
-        LevelHandler.DestroyObjectsInAllChunks();
+        LevelHandler.DestroyVoxelObjectsInAllChunks();
     }
 
     [Server] private void UpdateConnectedPlayersText()

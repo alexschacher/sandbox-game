@@ -25,10 +25,10 @@ public class BlockBitmask : MonoBehaviour
     public void UpdateModel()
     {
         int bitMask = 0;
-        if (LevelHandler.GetIdAtPosition(pos.x, pos.y, pos.z - 1) == ID.Ground) bitMask += 1;
-        if (LevelHandler.GetIdAtPosition(pos.x - 1, pos.y, pos.z) == ID.Ground) bitMask += 2;
-        if (LevelHandler.GetIdAtPosition(pos.x + 1, pos.y, pos.z) == ID.Ground) bitMask += 4;
-        if (LevelHandler.GetIdAtPosition(pos.x, pos.y, pos.z + 1) == ID.Ground) bitMask += 8;
+        if (LevelHandler.GetVoxelIdAtPosition(pos.x, pos.y, pos.z - 1) == vID.Ground) bitMask += 1;
+        if (LevelHandler.GetVoxelIdAtPosition(pos.x - 1, pos.y, pos.z) == vID.Ground) bitMask += 2;
+        if (LevelHandler.GetVoxelIdAtPosition(pos.x + 1, pos.y, pos.z) == vID.Ground) bitMask += 4;
+        if (LevelHandler.GetVoxelIdAtPosition(pos.x, pos.y, pos.z + 1) == vID.Ground) bitMask += 8;
 
         switch(bitMask)
         {

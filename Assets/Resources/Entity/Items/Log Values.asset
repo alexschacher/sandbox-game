@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d7f931d53751294f9f5bb0a4c5bebbc, type: 3}
-  m_Name: Pumpkin Values
+  m_Name: Log Values
   m_EditorClassIdentifier: 
-  originFrame: {x: 0, y: 4}
+  originFrame: {x: 0, y: 0}

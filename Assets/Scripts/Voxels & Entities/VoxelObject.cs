@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Spawnable : MonoBehaviour
+public abstract class VoxelObject : MonoBehaviour
 {
     public virtual void Init(InitValues values) { }
 }

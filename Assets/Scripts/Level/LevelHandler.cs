@@ -7,13 +7,10 @@ public class LevelHandler : NetworkBehaviour
 {
     private Level level;
     public static Level GetLevel() => singleton.level;
-    public static void SetLevel(Level newLevel)
-    {
-        Debug.Log("Set Level");
-        singleton.level = newLevel;
-    }
+    public static void SetLevel(Level newLevel) => singleton.level = newLevel;
 
     private HashSet<Vector3Int> liveChunks = new HashSet<Vector3Int>();
+    private List<GameObject> liveEntities = new List<GameObject>();
 
     private static LevelHandler singleton;
     private void Awake()
@@ -27,11 +24,10 @@ public class LevelHandler : NetworkBehaviour
     [Server]
     public static void InitHostLevel()
     {
-        Debug.Log("InitHostLevel");
         Level level = LevelUtil.LoadLevel(App.GetGameSaveName());
         if (level == null)
         {
-            level = LevelGenerator.Generate(16);
+            level = LevelGenerator.Generate(64);
             HUD.LogMessage("LevelHandler: New Level Generated");
         }
         SetLevel(level);
@@ -57,10 +53,11 @@ public class LevelHandler : NetworkBehaviour
     [Server]
     public static void UpdateLiveChunks(List<GameObject> playerObjects)
     {
-        int loadChunkZoneSize = 3;
+        int loadChunkZoneSize = 2;
         HashSet<Vector3Int> chunksThatShouldBeLive = new HashSet<Vector3Int>();
         HashSet<Vector3Int> liveChunksCopy = new HashSet<Vector3Int>(singleton.liveChunks);
 
+        // Determine which chunks should currently be live
         foreach (GameObject playerObj in playerObjects)
         {
             Vector3Int playerCoords = LevelUtil.GetChunkCoords(
@@ -77,14 +74,12 @@ public class LevelHandler : NetworkBehaviour
             }
         }
 
+        // Determine chunks that need to be loaded and unloaded by comparing overlap in lists
         HashSet<Vector3Int> chunkThatShouldBeLiveCopy = new HashSet<Vector3Int>(chunksThatShouldBeLive);
-
-        int matchesFound = 0;
         foreach (Vector3Int chunkThatShouldBeLive in chunkThatShouldBeLiveCopy)
         {
             if (liveChunksCopy.Contains(chunkThatShouldBeLive))
             {
-                matchesFound++;
                 chunksThatShouldBeLive.Remove(chunkThatShouldBeLive);
                 liveChunksCopy.Remove(chunkThatShouldBeLive);
             }
@@ -101,21 +96,29 @@ public class LevelHandler : NetworkBehaviour
 
         foreach (Vector3Int chunkToUnload in liveChunksCopy)
         {
-            singleton.RpcUnloadChunkOnAllClients(chunkToUnload.x, chunkToUnload.y, chunkToUnload.z);
-            singleton.liveChunks.Remove(chunkToUnload);
+            UnloadChunk(chunkToUnload);
         }
-
         foreach (Vector3Int chunkToLoad in chunksThatShouldBeLive)
         {
-            singleton.RpcSendChunkToAllClients(chunkToLoad.x, chunkToLoad.y, chunkToLoad.z, LevelUtil.CompressChunk(GetLevel().chunks[chunkToLoad.x, chunkToLoad.y, chunkToLoad.z]));
-            singleton.liveChunks.Add(chunkToLoad);
+            LoadChunk(chunkToLoad);
         }
     }
 
-    #region Send Chunk Data
+    #region Load & Send Chunks
 
-    [Server]
-    public static void SendAllLiveChunksToClient(NetworkConnection conn)
+    [Server] public static void LoadChunk(Vector3Int chunkCoords)
+    {
+        singleton.RpcSendChunkToAllClients(chunkCoords.x, chunkCoords.y, chunkCoords.z, LevelUtil.CompressChunk(GetLevel().chunks[chunkCoords.x, chunkCoords.y, chunkCoords.z]));
+        singleton.liveChunks.Add(chunkCoords);
+
+        foreach (CompressedEntity compressedEntity in GetLevel().chunks[chunkCoords.x, chunkCoords.y, chunkCoords.z].storedEntities)
+        {
+            SpawnEntity((eID)compressedEntity.id, new Vector3(compressedEntity.positionX, compressedEntity.positionY, compressedEntity.positionZ));
+        }
+        GetLevel().chunks[chunkCoords.x, chunkCoords.y, chunkCoords.z].storedEntities.Clear();
+    }
+
+    [Server] public static void SendAllLiveChunksToClient(NetworkConnection conn)
     {
         foreach (Vector3Int chunk in singleton.liveChunks)
         {
@@ -123,16 +126,14 @@ public class LevelHandler : NetworkBehaviour
         }
     }
 
-    [Server]
-    public static void SendChunkToClient(NetworkConnection conn, int chunkX, int chunkY, int chunkZ)
+    [Server] public static void SendChunkToClient(NetworkConnection conn, int chunkX, int chunkY, int chunkZ)
     {
         singleton.TargetSendChunkToClient(conn, chunkX, chunkY, chunkZ, LevelUtil.CompressChunk(GetLevel().chunks[chunkX, chunkY, chunkZ]));
     }
 
-    [ClientRpc] public void RpcUnloadChunkOnAllClients(int chunkX, int chunkY, int chunkZ) => DestroyObjectsInChunk(chunkX, chunkY, chunkZ);
-
     [ClientRpc] public void RpcSendChunkToAllClients(int chunkX, int chunkY, int chunkZ, CompressedChunk compressedChunk)
         => ReceiveCompressedChunk(chunkX, chunkY, chunkZ, compressedChunk);
+
     [TargetRpc] private void TargetSendChunkToClient(NetworkConnection target, int chunkX, int chunkY, int chunkZ, CompressedChunk compressedChunk)
         => ReceiveCompressedChunk(chunkX, chunkY, chunkZ, compressedChunk);
     
@@ -142,14 +143,80 @@ public class LevelHandler : NetworkBehaviour
         {
             level.chunks[chunkX, chunkY, chunkZ] = LevelUtil.UncompressChunk(compressedChunk);
         }
-        DestroyObjectsInChunk(chunkX, chunkY, chunkZ);
-        SpawnChunkObjects(chunkX, chunkY, chunkZ);
+        DestroyVoxelObjectsInChunk(chunkX, chunkY, chunkZ);
+        InstantiateChunkVoxelObjects(chunkX, chunkY, chunkZ);
     }
 
     #endregion
 
-    #region Spawn GameObjects
-    private void SpawnChunkObjects(int chunkX, int chunkY, int chunkZ)
+    #region Unload Chunks
+
+    [Server] public static void UnloadAllChunks()
+    {
+        HashSet<Vector3Int> liveChunksCopy = new HashSet<Vector3Int>(singleton.liveChunks);
+        foreach(Vector3Int chunkCoords in liveChunksCopy)
+        {
+            UnloadChunk(chunkCoords);
+        }
+    }
+
+    [Server] public static void UnloadChunk(Vector3Int chunkCoords)
+    {
+        List<GameObject> liveEntitiesToRemove = new List<GameObject>();
+
+        singleton.RpcUnloadChunkOnAllClients(chunkCoords.x, chunkCoords.y, chunkCoords.z);
+        singleton.liveChunks.Remove(chunkCoords);
+
+        foreach (GameObject liveEntity in singleton.liveEntities)
+        {
+            if (LevelUtil.GetChunkCoords((int)liveEntity.transform.position.x, (int)liveEntity.transform.position.y, (int)liveEntity.transform.position.z).Equals(chunkCoords))
+            {
+                DespawnEntity(liveEntity, chunkCoords);
+                liveEntitiesToRemove.Add(liveEntity);
+            }
+        }
+        foreach (GameObject liveEntity in liveEntitiesToRemove)
+        {
+            singleton.liveEntities.Remove(liveEntity);
+        }
+    }
+
+    [ClientRpc] public void RpcUnloadChunkOnAllClients(int chunkX, int chunkY, int chunkZ) => DestroyVoxelObjectsInChunk(chunkX, chunkY, chunkZ);
+
+    #endregion
+
+    #region Spawn & Despawn Entities
+
+    [Server]
+    public static void SpawnEntity(eID id, Vector3 worldPosition)
+    {
+        EntityBlueprint entityBP = EntityBlueprint.GetFromID(id);
+        GameObject entityObj = Instantiate(entityBP.prefab, worldPosition, Quaternion.identity, singleton.transform);
+        entityObj.GetComponent<EntityObject>().ServerInitEntity(entityBP.id);
+        NetworkServer.Spawn(entityObj);
+        singleton.liveEntities.Add(entityObj);
+    }
+
+    [Server]
+    public static void DespawnEntity(GameObject liveEntity, Vector3Int chunkCoords)
+    {
+        EntityObject entityObject = liveEntity.GetComponent<EntityObject>();
+
+        CompressedEntity compressedEntity = new CompressedEntity();
+        compressedEntity.id = (ushort)entityObject.GetID();
+        compressedEntity.positionX = liveEntity.transform.position.x;
+        compressedEntity.positionY = liveEntity.transform.position.y;
+        compressedEntity.positionZ = liveEntity.transform.position.z;
+        GetLevel().chunks[chunkCoords.x, chunkCoords.y, chunkCoords.z].storedEntities.Add(compressedEntity);
+
+        NetworkServer.Destroy(liveEntity);
+    }
+
+    #endregion
+
+    #region Instantiate Voxel Objects
+
+    private void InstantiateChunkVoxelObjects(int chunkX, int chunkY, int chunkZ)
     {
         for (int y = 0; y < Chunk.height; y++)
         {
@@ -157,30 +224,25 @@ public class LevelHandler : NetworkBehaviour
             {
                 for (int x = 0; x < Chunk.width; x++)
                 {
-                    SpawnObject(level.chunks[chunkX, chunkY, chunkZ].voxelIDs[x, y, z], chunkX, chunkY, chunkZ, x, y, z);
+                    InstantiateVoxelObject(level.chunks[chunkX, chunkY, chunkZ].voxelIDs[x, y, z], chunkX, chunkY, chunkZ, x, y, z);
                 }
             }
         }
     }
 
-    private void SpawnObject(ID id, int chunkX, int chunkY, int chunkZ, int x, int y, int z)
+    private void InstantiateVoxelObject(vID id, int chunkX, int chunkY, int chunkZ, int x, int y, int z)
     {
-        if (id == ID.Empty) return;
+        if (id == vID.Empty) return;
 
-        if (level.chunks[chunkX, chunkY, chunkZ].gameObjects[x, y, z] != null)
-        {
-            Debug.Log("Uh Oh! Spawning object in place of a currently existing object! An orphan gameobject may be left over and unconnected to the level/chunk  array!");
-        }
-
-        Entity entity = Entity.GetFromID(id);
-        GameObject spawnedObj = Instantiate(entity.prefab, new Vector3(x + (chunkX * Chunk.width), y * 0.5f, z + (chunkZ * Chunk.width)), Quaternion.identity, transform);
-        spawnedObj.GetComponent<Spawnable>().Init(entity.values);
-        level.chunks[chunkX, chunkY, chunkZ].gameObjects[x, y, z] = spawnedObj;
+        VoxelBlueprint voxelBP = VoxelBlueprint.GetFromID(id);
+        GameObject voxelObj = Instantiate(voxelBP.prefab, new Vector3(x + (chunkX * Chunk.width), y * 0.5f, z + (chunkZ * Chunk.width)), Quaternion.identity, transform);
+        voxelObj.GetComponent<VoxelObject>().Init(voxelBP.values);
+        level.chunks[chunkX, chunkY, chunkZ].gameObjects[x, y, z] = voxelObj;
     }
     #endregion
-    
-    #region Destroy GameObjects
-    public static void DestroyObjectsInAllChunks()
+
+    #region Destroy Voxel Objects
+    public static void DestroyVoxelObjectsInAllChunks()
     {
         for (int y = 0; y < 1; y++)
         {
@@ -188,13 +250,13 @@ public class LevelHandler : NetworkBehaviour
             {
                 for (int x = 0; x < singleton.level.levelWidthInChunks; x++)
                 {
-                    DestroyObjectsInChunk(x, y, z);
+                    DestroyVoxelObjectsInChunk(x, y, z);
                 }
             }
         }
     }
 
-    private static void DestroyObjectsInChunk(int chunkX, int chunkY, int chunkZ)
+    private static void DestroyVoxelObjectsInChunk(int chunkX, int chunkY, int chunkZ)
     {
         for (int y = 0; y < Chunk.height; y++)
         {
@@ -202,13 +264,13 @@ public class LevelHandler : NetworkBehaviour
             {
                 for (int x = 0; x < Chunk.width; x++)
                 {
-                    DestroyObjectAtPosition(chunkX, chunkY, chunkZ, x, y, z);
+                    DestroyVoxelObjectAtPosition(chunkX, chunkY, chunkZ, x, y, z);
                 }
             }
         }
     }
 
-    private static void DestroyObjectAtPosition(int chunkX, int chunkY, int chunkZ, int x, int y, int z)
+    private static void DestroyVoxelObjectAtPosition(int chunkX, int chunkY, int chunkZ, int x, int y, int z)
     {
         GameObject objectToDelete = singleton.level.chunks[chunkX, chunkY, chunkZ].gameObjects[x, y, z];
         if (objectToDelete != null)
@@ -222,16 +284,13 @@ public class LevelHandler : NetworkBehaviour
     #region Modify Voxel
 
     [Client]
-    public static void ModifyVoxel(ID id, int worldX, int worldY, int worldZ)
+    public static void ModifyVoxel(vID id, int worldX, int worldY, int worldZ)
     {
-        //if (singleton.isClient) <-- Rendered useless by the [Client] tag (presumably?)
-        //{
-            singleton.CmdModifyVoxel(id, worldX, worldY, worldZ);
-        //}
+        singleton.CmdModifyVoxel(id, worldX, worldY, worldZ);
     }
 
     [Command(ignoreAuthority = true)]
-    private void CmdModifyVoxel(ID id, int worldX, int worldY, int worldZ)
+    private void CmdModifyVoxel(vID id, int worldX, int worldY, int worldZ)
     {
         Vector3Int chunkCoords = LevelUtil.GetChunkCoords(worldX, worldY, worldZ);
         Vector3Int voxelCoords = LevelUtil.GetVoxelCoords(worldX, worldY, worldZ);
@@ -242,24 +301,24 @@ public class LevelHandler : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void RpcModifyVoxel(ID id, int worldX, int worldY, int worldZ)
+    private void RpcModifyVoxel(vID id, int worldX, int worldY, int worldZ)
     {
         Vector3Int chunkCoords = LevelUtil.GetChunkCoords(worldX, worldY, worldZ);
         Vector3Int voxelCoords = LevelUtil.GetVoxelCoords(worldX, worldY, worldZ);
 
         level.chunks[chunkCoords.x, chunkCoords.y, chunkCoords.z].voxelIDs[voxelCoords.x, voxelCoords.y, voxelCoords.z] = id;
 
-        DestroyObjectAtPosition(chunkCoords.x, chunkCoords.y, chunkCoords.z, voxelCoords.x, voxelCoords.y, voxelCoords.z);
+        DestroyVoxelObjectAtPosition(chunkCoords.x, chunkCoords.y, chunkCoords.z, voxelCoords.x, voxelCoords.y, voxelCoords.z);
 
-        SpawnObject(id, chunkCoords.x, chunkCoords.y, chunkCoords.z, voxelCoords.x, voxelCoords.y, voxelCoords.z);
+        InstantiateVoxelObject(id, chunkCoords.x, chunkCoords.y, chunkCoords.z, voxelCoords.x, voxelCoords.y, voxelCoords.z);
     }
     #endregion
 
     #region Util Getters
 
-    public static ID GetIdAtPosition(int worldX, int worldY, int worldZ)
+    public static vID GetVoxelIdAtPosition(int worldX, int worldY, int worldZ)
     {
-        if (CheckIfInRange(worldX, worldY, worldZ) == false) return ID.Empty;
+        if (CheckIfInRange(worldX, worldY, worldZ) == false) return vID.Empty;
 
         Vector3Int chunkCoords = LevelUtil.GetChunkCoords(worldX, worldY, worldZ);
         Vector3Int voxelCoords = LevelUtil.GetVoxelCoords(worldX, worldY, worldZ);

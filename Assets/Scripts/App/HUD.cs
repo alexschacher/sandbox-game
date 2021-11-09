@@ -164,9 +164,9 @@ public class HUD : MonoBehaviour
 
     [SerializeField] private Text selectedIdText;
 
-    public static void SetSelectedID(ID id)
+    public static void SetSelectedID(string message)
     {
-        instance.selectedIdText.text = "Selected: " + id.ToString();
+        instance.selectedIdText.text = "Selected: " + message;
     }
     public static void SetSelectedIDVisibility(bool value)
     {

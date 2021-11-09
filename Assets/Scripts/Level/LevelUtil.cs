@@ -111,12 +111,19 @@ public static class LevelUtil
         }
 
         CompressedChunk compressedChunk = new CompressedChunk();
-        compressedChunk.compressedVoxelData = new ushort[dataList.Count];
 
+        compressedChunk.compressedVoxelData = new ushort[dataList.Count];
         for (int i = 0; i < dataList.Count; i++)
         {
             compressedChunk.compressedVoxelData[i] = dataList[i];
         }
+
+        compressedChunk.storedEntities = new CompressedEntity[chunk.storedEntities.Count];
+        for (int i = 0; i < chunk.storedEntities.Count; i++)
+        {
+            compressedChunk.storedEntities[i] = chunk.storedEntities[i];
+        }
+
         return compressedChunk;
     }
 
@@ -130,7 +137,7 @@ public static class LevelUtil
         {
             if (compressedChunk.compressedVoxelData[i] > CompressedChunk.repeatBase) continue;
 
-            uncompressedChunk.voxelIDs[x, y, z] = (ID)compressedChunk.compressedVoxelData[i];
+            uncompressedChunk.voxelIDs[x, y, z] = (vID)compressedChunk.compressedVoxelData[i];
 
             if (compressedChunk.compressedVoxelData[i + 1] > CompressedChunk.repeatBase)
             {
@@ -140,11 +147,14 @@ public static class LevelUtil
                 {
                     z++; if (z > Chunk.width - 1) { z = 0; x++; if (x > Chunk.width - 1) { x = 0; y++; if (y > Chunk.height - 1) { Debug.Log("Uncompress Chunk Space Overflow"); break; } } }
 
-                    uncompressedChunk.voxelIDs[x, y, z] = (ID)compressedChunk.compressedVoxelData[i];
+                    uncompressedChunk.voxelIDs[x, y, z] = (vID)compressedChunk.compressedVoxelData[i];
                 }
             }
             z++; if (z > Chunk.width - 1) { z = 0; x++; if (x > Chunk.width - 1) { x = 0; y++; if (y > Chunk.height - 1) { break; } } }
         }
+
+        uncompressedChunk.storedEntities = new List<CompressedEntity>(compressedChunk.storedEntities);
+
         return uncompressedChunk;
     }
 
@@ -189,7 +199,7 @@ public class CompressedChunk
     public static readonly ushort repeatBase = 65000;
     public static readonly ushort nullSign = 65535;
     public ushort[] compressedVoxelData;
-    public CompressedEntity[] entities;
+    public CompressedEntity[] storedEntities;
 }
 
 [System.Serializable]
@@ -226,12 +236,14 @@ public class Chunk
 {
     public static readonly int width = 8;
     public static readonly int height = 8;
-    public ID[,,] voxelIDs;
+    public vID[,,] voxelIDs;
     public GameObject[,,] gameObjects;
+    public List<CompressedEntity> storedEntities;
 
     public Chunk()
     {
-        voxelIDs = new ID[width, height, width];
+        voxelIDs = new vID[width, height, width];
         gameObjects = new GameObject[width, height, width];
+        storedEntities = new List<CompressedEntity>();
     }
 }

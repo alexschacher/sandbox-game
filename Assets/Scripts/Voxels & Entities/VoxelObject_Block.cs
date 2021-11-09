@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spawnable_Block : Spawnable
+public class VoxelObject_Block : VoxelObject
 {
     private BlockBitmask blockBitmask;
 

@@ -25,7 +25,8 @@ public class App : MonoBehaviour
         if (singleton != null) return;
         singleton = this;
 
-        Entity.InitDictionary();
+        EntityBlueprint.InitDictionary();
+        VoxelBlueprint.InitDictionary();
     }
 
     private void OnESC()

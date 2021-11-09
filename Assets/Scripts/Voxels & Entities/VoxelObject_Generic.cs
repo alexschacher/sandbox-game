@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spawnable_Generic: Spawnable
+public class VoxelObject_Generic: VoxelObject
 {
     public override void Init(InitValues values)
     {

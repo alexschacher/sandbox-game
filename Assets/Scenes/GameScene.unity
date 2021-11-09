@@ -1083,7 +1083,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputAsset: {fileID: -944628639613478452, guid: ecc98b968cde10b48a3be2696881c799,
     type: 3}
-  selectedID: 6
+  selectedVID: 3
+  selectedEID: 0
 --- !u!1 &690962745
 GameObject:
   m_ObjectHideFlags: 0
@@ -2221,7 +2222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 100cd89771acdf248a6cf9b37c100dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameSaveName: gamesave4
+  gameSaveName: levelsave3
 --- !u!114 &1346922874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2569,7 +2570,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: version 21.11.1 - Chunk Loading Update - (in development)
+  m_Text: version 21.11.2 - Live Entities Update
 --- !u!222 &1389760685
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2628,6 +2629,7 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 7734644717500580661, guid: 122e4f66525c2b6489c9c383ae58b538, type: 3}
   - {fileID: 2921337969421144339, guid: 276ac895c7c16f242881471469baae5d, type: 3}
+  - {fileID: 2702197634504243268, guid: a4f77d9a73ae0e74dbd01401c046eb91, type: 3}
   gameMenu: {fileID: 1346922875}
   playerCharacterPrefab: {fileID: 7734644717500580661, guid: 122e4f66525c2b6489c9c383ae58b538,
     type: 3}
@@ -3779,6 +3781,7 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 7734644717500580661, guid: 122e4f66525c2b6489c9c383ae58b538, type: 3}
   - {fileID: 2921337969421144339, guid: 276ac895c7c16f242881471469baae5d, type: 3}
+  - {fileID: 2702197634504243268, guid: a4f77d9a73ae0e74dbd01401c046eb91, type: 3}
   gameMenu: {fileID: 1346922875}
   playerCharacterPrefab: {fileID: 7734644717500580661, guid: 122e4f66525c2b6489c9c383ae58b538,
     type: 3}
