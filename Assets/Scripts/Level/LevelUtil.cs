@@ -172,11 +172,11 @@ public static class LevelUtil
 [System.Serializable]
 public class GameSave
 {
-    public bool successfullyLoaded = false;
-    public int xWidth; // Not needed in new format, delete when done
-    public int height; // Not needed in new format, delete when done
-    public int zWidth; // Not needed in new format, delete when done
-    public short[] levelData; // Not needed in new format, delete when done
+    //public bool successfullyLoaded = false;             
+    //public int xWidth; // Not needed in new format, delete when done
+    //public int height; // Not needed in new format, delete when done
+    //public int zWidth; // Not needed in new format, delete when done
+    //public short[] levelData; // Not needed in new format, delete when done
     public CompressedLevel compressedLevel;
 }
 
@@ -196,7 +196,7 @@ public class CompressedLevel
 [System.Serializable]
 public class CompressedChunk
 {
-    public static readonly ushort repeatBase = 65000;
+    public static readonly ushort repeatBase = 60000;
     public static readonly ushort nullSign = 65535;
     public ushort[] compressedVoxelData;
     public CompressedEntity[] storedEntities;
@@ -235,7 +235,7 @@ public class Level
 public class Chunk
 {
     public static readonly int width = 8;
-    public static readonly int height = 8;
+    public static readonly int height = 16;
     public vID[,,] voxelIDs;
     public GameObject[,,] gameObjects;
     public List<CompressedEntity> storedEntities;

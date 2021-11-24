@@ -53,7 +53,7 @@ public class LevelHandler : NetworkBehaviour
     [Server]
     public static void UpdateLiveChunks(List<GameObject> playerObjects)
     {
-        int loadChunkZoneSize = 2;
+        int loadChunkZoneSize = 4;
         HashSet<Vector3Int> chunksThatShouldBeLive = new HashSet<Vector3Int>();
         HashSet<Vector3Int> liveChunksCopy = new HashSet<Vector3Int>(singleton.liveChunks);
 
@@ -235,6 +235,9 @@ public class LevelHandler : NetworkBehaviour
         if (id == vID.Empty) return;
 
         VoxelBlueprint voxelBP = VoxelBlueprint.GetFromID(id);
+
+        if (voxelBP == null) return;
+
         GameObject voxelObj = Instantiate(voxelBP.prefab, new Vector3(x + (chunkX * Chunk.width), y * 0.5f, z + (chunkZ * Chunk.width)), Quaternion.identity, transform);
         voxelObj.GetComponent<VoxelObject>().Init(voxelBP.values);
         level.chunks[chunkX, chunkY, chunkZ].gameObjects[x, y, z] = voxelObj;

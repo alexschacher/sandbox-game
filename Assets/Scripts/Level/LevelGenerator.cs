@@ -21,18 +21,18 @@ public class LevelGenerator : MonoBehaviour
                             (chunkX == levelWidth - 1 && x == Chunk.width - 1) ||
                             (chunkZ == levelWidth - 1 && z == Chunk.width - 1))
                         {
-                            level.chunks[chunkX, 0, chunkZ].voxelIDs[x, 0, z] = vID.Water;
+                            level.chunks[chunkX, 0, chunkZ].voxelIDs[x, 2, z] = vID.Water;
                         }
                         else
                         {
-                            level.chunks[chunkX, 0, chunkZ].voxelIDs[x, 0, z] = vID.Ground;
+                            level.chunks[chunkX, 0, chunkZ].voxelIDs[x, 2, z] = vID.Ground;
                             if (Random.Range(0f, 100f) < 20f)
                             {
-                                level.chunks[chunkX, 0, chunkZ].voxelIDs[x, 1, z] = vID.Tallgrass;
+                                level.chunks[chunkX, 0, chunkZ].voxelIDs[x, 3, z] = vID.Tallgrass;
                             }
                             if (Random.Range(0f, 100f) < 1.5f)
                             {
-                                level.chunks[chunkX, 0, chunkZ].voxelIDs[x, 1, z] = vID.Tree;
+                                level.chunks[chunkX, 0, chunkZ].voxelIDs[x, 3, z] = vID.Tree;
                             }
                         }
                     }

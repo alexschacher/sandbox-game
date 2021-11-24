@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62100c3515392284ebbe75ae2857bf22, type: 3}
   m_Name: Bridge
   m_EditorClassIdentifier: 
-  id: 5
+  id: 20
   prefab: {fileID: 6685179632959839608, guid: 4a66d09939642684c9e55d83749ccf6b, type: 3}
   values: {fileID: 11400000, guid: 22c13a645989f784ea34923308060563, type: 2}

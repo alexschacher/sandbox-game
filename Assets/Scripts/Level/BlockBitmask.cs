@@ -24,6 +24,8 @@ public class BlockBitmask : MonoBehaviour
 
     public void UpdateModel()
     {
+        return;
+
         int bitMask = 0;
         if (LevelHandler.GetVoxelIdAtPosition(pos.x, pos.y, pos.z - 1) == vID.Ground) bitMask += 1;
         if (LevelHandler.GetVoxelIdAtPosition(pos.x - 1, pos.y, pos.z) == vID.Ground) bitMask += 2;
@@ -54,6 +56,8 @@ public class BlockBitmask : MonoBehaviour
 
     private void UpdateNeighbors()
     {
+        return;
+
         UpdateNeighbor(pos.x + 1, pos.y, pos.z);
         UpdateNeighbor(pos.x - 1, pos.y, pos.z);
         UpdateNeighbor(pos.x, pos.y, pos.z + 1);
@@ -62,6 +66,8 @@ public class BlockBitmask : MonoBehaviour
 
     private void UpdateNeighbor(int x, int y, int z)
     {
+        return;
+
         GameObject neighbor = LevelHandler.GetObjectAtPosition(x, y, z);
         if (neighbor != null)
         {

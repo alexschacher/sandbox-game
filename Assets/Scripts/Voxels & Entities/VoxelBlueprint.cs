@@ -28,7 +28,7 @@ using UnityEngine;
 
             if (idLookup.ContainsKey(v.id))
             {
-                throw new System.Exception("Error: Multiple scriptable objects registered to the same ID: " + v.id.ToString());
+                Debug.Log("Error: Multiple scriptable objects registered to the same ID: " + v.id.ToString());
             }
             idLookup[v.id] = v;
         }
@@ -44,7 +44,37 @@ public enum vID : ushort
     Water,
     Post,
     Tree,
-    Bridge,
+    Cliff,
     Tallgrass,
-    Gravestone
+    Gravestone,
+    Cliff_Corner1,
+    Cliff_Corner2,
+    Cliff_Corner3,
+    Cliff_Corner4,
+    Cliff_Straight1,
+    Cliff_Straight2,
+    Cliff_Straight3,
+    Cliff_Straight4,
+    Cliff_InnerCorner1,
+    Cliff_InnerCorner2,
+    Cliff_InnerCorner3,
+    Cliff_InnerCorner4,
+    Bridge,
+    Bridge_R90,
+    Cliff_SlopeIn1,
+    Cliff_SlopeIn2,
+    Cliff_SlopeIn3,
+    Cliff_SlopeIn4,
+    Waterfall1,
+    Waterfall2,
+    Waterfall3,
+    Waterfall4,
+    Cliff_WaterfallCorner1,
+    Cliff_WaterfallCorner2,
+    Cliff_WaterfallCorner3,
+    Cliff_WaterfallCorner4,
+    UNUSED_2,
+    UNUSED_3,
+    UNUSED_4,
+    UNUSED_5
 }

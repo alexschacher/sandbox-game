@@ -18,6 +18,12 @@ public class NonBillboardAnim : MonoBehaviour
         properties = new MaterialPropertyBlock();
         rend = GetComponent<MeshRenderer>();
     }
+    public void SetVariables(float animSpeed, int numOfFrames, int framePixelWidth)
+    {
+        this.animSpeed = animSpeed;
+        this.numOfFrames = numOfFrames;
+        this.framePixelWidth = framePixelWidth;
+    }
     private void Update()
     {
         Animate();
