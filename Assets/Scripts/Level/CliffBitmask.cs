@@ -6,7 +6,8 @@ public class CliffBitmask : MonoBehaviour
 {
     private MeshFilter meshFilter1, meshFilter2, meshFilter3, meshFilter4;
     [SerializeField] private GameObject meshObject1, meshObject2, meshObject3, meshObject4;
-    [SerializeField] private Mesh edgeMesh, cornerMesh;
+    [SerializeField] private Mesh edgeMesh, cornerMesh, waterfallCornerMesh;
+    private bool mesh1IsCorner, mesh2IsCorner, mesh3IsCorner, mesh4IsCorner;
     private Vector3Int pos;
 
     private void Awake()
@@ -21,7 +22,7 @@ public class CliffBitmask : MonoBehaviour
     private void Start()
     {
         UpdateModel();
-        UpdateNeighbors();
+        CheckForWaterfall();
     }
 
     public void UpdateModel()
@@ -49,10 +50,10 @@ public class CliffBitmask : MonoBehaviour
                         meshObject3.SetActive(true);
                         meshObject4.SetActive(true);
 
-                        meshFilter1.mesh = edgeMesh;
-                        meshFilter2.mesh = edgeMesh;
-                        meshFilter3.mesh = edgeMesh;
-                        meshFilter4.mesh = edgeMesh;
+                        SetMesh1ToEdge();
+                        SetMesh2ToEdge();
+                        SetMesh3ToEdge();
+                        SetMesh4ToEdge();
 
                         meshObject1.transform.rotation = Quaternion.Euler(0, 0, 0);
                         meshObject2.transform.rotation = Quaternion.Euler(0, 90, 0);
@@ -66,9 +67,9 @@ public class CliffBitmask : MonoBehaviour
                         meshObject3.SetActive(true);
                         meshObject4.SetActive(false);
 
-                        meshFilter1.mesh = edgeMesh;
-                        meshFilter2.mesh = edgeMesh;
-                        meshFilter3.mesh = edgeMesh;
+                        SetMesh1ToEdge();
+                        SetMesh2ToEdge();
+                        SetMesh3ToEdge();
 
                         meshObject1.transform.rotation = Quaternion.Euler(0, 90, 0);
                         meshObject2.transform.rotation = Quaternion.Euler(0, 180, 0);
@@ -84,9 +85,9 @@ public class CliffBitmask : MonoBehaviour
                         meshObject3.SetActive(true);
                         meshObject4.SetActive(false);
 
-                        meshFilter1.mesh = edgeMesh;
-                        meshFilter2.mesh = edgeMesh;
-                        meshFilter3.mesh = edgeMesh;
+                        SetMesh1ToEdge();
+                        SetMesh2ToEdge();
+                        SetMesh3ToEdge();
 
                         meshObject1.transform.rotation = Quaternion.Euler(0, 0, 0);
                         meshObject2.transform.rotation = Quaternion.Euler(0, 90, 0);
@@ -99,8 +100,8 @@ public class CliffBitmask : MonoBehaviour
                         meshObject3.SetActive(false);
                         meshObject4.SetActive(false);
 
-                        meshFilter1.mesh = edgeMesh;
-                        meshFilter2.mesh = edgeMesh;
+                        SetMesh1ToEdge();
+                        SetMesh2ToEdge();
 
                         meshObject1.transform.rotation = Quaternion.Euler(0, 90, 0);
                         meshObject2.transform.rotation = Quaternion.Euler(0, -90, 0);
@@ -118,9 +119,9 @@ public class CliffBitmask : MonoBehaviour
                         meshObject3.SetActive(true);
                         meshObject4.SetActive(false);
 
-                        meshFilter1.mesh = edgeMesh;
-                        meshFilter2.mesh = edgeMesh;
-                        meshFilter3.mesh = edgeMesh;
+                        SetMesh1ToEdge();
+                        SetMesh2ToEdge();
+                        SetMesh3ToEdge();
 
                         meshObject1.transform.rotation = Quaternion.Euler(0, 0, 0);
                         meshObject2.transform.rotation = Quaternion.Euler(0, 90, 0);
@@ -135,9 +136,9 @@ public class CliffBitmask : MonoBehaviour
                             meshObject3.SetActive(true);
                             meshObject4.SetActive(false);
 
-                            meshFilter1.mesh = edgeMesh;
-                            meshFilter2.mesh = edgeMesh;
-                            meshFilter3.mesh = cornerMesh;
+                            SetMesh1ToEdge();
+                            SetMesh2ToEdge();
+                            SetMesh3ToCorner();
 
                             meshObject1.transform.rotation = Quaternion.Euler(0, 90, 0);
                             meshObject2.transform.rotation = Quaternion.Euler(0, 180, 0);
@@ -150,8 +151,8 @@ public class CliffBitmask : MonoBehaviour
                             meshObject3.SetActive(false);
                             meshObject4.SetActive(false);
 
-                            meshFilter1.mesh = edgeMesh;
-                            meshFilter2.mesh = edgeMesh;
+                            SetMesh1ToEdge();
+                            SetMesh2ToEdge();
 
                             meshObject1.transform.rotation = Quaternion.Euler(0, 90, 0);
                             meshObject2.transform.rotation = Quaternion.Euler(0, 180, 0);
@@ -169,9 +170,9 @@ public class CliffBitmask : MonoBehaviour
                             meshObject3.SetActive(true);
                             meshObject4.SetActive(false);
 
-                            meshFilter1.mesh = edgeMesh;
-                            meshFilter2.mesh = edgeMesh;
-                            meshFilter3.mesh = cornerMesh;
+                            SetMesh1ToEdge();
+                            SetMesh2ToEdge();
+                            SetMesh3ToCorner();
 
                             meshObject1.transform.rotation = Quaternion.Euler(0, 0, 0);
                             meshObject2.transform.rotation = Quaternion.Euler(0, 90, 0);
@@ -184,8 +185,8 @@ public class CliffBitmask : MonoBehaviour
                             meshObject3.SetActive(false);
                             meshObject4.SetActive(false);
 
-                            meshFilter1.mesh = edgeMesh;
-                            meshFilter2.mesh = edgeMesh;
+                            SetMesh1ToEdge();
+                            SetMesh2ToEdge();
 
                             meshObject1.transform.rotation = Quaternion.Euler(0, 0, 0);
                             meshObject2.transform.rotation = Quaternion.Euler(0, 90, 0);
@@ -202,9 +203,9 @@ public class CliffBitmask : MonoBehaviour
                                 meshObject3.SetActive(true);
                                 meshObject4.SetActive(false);
 
-                                meshFilter1.mesh = edgeMesh;
-                                meshFilter2.mesh = cornerMesh;
-                                meshFilter3.mesh = cornerMesh;
+                                SetMesh1ToEdge();
+                                SetMesh2ToCorner();
+                                SetMesh3ToCorner();
 
                                 meshObject1.transform.rotation = Quaternion.Euler(0, 90, 0);
                                 meshObject2.transform.rotation = Quaternion.Euler(0, -90, 0);
@@ -217,8 +218,8 @@ public class CliffBitmask : MonoBehaviour
                                 meshObject3.SetActive(false);
                                 meshObject4.SetActive(false);
 
-                                meshFilter1.mesh = edgeMesh;
-                                meshFilter2.mesh = cornerMesh;
+                                SetMesh1ToEdge();
+                                SetMesh2ToCorner();
 
                                 meshObject1.transform.rotation = Quaternion.Euler(0, 90, 0);
                                 meshObject2.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -233,8 +234,8 @@ public class CliffBitmask : MonoBehaviour
                                 meshObject3.SetActive(false);
                                 meshObject4.SetActive(false);
 
-                                meshFilter1.mesh = edgeMesh;
-                                meshFilter2.mesh = cornerMesh;
+                                SetMesh1ToEdge();
+                                SetMesh2ToCorner();
 
                                 meshObject1.transform.rotation = Quaternion.Euler(0, 90, 0);
                                 meshObject2.transform.rotation = Quaternion.Euler(0, -90, 0);
@@ -246,7 +247,7 @@ public class CliffBitmask : MonoBehaviour
                                 meshObject3.SetActive(false);
                                 meshObject4.SetActive(false);
 
-                                meshFilter1.mesh = edgeMesh;
+                                SetMesh1ToEdge();
 
                                 meshObject1.transform.rotation = Quaternion.Euler(0, 90, 0);
                             }
@@ -268,9 +269,9 @@ public class CliffBitmask : MonoBehaviour
                         meshObject3.SetActive(true);
                         meshObject4.SetActive(false);
 
-                        meshFilter1.mesh = edgeMesh;
-                        meshFilter2.mesh = edgeMesh;
-                        meshFilter3.mesh = edgeMesh;
+                        SetMesh1ToEdge();
+                        SetMesh2ToEdge();
+                        SetMesh3ToEdge();
 
                         meshObject1.transform.rotation = Quaternion.Euler(0, 0, 0);
                         meshObject2.transform.rotation = Quaternion.Euler(0, 180, 0);
@@ -285,9 +286,9 @@ public class CliffBitmask : MonoBehaviour
                             meshObject3.SetActive(true);
                             meshObject4.SetActive(false);
 
-                            meshFilter1.mesh = edgeMesh;
-                            meshFilter2.mesh = edgeMesh;
-                            meshFilter3.mesh = cornerMesh;
+                            SetMesh1ToEdge();
+                            SetMesh2ToEdge();
+                            SetMesh3ToCorner();
 
                             meshObject1.transform.rotation = Quaternion.Euler(0, 180, 0);
                             meshObject2.transform.rotation = Quaternion.Euler(0, -90, 0);
@@ -300,8 +301,8 @@ public class CliffBitmask : MonoBehaviour
                             meshObject3.SetActive(false);
                             meshObject4.SetActive(false);
 
-                            meshFilter1.mesh = edgeMesh;
-                            meshFilter2.mesh = edgeMesh;
+                            SetMesh1ToEdge();
+                            SetMesh2ToEdge();
 
                             meshObject1.transform.rotation = Quaternion.Euler(0, 180, 0);
                             meshObject2.transform.rotation = Quaternion.Euler(0, -90, 0);
@@ -319,9 +320,9 @@ public class CliffBitmask : MonoBehaviour
                             meshObject3.SetActive(true);
                             meshObject4.SetActive(false);
 
-                            meshFilter1.mesh = edgeMesh;
-                            meshFilter2.mesh = edgeMesh;
-                            meshFilter3.mesh = cornerMesh;
+                            SetMesh1ToEdge();
+                            SetMesh2ToEdge();
+                            SetMesh3ToCorner();
 
                             meshObject1.transform.rotation = Quaternion.Euler(0, -90, 0);
                             meshObject2.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -334,8 +335,8 @@ public class CliffBitmask : MonoBehaviour
                             meshObject3.SetActive(false);
                             meshObject4.SetActive(false);
 
-                            meshFilter1.mesh = edgeMesh;
-                            meshFilter2.mesh = edgeMesh;
+                            SetMesh1ToEdge();
+                            SetMesh2ToEdge();
 
                             meshObject1.transform.rotation = Quaternion.Euler(0, -90, 0);
                             meshObject2.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -352,9 +353,9 @@ public class CliffBitmask : MonoBehaviour
                                 meshObject3.SetActive(true);
                                 meshObject4.SetActive(false);
 
-                                meshFilter1.mesh = edgeMesh;
-                                meshFilter2.mesh = cornerMesh;
-                                meshFilter3.mesh = cornerMesh;
+                                SetMesh1ToEdge();
+                                SetMesh2ToCorner();
+                                SetMesh3ToCorner();
 
                                 meshObject1.transform.rotation = Quaternion.Euler(0, -90, 0);
                                 meshObject2.transform.rotation = Quaternion.Euler(0, 90, 0);
@@ -367,8 +368,8 @@ public class CliffBitmask : MonoBehaviour
                                 meshObject3.SetActive(false);
                                 meshObject4.SetActive(false);
 
-                                meshFilter1.mesh = edgeMesh;
-                                meshFilter2.mesh = cornerMesh;
+                                SetMesh1ToEdge();
+                                SetMesh2ToCorner();
 
                                 meshObject1.transform.rotation = Quaternion.Euler(0, -90, 0);
                                 meshObject2.transform.rotation = Quaternion.Euler(0, 90, 0);
@@ -383,8 +384,8 @@ public class CliffBitmask : MonoBehaviour
                                 meshObject3.SetActive(false);
                                 meshObject4.SetActive(false);
 
-                                meshFilter1.mesh = edgeMesh;
-                                meshFilter2.mesh = cornerMesh;
+                                SetMesh1ToEdge();
+                                SetMesh2ToCorner();
 
                                 meshObject1.transform.rotation = Quaternion.Euler(0, -90, 0);
                                 meshObject2.transform.rotation = Quaternion.Euler(0, 180, 0);
@@ -396,7 +397,7 @@ public class CliffBitmask : MonoBehaviour
                                 meshObject3.SetActive(false);
                                 meshObject4.SetActive(false);
 
-                                meshFilter1.mesh = edgeMesh;
+                                SetMesh1ToEdge();
 
                                 meshObject1.transform.rotation = Quaternion.Euler(0, -90, 0);
                             }
@@ -415,8 +416,8 @@ public class CliffBitmask : MonoBehaviour
                         meshObject3.SetActive(false);
                         meshObject4.SetActive(false);
 
-                        meshFilter1.mesh = edgeMesh;
-                        meshFilter2.mesh = edgeMesh;
+                        SetMesh1ToEdge();
+                        SetMesh2ToEdge();
 
                         meshObject1.transform.rotation = Quaternion.Euler(0, 0, 0);
                         meshObject2.transform.rotation = Quaternion.Euler(0, 180, 0);
@@ -432,9 +433,9 @@ public class CliffBitmask : MonoBehaviour
                                 meshObject3.SetActive(true);
                                 meshObject4.SetActive(false);
 
-                                meshFilter1.mesh = edgeMesh;
-                                meshFilter2.mesh = cornerMesh;
-                                meshFilter3.mesh = cornerMesh;
+                                SetMesh1ToEdge();
+                                SetMesh2ToCorner();
+                                SetMesh3ToCorner();
 
                                 meshObject1.transform.rotation = Quaternion.Euler(0, 180, 0);
                                 meshObject2.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -447,8 +448,8 @@ public class CliffBitmask : MonoBehaviour
                                 meshObject3.SetActive(false);
                                 meshObject4.SetActive(false);
 
-                                meshFilter1.mesh = edgeMesh;
-                                meshFilter2.mesh = cornerMesh;
+                                SetMesh1ToEdge();
+                                SetMesh2ToCorner();
 
                                 meshObject1.transform.rotation = Quaternion.Euler(0, 180, 0);
                                 meshObject2.transform.rotation = Quaternion.Euler(0, 90, 0);
@@ -463,8 +464,8 @@ public class CliffBitmask : MonoBehaviour
                                 meshObject3.SetActive(false);
                                 meshObject4.SetActive(false);
 
-                                meshFilter1.mesh = edgeMesh;
-                                meshFilter2.mesh = cornerMesh;
+                                SetMesh1ToEdge();
+                                SetMesh2ToCorner();
 
                                 meshObject1.transform.rotation = Quaternion.Euler(0, 180, 0);
                                 meshObject2.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -476,7 +477,7 @@ public class CliffBitmask : MonoBehaviour
                                 meshObject3.SetActive(false);
                                 meshObject4.SetActive(false);
 
-                                meshFilter1.mesh = edgeMesh;
+                                SetMesh1ToEdge();
 
                                 meshObject1.transform.rotation = Quaternion.Euler(0, 180, 0);
                             }
@@ -496,9 +497,9 @@ public class CliffBitmask : MonoBehaviour
                                 meshObject3.SetActive(true);
                                 meshObject4.SetActive(false);
 
-                                meshFilter1.mesh = edgeMesh;
-                                meshFilter2.mesh = cornerMesh;
-                                meshFilter3.mesh = cornerMesh;
+                                SetMesh1ToEdge();
+                                SetMesh2ToCorner();
+                                SetMesh3ToCorner();
 
                                 meshObject1.transform.rotation = Quaternion.Euler(0, 0, 0);
                                 meshObject2.transform.rotation = Quaternion.Euler(0, 180, 0);
@@ -511,8 +512,8 @@ public class CliffBitmask : MonoBehaviour
                                 meshObject3.SetActive(false);
                                 meshObject4.SetActive(false);
 
-                                meshFilter1.mesh = edgeMesh;
-                                meshFilter2.mesh = cornerMesh;
+                                SetMesh1ToEdge();
+                                SetMesh2ToCorner();
 
                                 meshObject1.transform.rotation = Quaternion.Euler(0, 0, 0);
                                 meshObject2.transform.rotation = Quaternion.Euler(0, 180, 0);
@@ -527,8 +528,8 @@ public class CliffBitmask : MonoBehaviour
                                 meshObject3.SetActive(false);
                                 meshObject4.SetActive(false);
 
-                                meshFilter1.mesh = edgeMesh;
-                                meshFilter2.mesh = cornerMesh;
+                                SetMesh1ToEdge();
+                                SetMesh2ToCorner();
 
                                 meshObject1.transform.rotation = Quaternion.Euler(0, 0, 0);
                                 meshObject2.transform.rotation = Quaternion.Euler(0, -90, 0);
@@ -540,7 +541,7 @@ public class CliffBitmask : MonoBehaviour
                                 meshObject3.SetActive(false);
                                 meshObject4.SetActive(false);
 
-                                meshFilter1.mesh = edgeMesh;
+                                SetMesh1ToEdge();
 
                                 meshObject1.transform.rotation = Quaternion.Euler(0, 0, 0);
                             }
@@ -561,10 +562,10 @@ public class CliffBitmask : MonoBehaviour
                                         meshObject3.SetActive(true);
                                         meshObject4.SetActive(true);
 
-                                        meshFilter1.mesh = cornerMesh;
-                                        meshFilter2.mesh = cornerMesh;
-                                        meshFilter3.mesh = cornerMesh;
-                                        meshFilter4.mesh = cornerMesh;
+                                        SetMesh1ToCorner();
+                                        SetMesh2ToCorner();
+                                        SetMesh3ToCorner();
+                                        SetMesh4ToCorner();
 
                                         meshObject1.transform.rotation = Quaternion.Euler(0, 0, 0);
                                         meshObject2.transform.rotation = Quaternion.Euler(0, 90, 0);
@@ -578,9 +579,9 @@ public class CliffBitmask : MonoBehaviour
                                         meshObject3.SetActive(true);
                                         meshObject4.SetActive(false);
 
-                                        meshFilter1.mesh = cornerMesh;
-                                        meshFilter2.mesh = cornerMesh;
-                                        meshFilter3.mesh = cornerMesh;
+                                        SetMesh1ToCorner();
+                                        SetMesh2ToCorner();
+                                        SetMesh3ToCorner();
 
                                         meshObject1.transform.rotation = Quaternion.Euler(0, 0, 0);
                                         meshObject2.transform.rotation = Quaternion.Euler(0, 90, 0);
@@ -596,9 +597,9 @@ public class CliffBitmask : MonoBehaviour
                                         meshObject3.SetActive(true);
                                         meshObject4.SetActive(false);
 
-                                        meshFilter1.mesh = cornerMesh;
-                                        meshFilter2.mesh = cornerMesh;
-                                        meshFilter3.mesh = cornerMesh;
+                                        SetMesh1ToCorner();
+                                        SetMesh2ToCorner();
+                                        SetMesh3ToCorner();
 
                                         meshObject1.transform.rotation = Quaternion.Euler(0, 90, 0);
                                         meshObject2.transform.rotation = Quaternion.Euler(0, 180, 0);
@@ -611,8 +612,8 @@ public class CliffBitmask : MonoBehaviour
                                         meshObject3.SetActive(false);
                                         meshObject4.SetActive(false);
 
-                                        meshFilter1.mesh = cornerMesh;
-                                        meshFilter2.mesh = cornerMesh;
+                                        SetMesh1ToCorner();
+                                        SetMesh2ToCorner();
 
                                         meshObject1.transform.rotation = Quaternion.Euler(0, 90, 0);
                                         meshObject2.transform.rotation = Quaternion.Euler(0, 180, 0);
@@ -630,9 +631,9 @@ public class CliffBitmask : MonoBehaviour
                                         meshObject3.SetActive(true);
                                         meshObject4.SetActive(false);
 
-                                        meshFilter1.mesh = cornerMesh;
-                                        meshFilter2.mesh = cornerMesh;
-                                        meshFilter3.mesh = cornerMesh;
+                                        SetMesh1ToCorner();
+                                        SetMesh2ToCorner();
+                                        SetMesh3ToCorner();
 
                                         meshObject1.transform.rotation = Quaternion.Euler(0, -90, 0);
                                         meshObject2.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -645,8 +646,8 @@ public class CliffBitmask : MonoBehaviour
                                         meshObject3.SetActive(false);
                                         meshObject4.SetActive(false);
 
-                                        meshFilter1.mesh = cornerMesh;
-                                        meshFilter2.mesh = cornerMesh;
+                                        SetMesh1ToCorner();
+                                        SetMesh2ToCorner();
 
                                         meshObject1.transform.rotation = Quaternion.Euler(0, 0, 0);
                                         meshObject2.transform.rotation = Quaternion.Euler(0, 90, 0);
@@ -661,8 +662,8 @@ public class CliffBitmask : MonoBehaviour
                                         meshObject3.SetActive(false);
                                         meshObject4.SetActive(false);
 
-                                        meshFilter1.mesh = cornerMesh;
-                                        meshFilter2.mesh = cornerMesh;
+                                        SetMesh1ToCorner();
+                                        SetMesh2ToCorner();
 
                                         meshObject1.transform.rotation = Quaternion.Euler(0, 90, 0);
                                         meshObject2.transform.rotation = Quaternion.Euler(0, -90, 0);
@@ -674,7 +675,7 @@ public class CliffBitmask : MonoBehaviour
                                         meshObject3.SetActive(false);
                                         meshObject4.SetActive(false);
 
-                                        meshFilter1.mesh = cornerMesh;
+                                        SetMesh1ToCorner();
 
                                         meshObject1.transform.rotation = Quaternion.Euler(0, 90, 0);
                                     }
@@ -694,9 +695,9 @@ public class CliffBitmask : MonoBehaviour
                                         meshObject3.SetActive(true);
                                         meshObject4.SetActive(false);
 
-                                        meshFilter1.mesh = cornerMesh;
-                                        meshFilter2.mesh = cornerMesh;
-                                        meshFilter3.mesh = cornerMesh;
+                                        SetMesh1ToCorner();
+                                        SetMesh2ToCorner();
+                                        SetMesh3ToCorner();
 
                                         meshObject1.transform.rotation = Quaternion.Euler(0, 180, 0);
                                         meshObject2.transform.rotation = Quaternion.Euler(0, -90, 0);
@@ -709,8 +710,8 @@ public class CliffBitmask : MonoBehaviour
                                         meshObject3.SetActive(false);
                                         meshObject4.SetActive(false);
 
-                                        meshFilter1.mesh = cornerMesh;
-                                        meshFilter2.mesh = cornerMesh;
+                                        SetMesh1ToCorner();
+                                        SetMesh2ToCorner();
 
                                         meshObject1.transform.rotation = Quaternion.Euler(0, 0, 0);
                                         meshObject2.transform.rotation = Quaternion.Euler(0, 180, 0);
@@ -725,8 +726,8 @@ public class CliffBitmask : MonoBehaviour
                                         meshObject3.SetActive(false);
                                         meshObject4.SetActive(false);
 
-                                        meshFilter1.mesh = cornerMesh;
-                                        meshFilter2.mesh = cornerMesh;
+                                        SetMesh1ToCorner();
+                                        SetMesh2ToCorner();
 
                                         meshObject1.transform.rotation = Quaternion.Euler(0, 180, 0);
                                         meshObject2.transform.rotation = Quaternion.Euler(0, -90, 0);
@@ -738,7 +739,7 @@ public class CliffBitmask : MonoBehaviour
                                         meshObject3.SetActive(false);
                                         meshObject4.SetActive(false);
 
-                                        meshFilter1.mesh = cornerMesh;
+                                        SetMesh1ToCorner();
 
                                         meshObject1.transform.rotation = Quaternion.Euler(0, 180, 0);
                                     }
@@ -755,8 +756,9 @@ public class CliffBitmask : MonoBehaviour
                                         meshObject3.SetActive(false);
                                         meshObject4.SetActive(false);
 
-                                        meshFilter1.mesh = cornerMesh;
-                                        meshFilter2.mesh = cornerMesh;
+                                        SetMesh1ToCorner();
+                                        mesh1IsCorner = true;
+                                        SetMesh2ToCorner();
 
                                         meshObject1.transform.rotation = Quaternion.Euler(0, 0, 0);
                                         meshObject2.transform.rotation = Quaternion.Euler(0, -90, 0);
@@ -768,7 +770,7 @@ public class CliffBitmask : MonoBehaviour
                                         meshObject3.SetActive(false);
                                         meshObject4.SetActive(false);
 
-                                        meshFilter1.mesh = cornerMesh;
+                                        SetMesh1ToCorner();
 
                                         meshObject1.transform.rotation = Quaternion.Euler(0, 0, 0);
                                     }
@@ -782,7 +784,7 @@ public class CliffBitmask : MonoBehaviour
                                         meshObject3.SetActive(false);
                                         meshObject4.SetActive(false);
 
-                                        meshFilter1.mesh = cornerMesh;
+                                        SetMesh1ToCorner();
 
                                         meshObject1.transform.rotation = Quaternion.Euler(0, -90, 0);
                                     }
@@ -790,7 +792,8 @@ public class CliffBitmask : MonoBehaviour
                                     {
                                         // No neighbors found on any 4 edge or any 4 corner
                                         // This cliff should not exist! Destroy self.
-                                        Debug.Log("Cliff should not exist! Destroying it");
+
+                                        // TODO Should be restricted to only Host doing this..
                                         LevelHandler.ModifyVoxel(vID.Empty, pos.x, pos.y, pos.z);
                                     }
                                 }
@@ -802,26 +805,80 @@ public class CliffBitmask : MonoBehaviour
         }
     }
 
-    private void UpdateNeighbors()
+    private void SetMesh1ToCorner()
     {
-        UpdateNeighbor(pos.x + 1, pos.y, pos.z);
-        UpdateNeighbor(pos.x - 1, pos.y, pos.z);
-        UpdateNeighbor(pos.x, pos.y, pos.z + 1);
-        UpdateNeighbor(pos.x, pos.y, pos.z - 1);
+        if (mesh1IsCorner) return;
+        meshFilter1.mesh = cornerMesh;
+        mesh1IsCorner = true;
+    }
+    private void SetMesh2ToCorner()
+    {
+        if (mesh2IsCorner) return;
+        meshFilter2.mesh = cornerMesh;
+        mesh2IsCorner = true;
+    }
+    private void SetMesh3ToCorner()
+    {
+        if (mesh3IsCorner) return;
+        meshFilter3.mesh = cornerMesh;
+        mesh3IsCorner = true;
+    }
+    private void SetMesh4ToCorner()
+    {
+        if (mesh4IsCorner) return;
+        meshFilter4.mesh = cornerMesh;
+        mesh4IsCorner = true;
+    }
+    private void SetMesh1ToEdge()
+    {
+        mesh1IsCorner = false;
+        meshFilter1.mesh = edgeMesh;
+    }
+    private void SetMesh2ToEdge()
+    {
+        mesh2IsCorner = false;
+        meshFilter2.mesh = edgeMesh;
+    }
+    private void SetMesh3ToEdge()
+    {
+        mesh3IsCorner = false;
+        meshFilter3.mesh = edgeMesh; ;
+    }
+    private void SetMesh4ToEdge()
+    {
+        mesh4IsCorner = false;
+        meshFilter4.mesh = edgeMesh;
     }
 
-    private void UpdateNeighbor(int x, int y, int z)
+    private void CheckForWaterfall()
     {
-        GameObject neighbor = LevelHandler.GetObjectAtPosition(x, y, z);
-        if (neighbor != null)
+        GameObject waterObject = LevelHandler.GetObjectAtPosition(pos.x, pos.y + 1, pos.z);
+        if (waterObject != null)
         {
-            CliffBitmask cliffBitmask = neighbor.GetComponent<CliffBitmask>();
-            if (cliffBitmask != null)
+            WaterBitmask waterBitmask = waterObject.GetComponent<WaterBitmask>();
+            if (waterBitmask != null)
             {
-                cliffBitmask.UpdateModel();
+                if (waterBitmask.CheckIfWaterfall() == true)
+                {
+                    ChangeCornersForWaterfall();
+                }
             }
         }
     }
 
-    private void OnDestroy() => UpdateNeighbors();
+    public void ChangeCornersForWaterfall()
+    {
+        if (mesh1IsCorner)                              meshFilter1.mesh = waterfallCornerMesh;
+        if (meshObject2.activeSelf && mesh2IsCorner)    meshFilter2.mesh = waterfallCornerMesh;
+        if (meshObject3.activeSelf && mesh3IsCorner)    meshFilter3.mesh = waterfallCornerMesh;
+        if (meshObject4.activeSelf && mesh4IsCorner)    meshFilter4.mesh = waterfallCornerMesh;
+    }
+
+    public void ChangeCornersForNoWaterfall()
+    {
+        if (mesh1IsCorner)                              meshFilter1.mesh = cornerMesh;
+        if (meshObject2.activeSelf && mesh2IsCorner)    meshFilter2.mesh = cornerMesh;
+        if (meshObject3.activeSelf && mesh3IsCorner)    meshFilter3.mesh = cornerMesh;
+        if (meshObject4.activeSelf && mesh4IsCorner)    meshFilter4.mesh = cornerMesh;
+    }
 }

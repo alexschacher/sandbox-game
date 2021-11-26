@@ -27,7 +27,7 @@ public class LevelHandler : NetworkBehaviour
         Level level = LevelUtil.LoadLevel(App.GetGameSaveName());
         if (level == null)
         {
-            level = LevelGenerator.Generate(64);
+            level = LevelGenerator.Generate(16);
             HUD.LogMessage("LevelHandler: New Level Generated");
         }
         SetLevel(level);

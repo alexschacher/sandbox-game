@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 2772434091392198073}
   - component: {fileID: 3147685369382103100}
   - component: {fileID: -416020893810193577}
+  - component: {fileID: 8678292557430835873}
   m_Layer: 8
-  m_Name: Spawnable Liquid
+  m_Name: Liquid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108,3 +109,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10b718f78080b0440b3fe474e98745f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8678292557430835873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2772434091392198079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58a25c64e6a334b4f8de87184cbe1ccc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterfallMesh: {fileID: -4210105678343401526, guid: 90c5c6d5a8188254b8a3daeb4bd4d09e,
+    type: 3}
