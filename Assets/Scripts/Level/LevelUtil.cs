@@ -7,6 +7,8 @@ public static class LevelUtil
 {
     public static void SaveLevel(Level level, string filename)
     {
+        if (App.IfSaveAndLoadLevels() == false) return;
+
         string path = Application.persistentDataPath + "/" + filename + ".savegame";
 
         GameSave gameSave = new GameSave();
@@ -22,6 +24,8 @@ public static class LevelUtil
 
     public static Level LoadLevel(string filename)
     {
+        if (App.IfSaveAndLoadLevels() == false) return null;
+
         string path = Application.persistentDataPath + "/" + filename + ".savegame";
 
         if (File.Exists(path))
@@ -156,6 +160,11 @@ public static class LevelUtil
         uncompressedChunk.storedEntities = new List<CompressedEntity>(compressedChunk.storedEntities);
 
         return uncompressedChunk;
+    }
+
+    public static Vector3Int GetWorldCoords(int chunkX, int chunkY, int chunkZ, int voxelX, int voxelY, int voxelZ)
+    {
+        return new Vector3Int(chunkX * Chunk.width + voxelX, chunkY * Chunk.height + voxelY, chunkZ * Chunk.width + voxelZ);
     }
 
     public static Vector3Int GetChunkCoords(int worldX, int worldY, int worldZ)

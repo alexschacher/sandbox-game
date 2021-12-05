@@ -11,6 +11,8 @@ public class App : MonoBehaviour
 
     [SerializeField] private string gameSaveName = "gamesave1";
     public static string GetGameSaveName() => singleton.gameSaveName;
+    [SerializeField] private bool saveAndLoadLevels = true;
+    public static bool IfSaveAndLoadLevels() => singleton.saveAndLoadLevels;
 
     private bool inputLocked = false;
     public static bool IsInputLocked() => singleton.inputLocked;

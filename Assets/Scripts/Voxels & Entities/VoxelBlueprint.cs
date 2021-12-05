@@ -64,13 +64,5 @@ public enum vID : ushort
     Cliff_SlopeIn1,
     Cliff_SlopeIn2,
     Cliff_SlopeIn3,
-    Cliff_SlopeIn4,
-    Waterfall1,
-    Waterfall2,
-    Waterfall3,
-    Waterfall4,
-    Cliff_WaterfallCorner1,
-    Cliff_WaterfallCorner2,
-    Cliff_WaterfallCorner3,
-    Cliff_WaterfallCorner4
+    Cliff_SlopeIn4
 }

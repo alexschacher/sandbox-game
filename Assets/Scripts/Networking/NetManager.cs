@@ -56,7 +56,7 @@ public class NetManager : NetworkManager
     {
         base.OnServerAddPlayer(conn);
 
-        GameObject playerObj = Instantiate(playerCharacterPrefab, new Vector3(64f, 1.5f, 64f), Quaternion.identity);
+        GameObject playerObj = Instantiate(playerCharacterPrefab, new Vector3(128f, 1.5f, 128f), Quaternion.identity);
         NetworkServer.Spawn(playerObj, conn);
         playerCharacterObjects.Add(playerObj);
         uint controlledEntityNetId = playerObj.GetComponent<NetworkIdentity>().netId;

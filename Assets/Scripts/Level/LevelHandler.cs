@@ -27,7 +27,7 @@ public class LevelHandler : NetworkBehaviour
         Level level = LevelUtil.LoadLevel(App.GetGameSaveName());
         if (level == null)
         {
-            level = LevelGenerator.Generate(16);
+            level = LevelGenerator.Generate(32);
             HUD.LogMessage("LevelHandler: New Level Generated");
         }
         SetLevel(level);
@@ -289,7 +289,14 @@ public class LevelHandler : NetworkBehaviour
     [Client]
     public static void ModifyVoxel(vID id, int worldX, int worldY, int worldZ)
     {
-        singleton.CmdModifyVoxel(id, worldX, worldY, worldZ);
+        if (CheckIfInRange(worldX, worldY, worldZ))
+        {
+            singleton.CmdModifyVoxel(id, worldX, worldY, worldZ);
+        }
+        else
+        {
+            Debug.Log("LevelHandler ModifyVoxel out of range! id: " + id.ToString() + " x:" + worldX + " y:" + worldY + " z:" + worldZ);
+        }
     }
 
     [Command(ignoreAuthority = true)]
@@ -339,11 +346,11 @@ public class LevelHandler : NetworkBehaviour
         return singleton.level.chunks[chunkCoords.x, chunkCoords.y, chunkCoords.z].gameObjects[voxelCoords.x, voxelCoords.y, voxelCoords.z];
     }
 
-    public static bool CheckIfInRange(int x, int y, int z)
+    public static bool CheckIfInRange(int worldX, int worldY, int worldZ)
     {
-        if (x >= 0 && x < GetLevel().levelWidthInChunks * Chunk.width &&
-        y >= 0 && y < Chunk.height &&
-        z >= 0 && z < GetLevel().levelWidthInChunks * Chunk.width)
+        if (worldX >= 0 && worldX < GetLevel().levelWidthInChunks * Chunk.width &&
+        worldY >= 0 && worldY < Chunk.height &&
+        worldZ >= 0 && worldZ < GetLevel().levelWidthInChunks * Chunk.width)
         {
             return true;
         }

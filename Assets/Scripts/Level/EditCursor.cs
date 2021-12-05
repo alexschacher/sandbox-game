@@ -4,15 +4,22 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+// TODO: Restrict ability to use cursor when it is not in the view of the camera
+// TODO: Auto select height for most behaviors, unless placing something in midair. Maybe holding Alt allows you to manually modify the height of the cursor or something
+// TODO: Fancy heightmap manipulation 
+// TODO: Inspect highlighted voxel or nearest entity, spits out debug info on it
+// TODO: Display cursor coordinates as UI element near cursor
+// TODO: Display highlighted voxel ID, easier to eyedropper select the right voxel when you can see what it is first
+
 public class EditCursor : MonoBehaviour
 {
     [SerializeField] private InputActionAsset inputAsset;
     private InputAction scrollAction, mousePositionAction, placeAction, deleteAction, ctrlAction;
 
     private int cursorHeight;
-    private Vector3Int cursorPosition = new Vector3Int(0,0,0), prevCursorPosition;
+    private Vector3Int cursorPosition = new Vector3Int(0, 0, 0), prevCursorPosition;
 
-    [SerializeField] private vID selectedVID = vID.Post;
+    [SerializeField] private vID selectedVID = vID.Ground;
     [SerializeField] private eID selectedEID = eID.Apple;
     private bool selectionModeIsVoxel = true;
 
@@ -34,16 +41,33 @@ public class EditCursor : MonoBehaviour
 
     private void Start()
     {
-        UpdateCursorPosition();
+        UpdateCursorPosition_CursorHeight();
+        HUD.SetSelectedID(selectedVID.ToString());
     }
 
     private void Update()
     {
-        UpdateCursorPosition();
+        UpdateCursorPosition_CursorHeight();
         CheckForNewCursorPosition();
     }
 
-    private void UpdateCursorPosition()
+    private void UpdateCursorPosition_RayToCollision()
+    {
+        Ray mouseRay = Camera.main.ScreenPointToRay(mousePositionAction.ReadValue<Vector2>());
+        RaycastHit hit;
+
+        if (Physics.Raycast(mouseRay, out hit))
+        {
+            cursorPosition = new Vector3Int(
+                Mathf.RoundToInt(hit.transform.position.x),
+                Mathf.RoundToInt(hit.transform.position.y * 2),
+                Mathf.RoundToInt(hit.transform.position.z)); 
+        }
+
+        transform.position = new Vector3(cursorPosition.x, cursorPosition.y * 0.5f, cursorPosition.z);
+    }
+
+    private void UpdateCursorPosition_CursorHeight()
     {
         Ray mouseRay = Camera.main.ScreenPointToRay(mousePositionAction.ReadValue<Vector2>());
         Plane plane = new Plane(Vector3.up, -cursorHeight * 0.5f);
@@ -198,6 +222,7 @@ public class EditCursor : MonoBehaviour
 
         selectionModeIsVoxel = true;
         selectedVID = LevelHandler.GetVoxelIdAtPosition(cursorPosition.x, cursorHeight, cursorPosition.z);
+        //selectedVID = LevelHandler.GetVoxelIdAtPosition(cursorPosition.x, cursorPosition.y, cursorPosition.z);
 
         HUD.SetSelectedID(selectedVID.ToString());
     }

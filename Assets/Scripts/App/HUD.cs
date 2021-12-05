@@ -13,6 +13,7 @@ public class HUD : MonoBehaviour
         instance = this;
         InitiateMessageDisplayTimers();
         ShowOnlyCurrentMessages();
+        DeactivateInputField();
     }
 
     private void Update()

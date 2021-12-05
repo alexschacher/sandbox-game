@@ -18,20 +18,26 @@ public class WaterBitmask : MonoBehaviour
 
     private void Start()
     {
-        if (CheckIfSurrounded(pos.x, pos.y, pos.z) == false)
+        if (pos.y > 2)
         {
-            BecomeWaterfall();
+            if (CheckIfSurrounded(pos.x, pos.y, pos.z) == false)
+            {
+                BecomeWaterfall();
+            }
         }
     }
     private void OnDestroy()
     {
-        GameObject cliffObject = LevelHandler.GetObjectAtPosition(pos.x, pos.y - 1, pos.z);
-        if (cliffObject != null)
+        if (isWaterfall)
         {
-            CliffBitmask cliffBitmask = cliffObject.GetComponent<CliffBitmask>();
-            if (cliffBitmask != null)
+            GameObject cliffObject = LevelHandler.GetObjectAtPosition(pos.x, pos.y - 1, pos.z);
+            if (cliffObject != null)
             {
-                cliffBitmask.ChangeCornersForNoWaterfall();
+                CliffBitmask cliffBitmask = cliffObject.GetComponent<CliffBitmask>();
+                if (cliffBitmask != null)
+                {
+                    cliffBitmask.ChangeCornersForNoWaterfall();
+                }
             }
         }
     }
@@ -40,6 +46,9 @@ public class WaterBitmask : MonoBehaviour
     {
         isWaterfall = true;
         meshFilter.mesh = waterfallMesh;
+
+        LevelHandler.ModifyVoxel(vID.Empty, pos.x, pos.y - 2, pos.z);
+        LevelHandler.ModifyVoxel(vID.Water, pos.x, pos.y - 3, pos.z);
 
         GameObject cliffObject = LevelHandler.GetObjectAtPosition(pos.x, pos.y - 1, pos.z);
         if (cliffObject != null)
