@@ -7,11 +7,14 @@ public class CharacterItemHolder : NetworkBehaviour
 {
     [SerializeField] private bool isHoldingItem;
     [SerializeField] private eID heldItem;
+    [SerializeField] private GameObject heldItemObject;
+    private Billboard heldItemBillboard;
     LayerMask itemLayerMask;
 
     private void Awake()
     {
         itemLayerMask = LayerMask.GetMask("Item");
+        heldItemBillboard = heldItemObject.GetComponent<Billboard>();
     }
 
     private void Start()
@@ -58,6 +61,11 @@ public class CharacterItemHolder : NetworkBehaviour
                 heldItem = entity.GetID();
                 isHoldingItem = true;
                 LevelHandler.CmdDespawnEntity(nearestItem);
+
+                heldItemObject.SetActive(true);
+                EntityBlueprint entityBP = EntityBlueprint.GetFromID(entity.GetID());
+                InitValues_Item itemValues = (InitValues_Item)entityBP.values;
+                heldItemBillboard.SetOriginFrame(itemValues.originFrame.x, itemValues.originFrame.y);
             }
         }
     }
@@ -67,5 +75,6 @@ public class CharacterItemHolder : NetworkBehaviour
         LevelHandler.CmdSpawnEntity(heldItem, transform.position);
         isHoldingItem = false;
         heldItem = eID.Null;
+        heldItemObject.SetActive(false);
     }
 }
