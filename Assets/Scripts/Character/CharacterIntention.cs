@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +10,16 @@ public class CharacterIntention : MonoBehaviour
 
     public void SetMoveDir(Vector2 dir) => moveDir = dir;
     public void SetFaceDir(Vector2 dir) => faceDir = dir;
-    
+
     public Vector2 GetMoveDir() => moveDir;
     public Vector2 GetFaceDir() => faceDir;
+
+    public event Action onHandleItemEvent;
+    public void TriggerOnHandleItemEvent()
+    {
+        if (onHandleItemEvent != null)
+        {
+            onHandleItemEvent();
+        }
+    }
 }

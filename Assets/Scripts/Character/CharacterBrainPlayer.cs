@@ -37,4 +37,11 @@ public class CharacterBrainPlayer : NetworkBehaviour
         Vector2 moveDir = VectorMath.ConvertInputToWorldDir(moveInput, Camera.main.transform);
         intention.SetMoveDir(moveDir);
     }
+    private void OnInputHandleItem()
+    {
+        if (hasAuthority && !App.IsInputLocked())
+        {
+            intention.TriggerOnHandleItemEvent();
+        }
+    }
 }

@@ -36,19 +36,26 @@ public class LevelGenTest : MonoBehaviour
 
         int arrayWidth = 256;
         float[,] treesPerlin = LevelGenUtil.GeneratePerlin(arrayWidth, seed, 15f, 4, 0.5f, 2f);
+        float[,] treesPerlin2 = LevelGenUtil.GeneratePerlin(arrayWidth, seed, perlinScale, 4, 0.5f, 2f);
+        treesPerlin2 = LevelGenUtil.Posterize(treesPerlin2, treesPosterizeCutoff);
+
         float[,] treesPosterizedPerlin = LevelGenUtil.Posterize(treesPerlin, 0.55f);
         float[,] treesPoisson = LevelGenUtil.GeneratePoisson(arrayWidth, 1.25f, 2.85f);
         float[,] treeMap = LevelGenUtil.Darken(treesPoisson, treesPosterizedPerlin);
+
+        float[,] treesCombined = LevelGenUtil.Lighten(treesPosterizedPerlin, treesPerlin2);
+        float[,] grid = LevelGenUtil.GenerateGrid(arrayWidth, 2, 2, 1);
+        grid = LevelGenUtil.Darken(grid, treesCombined);
 
         float[,] island = LevelGenUtil.GenerateBlob(arrayWidth, 0.2f, 1f, 4f, seed, 50f, 4, 0.5f, 2f);
         float[,] islandHalved = LevelGenUtil.Normalize(island, 0, 2);
         float[,] islandTreeMap = LevelGenUtil.Darken(island, treeMap);
         float[,] islandHalvedWithTrees = LevelGenUtil.Lighten(islandHalved, islandTreeMap);
 
-        //textureRenderer.sharedMaterial.mainTexture = LevelGenUtil.GenerateTexture(treesPoisson);
-        //textureRenderer2.sharedMaterial.mainTexture = LevelGenUtil.GenerateTexture(island);
-        textureRenderer3.sharedMaterial.mainTexture = LevelGenUtil.GenerateTexture(islandHalvedWithTrees);
-        //textureRenderer4.sharedMaterial.mainTexture = LevelGenUtil.GenerateTexture(trees);
+        textureRenderer.sharedMaterial.mainTexture = LevelGenUtil.GenerateTexture(treesPosterizedPerlin);
+        textureRenderer2.sharedMaterial.mainTexture = LevelGenUtil.GenerateTexture(treesPerlin2);
+        textureRenderer3.sharedMaterial.mainTexture = LevelGenUtil.GenerateTexture(treesCombined);
+        textureRenderer4.sharedMaterial.mainTexture = LevelGenUtil.GenerateTexture(grid);
     }
 }
 

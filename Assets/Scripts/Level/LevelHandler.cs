@@ -113,7 +113,7 @@ public class LevelHandler : NetworkBehaviour
 
         foreach (CompressedEntity compressedEntity in GetLevel().chunks[chunkCoords.x, chunkCoords.y, chunkCoords.z].storedEntities)
         {
-            SpawnEntity((eID)compressedEntity.id, new Vector3(compressedEntity.positionX, compressedEntity.positionY, compressedEntity.positionZ));
+            ServerSpawnEntity((eID)compressedEntity.id, new Vector3(compressedEntity.positionX, compressedEntity.positionY, compressedEntity.positionZ));
         }
         GetLevel().chunks[chunkCoords.x, chunkCoords.y, chunkCoords.z].storedEntities.Clear();
     }
@@ -171,7 +171,7 @@ public class LevelHandler : NetworkBehaviour
         {
             if (LevelUtil.GetChunkCoords((int)liveEntity.transform.position.x, (int)liveEntity.transform.position.y, (int)liveEntity.transform.position.z).Equals(chunkCoords))
             {
-                DespawnEntity(liveEntity, chunkCoords);
+                ServerDespawnAndSaveEntity(liveEntity, chunkCoords);
                 liveEntitiesToRemove.Add(liveEntity);
             }
         }
@@ -187,8 +187,9 @@ public class LevelHandler : NetworkBehaviour
 
     #region Spawn & Despawn Entities
 
-    [Server]
-    public static void SpawnEntity(eID id, Vector3 worldPosition)
+    public static void CmdSpawnEntity(eID id, Vector3 worldPosition) => singleton.CmdServerSpawnEntity(id, worldPosition);
+    [Command(ignoreAuthority = true)] private void CmdServerSpawnEntity(eID id, Vector3 worldPosition) => ServerSpawnEntity(id, worldPosition);
+    [Server] public static void ServerSpawnEntity(eID id, Vector3 worldPosition)
     {
         EntityBlueprint entityBP = EntityBlueprint.GetFromID(id);
         GameObject entityObj = Instantiate(entityBP.prefab, worldPosition, Quaternion.identity, singleton.transform);
@@ -197,8 +198,7 @@ public class LevelHandler : NetworkBehaviour
         singleton.liveEntities.Add(entityObj);
     }
 
-    [Server]
-    public static void DespawnEntity(GameObject liveEntity, Vector3Int chunkCoords)
+    [Server] public static void ServerDespawnAndSaveEntity(GameObject liveEntity, Vector3Int chunkCoords)
     {
         EntityObject entityObject = liveEntity.GetComponent<EntityObject>();
 
@@ -209,6 +209,17 @@ public class LevelHandler : NetworkBehaviour
         compressedEntity.positionZ = liveEntity.transform.position.z;
         GetLevel().chunks[chunkCoords.x, chunkCoords.y, chunkCoords.z].storedEntities.Add(compressedEntity);
 
+        NetworkServer.Destroy(liveEntity);
+    }
+
+    public static void CmdDespawnEntity(GameObject liveEntity) => singleton.CmdServerDespawnEntity(liveEntity);
+    [Command(ignoreAuthority = true)] private void CmdServerDespawnEntity(GameObject liveEntity) => ServerDespawnEntity(liveEntity);
+    [Server] public static void ServerDespawnEntity(GameObject liveEntity)
+    {
+        if (singleton.liveEntities.Contains(liveEntity))
+        {
+            singleton.liveEntities.Remove(liveEntity);
+        }
         NetworkServer.Destroy(liveEntity);
     }
 

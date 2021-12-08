@@ -280,4 +280,28 @@ public class LevelGenUtil
         poisson = Posterize(poisson, 0.9f);
         return poisson;
     }
+
+    public static float[,] GenerateGrid(int arrayWidth, int xSpace, int zSpace, int rowOffset)
+    {
+        float[,] grid = new float[arrayWidth, arrayWidth];
+        int currentRowOffset = 0;
+
+        for (int z = 0; z < arrayWidth; z++)
+        {
+            if (z % zSpace != 0) continue;
+
+            currentRowOffset = currentRowOffset == 0 ? rowOffset : 0;
+
+            for (int x = 0; x < arrayWidth; x++)
+            {
+                if (x % xSpace != 0) continue;
+
+                if (x + currentRowOffset < arrayWidth)
+                {
+                    grid[x + currentRowOffset, z] = 1;
+                }
+            }
+        }
+        return grid;
+    }
 }

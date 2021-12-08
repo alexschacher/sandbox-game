@@ -27,11 +27,14 @@ public class LevelGenerator : MonoBehaviour
         int arrayWidth = levelWidthInChunks * Chunk.width;
 
         float[,] island = LevelGenUtil.GenerateBlob(arrayWidth, 0.2f, 1f, 4f, seed, 50f, 4, 0.5f, 2f);
-        float[,] treesPerlin = LevelGenUtil.GeneratePerlin(arrayWidth, seed, 15f, 4, 0.5f, 2f);
+        float[,] treesPerlin = LevelGenUtil.GeneratePerlin(arrayWidth, seed, 10f, 4, 0.5f, 2f);
         float[,] treesPosterizedPerlin = LevelGenUtil.Posterize(treesPerlin, 0.55f);
-        float[,] treesPoisson = LevelGenUtil.GeneratePoisson(arrayWidth, 2f, 2.85f);
-        float[,] treesPoissonAndPerlin = LevelGenUtil.Darken(treesPoisson, treesPosterizedPerlin);
-        float[,] treeMap = LevelGenUtil.Darken(island, treesPoissonAndPerlin);
+        float[,] treesPerlinSmall = LevelGenUtil.GeneratePerlin(arrayWidth, seed, 7f, 4, 0.5f, 2f);
+        float[,] treesPosterizedPerlinSmall = LevelGenUtil.Posterize(treesPerlin, 0.52f);
+        float[,] treesCombinedPosterizedPerlin = LevelGenUtil.Lighten(treesPosterizedPerlin, treesPosterizedPerlinSmall);
+        float[,] treeGrid = LevelGenUtil.GenerateGrid(arrayWidth, 2, 2, 1);
+        float[,] treeGridPerlin = LevelGenUtil.Darken(treeGrid, treesCombinedPosterizedPerlin);
+        float[,] treeMap = LevelGenUtil.Darken(island, treeGridPerlin);
 
         LevelGenID[,,] levelGenIDs = new LevelGenID[levelWidthInChunks * Chunk.width, Chunk.height, levelWidthInChunks * Chunk.width];
 
@@ -51,14 +54,6 @@ public class LevelGenerator : MonoBehaviour
                         {
                             levelGenIDs[worldCoords.x, 2, worldCoords.z] = LevelGenID.Ground;
 
-                            if (Random.Range(0f, 1f) < 0.4f)
-                            {
-                                //levelGenIDs[worldCoords.x, 3, worldCoords.z] = LevelGenID.Tallgrass;
-                            }
-                            if (Random.Range(0f, 1f) < 0.01f)
-                            {
-                                levelGenIDs[worldCoords.x, 3, worldCoords.z] = LevelGenID.Tree;
-                            }
                             if (treeMap[worldCoords.x, worldCoords.z] > 0.5f)
                             {
                                 levelGenIDs[worldCoords.x, 3, worldCoords.z] = LevelGenID.Tree;

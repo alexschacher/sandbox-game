@@ -205,7 +205,7 @@ public class EditCursor : MonoBehaviour
         }
         else
         {
-            LevelHandler.SpawnEntity(selectedEID, GetUnroundedCursorPosition());
+            LevelHandler.CmdSpawnEntity(selectedEID, GetUnroundedCursorPosition());
         }
     }
 

@@ -14,7 +14,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Grab",
+                    "name": "InputHandleItem",
                     "type": "Button",
                     "id": "e44f9193-41bb-4a2c-9650-b02f48eeb0b6",
                     "expectedControlType": "Button",
@@ -302,7 +302,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Grab",
+                    "action": "InputHandleItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -313,7 +313,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Grab",
+                    "action": "InputHandleItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -11,7 +11,8 @@ public class ToggleTorch : NetworkBehaviour
     [Command] private void CmdSetTorchToggle(bool toggle) => torchOn = toggle;
     private void Hook_SetTorchToggle(bool oldValue, bool newValue) => torch.SetActive(newValue);
 
-    private void OnGrab()
+    // TODO This method is not triggered by input ATM
+    private void OnTorch()
     {
         if (hasAuthority && !App.IsInputLocked())
         {

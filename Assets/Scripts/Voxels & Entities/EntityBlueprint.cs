@@ -39,6 +39,8 @@ using UnityEngine;
 
 public enum eID : ushort
 {
+    Null,
     Apple,
-    Log
+    Log,
+    Fish
 }

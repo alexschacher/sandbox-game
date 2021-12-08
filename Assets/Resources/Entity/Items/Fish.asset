@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c723c07777d8b984780792e12bd59973, type: 3}
-  m_Name: Log
+  m_Name: Fish
   m_EditorClassIdentifier: 
-  id: 2
+  id: 3
   prefab: {fileID: 2702197634504243268, guid: a4f77d9a73ae0e74dbd01401c046eb91, type: 3}
-  values: {fileID: 11400000, guid: e535fd9762c377c4bb5dc347677a4cc4, type: 2}
+  values: {fileID: 11400000, guid: e7c3eada5b4f81543bda05c2dffef283, type: 2}

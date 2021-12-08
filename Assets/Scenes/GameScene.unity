@@ -3152,7 +3152,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1422334125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3175,13 +3175,13 @@ MonoBehaviour:
   radialFill: 4
   poissonMin: 1.2
   poissonMax: 2.85
-  perlinScale: 50
+  perlinScale: 7
   perlinOctaves: 4
   perlinPersistance: 0.5
   perlinLacunarity: 2
-  treesPerlinScale: 15
-  treesPosterizeCutoff: 0.55
-  perlinSeed: 605
+  treesPerlinScale: 20
+  treesPosterizeCutoff: 0.7
+  perlinSeed: 504
 --- !u!4 &1422334128
 Transform:
   m_ObjectHideFlags: 0
