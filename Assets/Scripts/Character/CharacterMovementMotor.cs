@@ -25,12 +25,15 @@ public class CharacterMovementMotor : NetworkBehaviour
     {
         if (hasAuthority)
         {
-            AttemptMove();
+            if (intention.GetActionState() == CharacterActionState.Default)
+            {
+                AttemptMove();
+            }
         }
     }
     private void AttemptMove()
     {
-        moveDir = VectorMath.V2toV3(intention.GetMoveDir());
+        moveDir = VectorMath.V2toV3(intention.GetAimDir());
         distanceToMove = moveSpeed * Time.deltaTime;
 
         AdjustDirAroundWalls(true);

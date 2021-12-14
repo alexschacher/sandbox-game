@@ -33,18 +33,34 @@ public static class VectorMath
         return Quaternion.Euler(0, angle, 0) * v3;
     }
 
-    public static Vector3 RoundDirTo45DegreeGridMovement(Vector3 dir)
+    public static Vector3Int GetRelativeAdjacentVoxelFromDir(Vector2 dir)
     {
-        if (dir.x >  0.92f) return new Vector3( 1, 0, 0);
-        if (dir.z >  0.92f) return new Vector3( 0, 0, 1);
-        if (dir.x < -0.92f) return new Vector3(-1, 0, 0);
-        if (dir.z < -0.92f) return new Vector3( 0, 0,-1);
+        if (dir.x >  0.92f) return new Vector3Int( 1, 0, 0);
+        if (dir.y >  0.92f) return new Vector3Int( 0, 0, 1);
+        if (dir.x < -0.92f) return new Vector3Int(-1, 0, 0);
+        if (dir.y < -0.92f) return new Vector3Int( 0, 0,-1);
 
-        if (dir.x > 0 && dir.z > 0) return new Vector3( 1, 0, 1);
-        if (dir.x < 0 && dir.z > 0) return new Vector3(-1, 0, 1);
-        if (dir.x > 0 && dir.z < 0) return new Vector3( 1, 0,-1);
-        if (dir.x < 0 && dir.z < 0) return new Vector3(-1, 0,-1);
+        if (dir.x > 0 && dir.y > 0) return new Vector3Int( 1, 0, 1);
+        if (dir.x < 0 && dir.y > 0) return new Vector3Int(-1, 0, 1);
+        if (dir.x > 0 && dir.y < 0) return new Vector3Int( 1, 0,-1);
+        if (dir.x < 0 && dir.y < 0) return new Vector3Int(-1, 0,-1);
 
-        return Vector3.zero;
+        return Vector3Int.zero;
+    }
+    public static Vector3Int GetWorldVoxelCoordsFromPosition(Vector3 position)
+    {
+        Debug.Log(position +" > "+ new Vector3Int(
+            Mathf.RoundToInt(position.x),
+            Mathf.RoundToInt((position.y * 2) + 0.2f),
+            Mathf.RoundToInt(position.z)));
+        return new Vector3Int(
+            Mathf.RoundToInt(position.x),
+            Mathf.RoundToInt((position.y * 2) + 0.2f),
+            Mathf.RoundToInt(position.z));
+    }
+    public static Vector3 GetPositionFromWorldVoxelCoords(Vector3Int coords)
+    {
+        Debug.Log(coords + ">" + new Vector3(coords.x, coords.y / 2f, coords.z));
+        return new Vector3(coords.x, coords.y / 2f, coords.z);
     }
 }

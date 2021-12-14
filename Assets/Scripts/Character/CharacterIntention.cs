@@ -5,21 +5,22 @@ using UnityEngine;
 
 public class CharacterIntention : MonoBehaviour
 {
-    [SerializeField] private Vector2 moveDir;
-    [SerializeField] private Vector2 faceDir;
+    private Vector2 aimDir;
+    public Vector2 GetAimDir() => aimDir;
+    public void SetAimDir(Vector2 dir) => aimDir = dir;
 
-    public void SetMoveDir(Vector2 dir) => moveDir = dir;
-    public void SetFaceDir(Vector2 dir) => faceDir = dir;
-
-    public Vector2 GetMoveDir() => moveDir;
-    public Vector2 GetFaceDir() => faceDir;
+    private CharacterActionState actionState;
+    public CharacterActionState GetActionState() => actionState;
+    public void SetActionState(CharacterActionState value) => actionState = value;
 
     public event Action onHandleItemEvent;
-    public void TriggerOnHandleItemEvent()
-    {
-        if (onHandleItemEvent != null)
-        {
-            onHandleItemEvent();
-        }
-    }
+    public event Action onInteractEvent;
+    public void TriggerOnHandleItemEvent() => onHandleItemEvent?.Invoke();
+    public void TriggerOnInteractEvent() => onInteractEvent?.Invoke();
+}
+
+public enum CharacterActionState
+{
+    Default,
+    Fishing
 }

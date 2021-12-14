@@ -6,11 +6,14 @@ using Mirror;
 [RequireComponent(typeof(BillboardAnimator))]
 public class CharacterAnimator : NetworkBehaviour
 {
-    public enum AnimState { Stand, Walk }
+    public enum AnimState { Stand, Walk, Fish, Reel }
 
     [SerializeField] private Anim walkAnim;
     [SerializeField] private Anim standAnim;
+    [SerializeField] private Anim fishAnim;
+    [SerializeField] private Anim reelAnim;
 
+    private CharacterIntention intention;
     private BillboardAnimator animator;
     private Vector3 currentPosition;
     private Vector3 prevPosition;
@@ -21,11 +24,22 @@ public class CharacterAnimator : NetworkBehaviour
     private void Awake()
     {
         animator = GetComponent<BillboardAnimator>();
+        intention = GetComponent<CharacterIntention>();
     }
     private void Update()
     {
         currentPosition = transform.position;
-
+        
+        switch(intention.GetActionState())
+        {
+            case CharacterActionState.Default:  AnimateDefault();   break;
+            default:                            AnimateDefault();   break;
+        }
+        
+        prevPosition = currentPosition;
+    }
+    private void AnimateDefault()
+    {
         if (currentPosition != prevPosition)
         {
             if (animState != AnimState.Walk)
@@ -55,6 +69,10 @@ public class CharacterAnimator : NetworkBehaviour
                 }
             }
         }
-        prevPosition = currentPosition;
+    }
+
+    private void AnimateFishing()
+    {
+
     }
 }

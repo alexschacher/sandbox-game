@@ -5,8 +5,24 @@ using UnityEngine;
 
 public class CharacterItemHolder : NetworkBehaviour
 {
-    [SerializeField] private bool isHoldingItem;
     [SerializeField] private eID heldItem;
+    public eID GetHeldItem() => heldItem;
+    public void SetHeldItem(eID item)
+    {
+        heldItem = item;
+        if (heldItem == eID.Null)
+        {
+            heldItemObject.SetActive(false);
+        }
+        else
+        {
+            heldItemObject.SetActive(true);
+            EntityBlueprint entityBP = EntityBlueprint.GetFromID(heldItem);
+            InitValues_Item itemValues = (InitValues_Item)entityBP.values;
+            heldItemBillboard.SetOriginFrame(itemValues.originFrame.x, itemValues.originFrame.y);
+        }
+    }
+
     [SerializeField] private GameObject heldItemObject;
     private Billboard heldItemBillboard;
     LayerMask itemLayerMask;
@@ -28,7 +44,7 @@ public class CharacterItemHolder : NetworkBehaviour
 
     private void HandleItemEvent()
     {
-        if (isHoldingItem)
+        if (heldItem != eID.Null)
         {
             AttemptDropItem();
         }
@@ -58,14 +74,8 @@ public class CharacterItemHolder : NetworkBehaviour
             EntityObject entity = nearestItem.GetComponent<EntityObject>();
             if (entity != null)
             {
-                heldItem = entity.GetID();
-                isHoldingItem = true;
+                SetHeldItem(entity.GetID());
                 LevelHandler.CmdDespawnEntity(nearestItem);
-
-                heldItemObject.SetActive(true);
-                EntityBlueprint entityBP = EntityBlueprint.GetFromID(entity.GetID());
-                InitValues_Item itemValues = (InitValues_Item)entityBP.values;
-                heldItemBillboard.SetOriginFrame(itemValues.originFrame.x, itemValues.originFrame.y);
             }
         }
     }
@@ -73,8 +83,6 @@ public class CharacterItemHolder : NetworkBehaviour
     private void AttemptDropItem()
     {
         LevelHandler.CmdSpawnEntity(heldItem, transform.position);
-        isHoldingItem = false;
-        heldItem = eID.Null;
-        heldItemObject.SetActive(false);
+        SetHeldItem(eID.Null);
     }
 }

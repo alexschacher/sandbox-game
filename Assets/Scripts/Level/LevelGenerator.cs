@@ -54,6 +54,10 @@ public class LevelGenerator : MonoBehaviour
                         {
                             levelGenIDs[worldCoords.x, 2, worldCoords.z] = LevelGenID.Ground;
 
+                            if (Random.Range(0f, 1f) < 0.05f)
+                            {
+                                levelGenIDs[worldCoords.x, 3, worldCoords.z] = LevelGenID.Tallgrass;
+                            }
                             if (treeMap[worldCoords.x, worldCoords.z] > 0.5f)
                             {
                                 levelGenIDs[worldCoords.x, 3, worldCoords.z] = LevelGenID.Tree;

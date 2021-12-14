@@ -59,12 +59,12 @@ public class GroundBitmask : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("GroundBitmask: Cliff bitmask not found when expected");
+                    //Debug.Log("GroundBitmask: Cliff bitmask not found when expected");
                 }
             }
             else
             {
-                Debug.Log("GroundBitmask: Cliff object not found when expected");
+                //Debug.Log("GroundBitmask: Cliff object not found when expected");
             }
         }
     }

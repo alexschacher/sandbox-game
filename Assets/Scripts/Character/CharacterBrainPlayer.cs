@@ -23,7 +23,7 @@ public class CharacterBrainPlayer : NetworkBehaviour
         {
             if (App.IsInputLocked())
             {
-                intention.SetMoveDir(Vector2.zero);
+                intention.SetAimDir(Vector2.zero);
             }
             else
             {
@@ -31,17 +31,26 @@ public class CharacterBrainPlayer : NetworkBehaviour
             }
         }
     }
+
     private void GetMoveInput()
     {
         Vector2 moveInput = moveInputAction.ReadValue<Vector2>();
         Vector2 moveDir = VectorMath.ConvertInputToWorldDir(moveInput, Camera.main.transform);
-        intention.SetMoveDir(moveDir);
+        intention.SetAimDir(moveDir);
     }
+
     private void OnInputHandleItem()
     {
         if (hasAuthority && !App.IsInputLocked())
         {
             intention.TriggerOnHandleItemEvent();
+        }
+    }
+    private void OnInputInteract()
+    {
+        if (hasAuthority && !App.IsInputLocked())
+        {
+            intention.TriggerOnInteractEvent();
         }
     }
 }

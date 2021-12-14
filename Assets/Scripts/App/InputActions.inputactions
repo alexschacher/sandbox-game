@@ -22,6 +22,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "InputInteract",
+                    "type": "Button",
+                    "id": "cad3ed68-c958-4042-b5cd-9c0e7008ccdf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "RotateCameraLeft",
                     "type": "Button",
                     "id": "a47e5c8f-b333-4a09-a600-dc8c263d119a",
@@ -298,7 +306,7 @@
                 {
                     "name": "",
                     "id": "bbdc454b-7cd5-4f01-8734-071a40665bd9",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -512,6 +520,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Enter",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "15a6dfdc-51e8-4982-a1b4-caf4b19594d2",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InputInteract",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6d708b3e-baaf-4d92-90e7-b8f433c90421",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InputInteract",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

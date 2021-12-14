@@ -42,5 +42,6 @@ public enum eID : ushort
     Null,
     Apple,
     Log,
-    Fish
+    Fish,
+    Bobber
 }
