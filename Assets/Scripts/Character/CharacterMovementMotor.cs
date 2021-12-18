@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-[RequireComponent(typeof(FaceDir))]
 public class CharacterMovementMotor : NetworkBehaviour
 {
-    private CharacterIntention intention;
-    private FaceDir faceDir;
+    private CharCore core;
     private LayerMask solidLayerMask;
     private float colliderRadius = 0.39f;
 
@@ -17,23 +15,32 @@ public class CharacterMovementMotor : NetworkBehaviour
 
     private void Awake()
     {
-        intention = GetComponent<CharacterIntention>();
-        faceDir = GetComponent<FaceDir>();
+        core = GetComponent<CharCore>();
         solidLayerMask = LayerMask.GetMask("Solid");
     }
     private void Update()
     {
         if (hasAuthority)
         {
-            if (intention.GetActionState() == CharacterActionState.Default)
+            if (core.GetFishingState() == Fishing.State.NotFishing) // This is our "can we move?" check, also used in character animator
             {
                 AttemptMove();
+
+                if (core.GetIntentionDir() != Vector2.zero)
+                {
+                    core.SetVisualDir(core.GetIntentionDir());
+                    core.SetInteractDir(core.GetIntentionDir());
+                }
+            }
+            else
+            {
+                core.SetWalkDir(Vector2.zero);
             }
         }
     }
     private void AttemptMove()
     {
-        moveDir = VectorMath.V2toV3(intention.GetAimDir());
+        moveDir = VectorMath.V2toV3(core.GetIntentionDir());
         distanceToMove = moveSpeed * Time.deltaTime;
 
         AdjustDirAroundWalls(true);
@@ -44,7 +51,11 @@ public class CharacterMovementMotor : NetworkBehaviour
         {
             moveDir.y = 0f;
             transform.Translate(moveDir * distanceToMove);
-            faceDir.SetFaceDir(VectorMath.V3toV2Norm(moveDir));
+            core.SetWalkDir(VectorMath.V3toV2Norm(moveDir));
+        }
+        else
+        {
+            core.SetWalkDir(Vector2.zero);
         }
         ClampHeightToGround();
     }

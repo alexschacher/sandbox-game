@@ -1,16 +1,17 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fishing : MonoBehaviour
+public class Fishing : NetworkBehaviour
 {
-    enum State { NotFishing, WaitingForBite, FishIsBiting, ReelingIn }
-    private State state = State.NotFishing;
+    // needs to only execute if has authority
 
+    public enum State { NotFishing, WaitingForBite, FishIsBiting, ReelingIn }
+
+    private CharCore core;
     [SerializeField] private GameObject bobberPrefab;
     private GameObject activeBobber;
-
-    private CharacterIntention intention;
 
     private float fishBiteTimer;
     private float fishBiteTimerMin = 3f;
@@ -31,12 +32,14 @@ public class Fishing : MonoBehaviour
 
     private void Awake()
     {
-        intention = GetComponent<CharacterIntention>();
+        core = GetComponent<CharCore>();
     }
 
     public void Update()
     {
-        if (state == State.WaitingForBite)
+        if (hasAuthority == false) return;
+
+        if (core.GetFishingState() == State.WaitingForBite)
         {
             fishBiteTimer -= Time.deltaTime;
             if (fishBiteTimer < 0)
@@ -44,7 +47,7 @@ public class Fishing : MonoBehaviour
                 FishBite();
             }
         }
-        else if (state == State.FishIsBiting)
+        else if (core.GetFishingState() == State.FishIsBiting)
         {
             breakLineTimer -= Time.deltaTime;
             if (breakLineTimer < 0)
@@ -52,7 +55,7 @@ public class Fishing : MonoBehaviour
                 BreakLine();
             }
         }
-        else if (state == State.ReelingIn)
+        else if (core.GetFishingState() == State.ReelingIn)
         {
             reelingTimer -= Time.deltaTime;
             if (reelingTimer < 0)
@@ -65,8 +68,7 @@ public class Fishing : MonoBehaviour
     public void StartFishing(Vector3Int fishingCoords)
     {
         Debug.Log("Start fishing");
-        state = State.WaitingForBite;
-        intention.SetActionState(CharacterActionState.Fishing);
+        core.SetFishingState(State.WaitingForBite);
         fishBiteTimer = Random.Range(fishBiteTimerMin, fishBiteTimerMax);
         DestroyBobber();
         activeBobber = Instantiate(bobberPrefab, VectorMath.GetPositionFromWorldVoxelCoords(fishingCoords), Quaternion.identity);
@@ -76,19 +78,18 @@ public class Fishing : MonoBehaviour
 
     public void StopFishing()
     {
-        state = State.NotFishing;
-        intention.SetActionState(CharacterActionState.Default);
+        core.SetFishingState(State.NotFishing);
         DestroyBobber();
         // change fishermans animation to idle
     }
 
     public void Interact()
     {
-        if (state == State.FishIsBiting)
+        if (core.GetFishingState() == State.FishIsBiting)
         {
             StartReeling();
         }
-        else if (state == State.ReelingIn)
+        else if (core.GetFishingState() == State.ReelingIn)
         {
             ReelTap();
         }
@@ -101,7 +102,7 @@ public class Fishing : MonoBehaviour
     private void FishBite()
     {
         Debug.Log("Fish Bite!");
-        state = State.FishIsBiting;
+        core.SetFishingState(State.FishIsBiting);
         breakLineTimer = Random.Range(breakLineTimerMin, breakLineTimerMax);
         activeBobber.transform.position -= new Vector3(0f, 0.12f, 0f);
     }
@@ -122,7 +123,7 @@ public class Fishing : MonoBehaviour
 
     private void StartReeling()
     {
-        state = State.ReelingIn;
+        core.SetFishingState(State.ReelingIn);
         reelingTimer = Random.Range(reelingTimerMin, reelingTimerMax);
         reelTapsGoal = Random.Range(reelTapsGoalMin, reelTapsGoalMax);
         reelTaps = 1;
@@ -140,7 +141,7 @@ public class Fishing : MonoBehaviour
     private void CatchFish()
     {
         Debug.Log("Caught Fish!");
-        GetComponent<CharacterItemHolder>().SetHeldItem(eID.Fish);
+        core.SetHeldItem(eID.Fish);
         // play catch fish sound
         StopFishing();
     }

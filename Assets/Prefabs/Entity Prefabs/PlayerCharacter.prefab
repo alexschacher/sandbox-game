@@ -382,7 +382,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dd4a9f2a448dbe40aca01d45208a965, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aimDir: {x: 0, y: 0}
+  intentionDir: {x: 0, y: 0}
+  interactDir: {x: 0, y: 0}
+  visualDir: {x: 0, y: 0}
+  walkDir: {x: 0, y: 0}
+  isWalking: 0
+  isFishing: 0
+  isHoldingItem: 0
+  heldItem: 0
 --- !u!114 &9102914325709958165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,7 +420,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  heldItem: 0
   heldItemObject: {fileID: 8317397768412039032}
 --- !u!114 &3008240228552770007
 MonoBehaviour:
@@ -445,6 +451,8 @@ MonoBehaviour:
   syncInterval: 0.1
   walkAnim: {fileID: 11400000, guid: 7fb9245c568e8484585e732d38f82b21, type: 2}
   standAnim: {fileID: 11400000, guid: d735ebe180eacbf4fbd22181812e02ce, type: 2}
+  fishAnim: {fileID: 11400000, guid: 51ce10f077bd6ce4481113c0d3982e30, type: 2}
+  reelAnim: {fileID: 11400000, guid: 751afcb1eac70634a8e4067b56ffc9a0, type: 2}
   animState: 0
 --- !u!114 &1312242121634298262
 MonoBehaviour:

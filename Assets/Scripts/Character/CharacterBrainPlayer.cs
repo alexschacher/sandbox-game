@@ -6,14 +6,14 @@ using Mirror;
 
 public class CharacterBrainPlayer : NetworkBehaviour
 {
-    private CharacterIntention intention;
+    private CharCore core;
 
     [SerializeField] private InputActionAsset inputActionAsset;
     private InputAction moveInputAction;
 
     private void Awake()
     {
-        intention = GetComponent<CharacterIntention>();
+        core = GetComponent<CharCore>();
         moveInputAction = inputActionAsset.FindAction("Move");
     }
 
@@ -23,34 +23,34 @@ public class CharacterBrainPlayer : NetworkBehaviour
         {
             if (App.IsInputLocked())
             {
-                intention.SetAimDir(Vector2.zero);
+                core.SetIntentionDir(Vector2.zero);
             }
             else
             {
-                GetMoveInput();
+                GetIntentionDirInput();
             }
         }
     }
 
-    private void GetMoveInput()
+    private void GetIntentionDirInput()
     {
-        Vector2 moveInput = moveInputAction.ReadValue<Vector2>();
-        Vector2 moveDir = VectorMath.ConvertInputToWorldDir(moveInput, Camera.main.transform);
-        intention.SetAimDir(moveDir);
+        Vector2 intentionDirInput = moveInputAction.ReadValue<Vector2>();
+        Vector2 intentionDir = VectorMath.ConvertInputToWorldDir(intentionDirInput, Camera.main.transform);
+        core.SetIntentionDir(intentionDir);
     }
 
     private void OnInputHandleItem()
     {
         if (hasAuthority && !App.IsInputLocked())
         {
-            intention.TriggerOnHandleItemEvent();
+            core.TriggerOnHandleItemEvent();
         }
     }
     private void OnInputInteract()
     {
         if (hasAuthority && !App.IsInputLocked())
         {
-            intention.TriggerOnInteractEvent();
+            core.TriggerOnInteractEvent();
         }
     }
 }

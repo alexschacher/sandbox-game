@@ -13,10 +13,8 @@ public class CharacterAnimator : NetworkBehaviour
     [SerializeField] private Anim fishAnim;
     [SerializeField] private Anim reelAnim;
 
-    private CharacterIntention intention;
+    private CharCore core;
     private BillboardAnimator animator;
-    private Vector3 currentPosition;
-    private Vector3 prevPosition;
     private float animationGrace = 0.15f;
     private float animationGraceTimer;
     [SerializeField] private AnimState animState = AnimState.Stand;
@@ -24,23 +22,22 @@ public class CharacterAnimator : NetworkBehaviour
     private void Awake()
     {
         animator = GetComponent<BillboardAnimator>();
-        intention = GetComponent<CharacterIntention>();
+        core = GetComponent<CharCore>();
     }
     private void Update()
     {
-        currentPosition = transform.position;
-        
-        switch(intention.GetActionState())
+        if (core.GetFishingState() != Fishing.State.NotFishing)  // This is our "can we move?" check, also used in character movement motor
         {
-            case CharacterActionState.Default:  AnimateDefault();   break;
-            default:                            AnimateDefault();   break;
+            AnimateFishing();
         }
-        
-        prevPosition = currentPosition;
+        else
+        {
+            AnimateDefault();
+        }
     }
     private void AnimateDefault()
     {
-        if (currentPosition != prevPosition)
+        if (core.GetWalkDir() != Vector2.zero)
         {
             if (animState != AnimState.Walk)
             {
@@ -73,6 +70,18 @@ public class CharacterAnimator : NetworkBehaviour
 
     private void AnimateFishing()
     {
-
+        if (core.GetFishingState() == Fishing.State.ReelingIn)
+        {
+            if (animState != AnimState.Reel)
+            {
+                animator.StartAnim(reelAnim);
+                animState = AnimState.Reel;
+            }
+        }
+        else if (animState != AnimState.Fish)
+        {
+            animator.StartAnim(fishAnim);
+            animState = AnimState.Fish;
+        }
     }
 }

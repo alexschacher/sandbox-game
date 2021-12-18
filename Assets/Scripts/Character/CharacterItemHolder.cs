@@ -5,24 +5,7 @@ using UnityEngine;
 
 public class CharacterItemHolder : NetworkBehaviour
 {
-    [SerializeField] private eID heldItem;
-    public eID GetHeldItem() => heldItem;
-    public void SetHeldItem(eID item)
-    {
-        heldItem = item;
-        if (heldItem == eID.Null)
-        {
-            heldItemObject.SetActive(false);
-        }
-        else
-        {
-            heldItemObject.SetActive(true);
-            EntityBlueprint entityBP = EntityBlueprint.GetFromID(heldItem);
-            InitValues_Item itemValues = (InitValues_Item)entityBP.values;
-            heldItemBillboard.SetOriginFrame(itemValues.originFrame.x, itemValues.originFrame.y);
-        }
-    }
-
+    private CharCore core;
     [SerializeField] private GameObject heldItemObject;
     private Billboard heldItemBillboard;
     LayerMask itemLayerMask;
@@ -31,26 +14,24 @@ public class CharacterItemHolder : NetworkBehaviour
     {
         itemLayerMask = LayerMask.GetMask("Item");
         heldItemBillboard = heldItemObject.GetComponent<Billboard>();
-    }
 
-    private void Start()
-    {
-        CharacterIntention intention = GetComponent<CharacterIntention>();
-        if (intention != null)
+        core = GetComponent<CharCore>();
+        if (core != null)
         {
-            intention.onHandleItemEvent += HandleItemEvent;
+            core.onHandleItemEvent += HandleItemEvent;
+            core.onSetHeldItemEvent += SetHeldItemEvent;
         }
     }
 
     private void HandleItemEvent()
     {
-        if (heldItem != eID.Null)
+        if (core.GetHeldItem() == eID.Null)
         {
-            AttemptDropItem();
+            AttemptPickupItem();
         }
         else
         {
-            AttemptPickupItem();
+            AttemptDropItem();
         }
     }
 
@@ -74,7 +55,7 @@ public class CharacterItemHolder : NetworkBehaviour
             EntityObject entity = nearestItem.GetComponent<EntityObject>();
             if (entity != null)
             {
-                SetHeldItem(entity.GetID());
+                core.SetHeldItem(entity.GetID());
                 LevelHandler.CmdDespawnEntity(nearestItem);
             }
         }
@@ -82,7 +63,23 @@ public class CharacterItemHolder : NetworkBehaviour
 
     private void AttemptDropItem()
     {
-        LevelHandler.CmdSpawnEntity(heldItem, transform.position);
-        SetHeldItem(eID.Null);
+        LevelHandler.CmdSpawnEntity(core.GetHeldItem(), transform.position);
+        core.SetHeldItem(eID.Null);
+    }
+
+    private void SetHeldItemEvent()
+    {
+        eID id = core.GetHeldItem();
+        if (id == eID.Null)
+        {
+            heldItemObject.SetActive(false);
+        }
+        else
+        {
+            heldItemObject.SetActive(true);
+            EntityBlueprint entityBP = EntityBlueprint.GetFromID(id);
+            InitValues_Item itemValues = (InitValues_Item)entityBP.values;
+            heldItemBillboard.SetOriginFrame(itemValues.originFrame.x, itemValues.originFrame.y);
+        }
     }
 }

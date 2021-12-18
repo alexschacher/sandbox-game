@@ -14,7 +14,7 @@ using UnityEngine;
         {
             return idLookup[id];
         }
-        Debug.Log("Trying to access non-existant entity ID");
+        Debug.Log("Trying to access non-existant entity ID: " + id + " " + id.ToString());
         return null;
     }
     public static void InitDictionary()
