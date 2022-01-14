@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animFrames: 4
   animSpeed: 2
+  framePixelWidth: 10

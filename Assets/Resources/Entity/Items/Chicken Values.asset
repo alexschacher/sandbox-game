@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d286a12179d4c24c9e43121fef61637, type: 3}
-  m_Name: Waterfall Values
+  m_Script: {fileID: 11500000, guid: 5d7f931d53751294f9f5bb0a4c5bebbc, type: 3}
+  m_Name: Chicken Values
   m_EditorClassIdentifier: 
-  animFrames: 4
-  animSpeed: 4
+  originFrame: {x: 0, y: 11}

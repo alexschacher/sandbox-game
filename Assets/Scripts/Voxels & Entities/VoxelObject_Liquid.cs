@@ -13,6 +13,6 @@ public class VoxelObject_Liquid : VoxelObject
         {
             nonBillboardAnim = GetComponentInChildren<NonBillboardAnim>();
         }
-        nonBillboardAnim.SetVariables(liquidValues.animSpeed, liquidValues.animFrames, 15);
+        nonBillboardAnim.SetVariables(liquidValues.animSpeed, liquidValues.animFrames, liquidValues.framePixelWidth);
     }
 }

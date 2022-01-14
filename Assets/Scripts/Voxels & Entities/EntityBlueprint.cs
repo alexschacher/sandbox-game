@@ -43,5 +43,7 @@ public enum eID : ushort
     Apple,
     Log,
     Fish,
-    Bobber
+    Bobber,
+    ChickenTest,
+    Turnip
 }

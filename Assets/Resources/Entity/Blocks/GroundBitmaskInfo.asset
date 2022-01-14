@@ -12,19 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f16fcfd051a60b4f9c24abec66d68cf, type: 3}
   m_Name: GroundBitmaskInfo
   m_EditorClassIdentifier: 
-  isleMesh: {fileID: -6031815567599715270, guid: 90c5c6d5a8188254b8a3daeb4bd4d09e,
+  isleMesh: {fileID: 4858527227506401177, guid: 3706caa9584d5044f95f66354f5dadcf,
     type: 3}
-  endMesh: {fileID: -9162330557598176198, guid: 90c5c6d5a8188254b8a3daeb4bd4d09e,
+  endMesh: {fileID: -4369165392155228715, guid: 3706caa9584d5044f95f66354f5dadcf,
     type: 3}
-  laneMesh: {fileID: -3038427014544148154, guid: 90c5c6d5a8188254b8a3daeb4bd4d09e,
+  laneMesh: {fileID: 5182437972788053032, guid: 3706caa9584d5044f95f66354f5dadcf,
     type: 3}
-  cornerMesh: {fileID: -8103136257964427595, guid: 90c5c6d5a8188254b8a3daeb4bd4d09e,
+  cornerMesh: {fileID: 4762163494523217248, guid: 3706caa9584d5044f95f66354f5dadcf,
     type: 3}
-  edgeMesh: {fileID: 1016338394099841964, guid: 90c5c6d5a8188254b8a3daeb4bd4d09e,
+  edgeMesh: {fileID: 2710373422300744560, guid: 3706caa9584d5044f95f66354f5dadcf,
     type: 3}
-  midMesh: {fileID: -6454217189564175781, guid: 90c5c6d5a8188254b8a3daeb4bd4d09e,
+  midMesh: {fileID: -4451282640918694094, guid: 3706caa9584d5044f95f66354f5dadcf,
     type: 3}
-  rotateEnd: -90
-  rotateLane: 0
+  rotateEnd: 0
+  rotateLane: 90
   rotateCorner: 0
   rotateEdge: 0

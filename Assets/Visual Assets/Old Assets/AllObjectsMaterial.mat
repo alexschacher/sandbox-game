@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AllObjectsMaterial
+  m_Shader: {fileID: -6465566751694194690, guid: f7c0f2d00954f9049a1bb62f787e1644,
+    type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: dc3751c9d8faa574a918d04f028ba52c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShaderLighting_3223F9EE_Texture2DAC968373_2736757446:
+        m_Texture: {fileID: 2800000, guid: b630ce6aeee45cb42927226077cd0071, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShaderLighting_3223F9EE_Texture2DC20E08BA_4073258534:
+        m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2D:
+        m_Texture: {fileID: 2800000, guid: dc3751c9d8faa574a918d04f028ba52c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texturesheet:
+        m_Texture: {fileID: 2800000, guid: dc3751c9d8faa574a918d04f028ba52c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Boolean_187D6DC4: 0
+    - Vector1_E526CB93: 1
+    - _BumpScale: 1
+    - _CameraTargetBrightness: 0.5
+    - _CameraTargetRadius: 3.5
+    - _Cutoff: 0.5
+    - _Daylight: 0
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _FlipX: 0
+    - _FlipY: 0
+    - _FrameSpacing: 1
+    - _FrameWidth: 12
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _IsBillboarded: 0
+    - _LightingStep1: 0.001
+    - _LightingStep2: 0.05
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _ShadeOpacity: 0.5
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _UVSec: 0
+    - _ZWrite: 1
+    m_Colors:
+    - Color_184D89F4: {r: 1, g: 1, b: 1, a: 0}
+    - Color_423B37FE: {r: 0, g: 0, b: 0, a: 0}
+    - Vector2_15A1ECEF: {r: 0, g: 0, b: 0, a: 0}
+    - Vector2_560B0111: {r: 0, g: 0, b: 0, a: 0}
+    - _AnimFrame: {r: 0, g: 0, b: 0, a: 0}
+    - _AtmosphereTint: {r: 0.2864154, g: 0.20389818, b: 0.5471698, a: 1}
+    - _CameraTargetPosition: {r: 129.2686, g: 1.5, b: 119.75753, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DarknessColor: {r: 0, g: 0, b: 0, a: 0}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _OriginFrame: {r: 0, g: 0, b: 0, a: 0}

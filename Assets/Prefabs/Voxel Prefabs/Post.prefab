@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 2629341804919787039}
   - component: {fileID: 2629341804919787032}
   - component: {fileID: -316319966642078956}
+  - component: {fileID: 3340038810011125556}
   m_Layer: 8
-  m_Name: Spawnable Post
+  m_Name: Post
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2629341804919787036}
-  m_Mesh: {fileID: 4946852426162558294, guid: 90c5c6d5a8188254b8a3daeb4bd4d09e, type: 3}
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &2629341804919787039
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -60,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fb546b9fd42ebeb488e49ee25d549d27, type: 2}
+  - {fileID: 2100000, guid: 097e639da08396b4aa49481481e8008e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -107,3 +108,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a8d2fad252f6f748a3c27f743de7e8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3340038810011125556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2629341804919787036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1e0f1193f58ce04bbaebc080ee5ae20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frameWidth: 8
+  frameSpacing: 1
+  flipX: 0
+  flipY: 0
+  originFrame: {x: 0, y: 1}
+  animFrame: {x: 0, y: 0}

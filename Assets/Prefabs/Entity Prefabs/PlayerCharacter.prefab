@@ -174,7 +174,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6115434009198379981
 RectTransform:
   m_ObjectHideFlags: 0
@@ -276,7 +276,6 @@ GameObject:
   - component: {fileID: 1312242121634298262}
   - component: {fileID: 7734644717500580665}
   - component: {fileID: 7085960113803252189}
-  - component: {fileID: 1205841805314784296}
   - component: {fileID: 7734644717500580667}
   - component: {fileID: 7734644717500580660}
   - component: {fileID: 1789843828009758297}
@@ -382,14 +381,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dd4a9f2a448dbe40aca01d45208a965, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   intentionDir: {x: 0, y: 0}
   interactDir: {x: 0, y: 0}
   visualDir: {x: 0, y: 0}
   walkDir: {x: 0, y: 0}
-  isWalking: 0
-  isFishing: 0
-  isHoldingItem: 0
+  fishingState: 0
   heldItem: 0
+  maxHealth: 100
+  currentHealth: 100
 --- !u!114 &9102914325709958165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,11 +479,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e0f1193f58ce04bbaebc080ee5ae20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frameWidth: 12
+  frameWidth: 8
   frameSpacing: 1
   flipX: 0
   flipY: 0
-  originFrame: {x: 0, y: 1}
+  originFrame: {x: 0, y: 10}
   animFrame: {x: 0, y: 0}
 --- !u!114 &7085960113803252189
 MonoBehaviour:
@@ -496,20 +497,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc0b8df24675a5448a03625e52de7309, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1205841805314784296
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7734644717500580661}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07cc4a42a241ccc4a91b8c072430eb5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
 --- !u!33 &7734644717500580667
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -536,7 +523,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fb546b9fd42ebeb488e49ee25d549d27, type: 2}
+  - {fileID: 2100000, guid: 097e639da08396b4aa49481481e8008e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -629,6 +616,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ca51ffe25cb272488b49b1d960c1bea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   bobberPrefab: {fileID: 2702197634504243268, guid: 111a8f57a803e134cba5fd446035108e,
     type: 3}
 --- !u!1 &8317397768412039032
@@ -658,7 +647,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8317397768412039032}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.85, z: 0}
+  m_LocalPosition: {x: 0, y: 1.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7734644717500580666}
@@ -690,7 +679,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fb546b9fd42ebeb488e49ee25d549d27, type: 2}
+  - {fileID: 2100000, guid: 097e639da08396b4aa49481481e8008e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -723,7 +712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e0f1193f58ce04bbaebc080ee5ae20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frameWidth: 12
+  frameWidth: 8
   frameSpacing: 1
   flipX: 0
   flipY: 0

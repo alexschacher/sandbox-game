@@ -50,7 +50,8 @@ public class CharacterBrainPlayer : NetworkBehaviour
     {
         if (hasAuthority && !App.IsInputLocked())
         {
-            core.TriggerOnInteractEvent();
+            core.LoseHealth(33f);
+            //core.TriggerOnInteractEvent();
         }
     }
 }

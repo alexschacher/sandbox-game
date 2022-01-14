@@ -39,7 +39,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4685224073119546305}
-  m_Mesh: {fileID: 674340280032488212, guid: 90c5c6d5a8188254b8a3daeb4bd4d09e, type: 3}
+  m_Mesh: {fileID: 674340280032488212, guid: 3706caa9584d5044f95f66354f5dadcf, type: 3}
 --- !u!23 &7899850074294562477
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fb546b9fd42ebeb488e49ee25d549d27, type: 2}
+  - {fileID: 2100000, guid: 097e639da08396b4aa49481481e8008e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 6685179632959839615}
   - component: {fileID: 6158456048105284698}
   m_Layer: 8
-  m_Name: Bridge 1
+  m_Name: Bridge R90
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

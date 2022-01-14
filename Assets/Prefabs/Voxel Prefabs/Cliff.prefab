@@ -50,7 +50,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fb546b9fd42ebeb488e49ee25d549d27, type: 2}
+  - {fileID: 2100000, guid: 097e639da08396b4aa49481481e8008e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -78,7 +78,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1734764053668734948}
-  m_Mesh: {fileID: 5104424977293452882, guid: 90c5c6d5a8188254b8a3daeb4bd4d09e, type: 3}
+  m_Mesh: {fileID: -6633500982450377072, guid: 3706caa9584d5044f95f66354f5dadcf, type: 3}
 --- !u!1 &5946573513727916196
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,7 +129,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fb546b9fd42ebeb488e49ee25d549d27, type: 2}
+  - {fileID: 2100000, guid: 097e639da08396b4aa49481481e8008e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -208,7 +208,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fb546b9fd42ebeb488e49ee25d549d27, type: 2}
+  - {fileID: 2100000, guid: 097e639da08396b4aa49481481e8008e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -287,7 +287,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fb546b9fd42ebeb488e49ee25d549d27, type: 2}
+  - {fileID: 2100000, guid: 097e639da08396b4aa49481481e8008e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -394,9 +394,8 @@ MonoBehaviour:
   meshObject2: {fileID: 6588764100186579615}
   meshObject3: {fileID: 5946573513727916196}
   meshObject4: {fileID: 5989507738373569180}
-  edgeMesh: {fileID: -4507102788956137328, guid: 90c5c6d5a8188254b8a3daeb4bd4d09e,
+  edgeMesh: {fileID: 27993091915505150, guid: 3706caa9584d5044f95f66354f5dadcf, type: 3}
+  cornerMesh: {fileID: -6633500982450377072, guid: 3706caa9584d5044f95f66354f5dadcf,
     type: 3}
-  cornerMesh: {fileID: 5104424977293452882, guid: 90c5c6d5a8188254b8a3daeb4bd4d09e,
-    type: 3}
-  waterfallCornerMesh: {fileID: -9123096497500318171, guid: 90c5c6d5a8188254b8a3daeb4bd4d09e,
+  waterfallCornerMesh: {fileID: 7215357615312196951, guid: 3706caa9584d5044f95f66354f5dadcf,
     type: 3}

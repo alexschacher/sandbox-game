@@ -6,4 +6,5 @@ using UnityEngine;
 {
     public int animFrames;
     public float animSpeed;
+    public int framePixelWidth;
 }

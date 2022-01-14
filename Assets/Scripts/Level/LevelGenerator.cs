@@ -17,7 +17,8 @@ public class LevelGenerator : MonoBehaviour
 
     public static Level Generate(int levelWidth)
     {
-        LevelGenID[,,] levelGenIDs =  GenerateIslandWithTrees(levelWidth);
+        //LevelGenID[,,] levelGenIDs =  GenerateIslandWithTrees(levelWidth);
+        LevelGenID[,,] levelGenIDs = GenerateEmptyLevel (levelWidth);
         return ConvertGeneratedDataToLevel(levelGenIDs, levelWidth);
     }
 

@@ -77,7 +77,15 @@ public class NetManager : NetworkManager
         LevelHandler.SendInitLevelInfo(conn);
         LevelHandler.SendAllLiveChunksToClient(conn);
         LevelHandler.UpdateLiveChunks(playerCharacterObjects);
+    }
 
+    public static void DestroyCharacter(GameObject character)
+    {
+        if (instance.playerCharacterObjects.Contains(character))
+        {
+            instance.playerCharacterObjects.Remove(character);
+        }
+        NetworkServer.Destroy(character);
     }
 
     public override void OnStopServer()

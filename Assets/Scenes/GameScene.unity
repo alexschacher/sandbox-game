@@ -198,7 +198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  material: {fileID: 2100000, guid: fb546b9fd42ebeb488e49ee25d549d27, type: 2}
+  material: {fileID: 2100000, guid: 097e639da08396b4aa49481481e8008e, type: 2}
   currentHour: 14
   timeSpeed: 0
   currentPartOfDay: 1
@@ -1103,7 +1103,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fb546b9fd42ebeb488e49ee25d549d27, type: 2}
+  - {fileID: 2100000, guid: 7e17355d33a3e904c903ac959352754f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2504,8 +2504,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 100cd89771acdf248a6cf9b37c100dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameSaveName: levelsave19
-  saveAndLoadLevels: 0
+  gameSaveName: testlevelnew
+  saveAndLoadLevels: 1
 --- !u!114 &1346922874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4329,7 +4329,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7412504577382063583}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: -32}
+  m_LocalPosition: {x: 0, y: 0, z: -50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7412504577560051543}

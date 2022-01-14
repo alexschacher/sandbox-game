@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62100c3515392284ebbe75ae2857bf22, type: 3}
-  m_Name: Waterfall1
+  m_Script: {fileID: 11500000, guid: c723c07777d8b984780792e12bd59973, type: 3}
+  m_Name: Chicken
   m_EditorClassIdentifier: 
-  id: 26
-  prefab: {fileID: 2772434091392198079, guid: 836e1321a7848ac4fb0260b093ff74b4, type: 3}
-  values: {fileID: 11400000, guid: 912406f57eae8204089a66e47b52ec33, type: 2}
+  id: 5
+  prefab: {fileID: 2702197634504243268, guid: a4f77d9a73ae0e74dbd01401c046eb91, type: 3}
+  values: {fileID: 11400000, guid: 983415fae793fd54a836afb0aae09ac4, type: 2}

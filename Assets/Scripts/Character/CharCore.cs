@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class CharCore : NetworkBehaviour
 {
+    // Vector2 Dirs
+
     [SerializeField] private Vector2 intentionDir;
     public Vector2 GetIntentionDir() => intentionDir;
     public void SetIntentionDir(Vector2 dir) => intentionDir = dir;
@@ -32,6 +34,10 @@ public class CharCore : NetworkBehaviour
     }
     [Command] private void CmdSetWalkDir(Vector2 dir) => walkDir = dir;
 
+
+
+    // Fishing State
+
     [SerializeField] [SyncVar] private Fishing.State fishingState;
     public Fishing.State GetFishingState() => fishingState;
     public void SetFishingState(Fishing.State state)
@@ -40,6 +46,10 @@ public class CharCore : NetworkBehaviour
         CmdSetFishingState(state);
     }
     [Command] private void CmdSetFishingState(Fishing.State state) => fishingState = state;
+
+
+
+    // Held Item
 
     [SerializeField] [SyncVar(hook = nameof(HookSetHeldItem))]
     private eID heldItem;
@@ -52,11 +62,49 @@ public class CharCore : NetworkBehaviour
     }
     [Command] private void CmdSetHeldItem(eID id) => heldItem = id;
     private void HookSetHeldItem(eID oldID, eID newID) => onSetHeldItemEvent?.Invoke();
-
     public event Action onSetHeldItemEvent;
+
+
+
+    // Health
+
+    [SerializeField] [SyncVar] private float maxHealth = 100f;
+    [SerializeField] [SyncVar(hook = nameof(HookSetHealth))] private float currentHealth = 100f;
+    public float GetCurrentHealth() => currentHealth;
+    public void GainHealth(float amount) => SetCurrentHealth(currentHealth + amount);
+    public void LoseHealth(float amount) => SetCurrentHealth(currentHealth - amount);
+    public void SetCurrentHealth(float amount)
+    {
+        if (amount > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+        else if (amount <= 0)
+        {
+            currentHealth = 0;
+        }
+        else
+        {
+            currentHealth = amount;
+        }
+    }
+    private void HookSetHealth(float oldHealth, float newHealth)
+    {
+        if (isServer)
+        {
+            if (newHealth <= 0f)
+            {
+                NetManager.DestroyCharacter(gameObject);
+            }
+        }
+    }
+
+
+
+    // Input Events
+
     public event Action onHandleItemEvent;
     public event Action onInteractEvent;
-
     public void TriggerOnHandleItemEvent() => onHandleItemEvent?.Invoke();
     public void TriggerOnInteractEvent() => onInteractEvent?.Invoke();
 } 
